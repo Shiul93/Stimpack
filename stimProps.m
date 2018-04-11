@@ -4,18 +4,23 @@ classdef stimProps < handle
     %   tool. An instance of this class is found in the stimCore class.
     
     properties (SetAccess = public)
+        % path info
+        path@char = './'
         % Device enable
-        usingEyelink = false
-        usingDataPixx = false
-        usingLabJack = false
+        usingEyelink@logical = false
+        usingDataPixx@logical = false
+        usingLabJack@logical = false
         
         % 
-        eyelinkIp = ''
+        eyelinkIp@char = '10.1.1.1'
+        
+        %
+        stimScreen = 0
         
     end
     
     methods
-        function this = stimProps(args)
+        function obj = stimProps(args)
         end
     end
     
