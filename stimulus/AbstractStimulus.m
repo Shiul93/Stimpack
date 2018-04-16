@@ -5,10 +5,10 @@ classdef (Abstract) AbstractStimulus < handle
     properties 
         
         % Reference to global properties
-        props@stimProps
+        props@stimProps;
         % Reference to main class
-        stimPk@stimpack        
-        
+        stimPk@stimpack;        
+        el;
     end
     
     properties (Abstract = true)
@@ -18,18 +18,20 @@ classdef (Abstract) AbstractStimulus < handle
         
     end
     
-    properties (Access = protected)
+    properties %(Access = protected)
         
         window
         wRect
-        winWidth
-        winHeight
+        winWidth@double
+        winHeight@double
         
-        el
+        
     end
     
     methods (Abstract)
-        runStimulus(obj);
+        configureEDF(obj);
+        runTrials(obj);
+        endExperiment(obj);
     end
     
     methods 
@@ -39,7 +41,12 @@ classdef (Abstract) AbstractStimulus < handle
             % Open a graphics window on the main screen
             % using the PsychToolbox's Screen function.
             %screenNumber=max(Screen('Screens'));
-            Screen('Preference', 'SkipSyncTests', 1);
+            
+            if obj.props.ptbSkipSync
+                Screen('Preference', 'SkipSyncTests', 1);
+            else
+                Screen('Preference', 'SkipSyncTests', 0);
+            end
             if isempty(obj.props.stimScreen)
                 screenNumber=max(Screen('Screens'));
             else
@@ -49,7 +56,6 @@ classdef (Abstract) AbstractStimulus < handle
             Screen(obj.window,'BlendFunction',GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
             [obj.winWidth, obj.winHeight] = WindowSize(obj.window);
         end
-        
         
         function configureEyelink(obj)
             % Provide Eyelink with details about the graphics environment
@@ -62,7 +68,7 @@ classdef (Abstract) AbstractStimulus < handle
 
             % We are changing calibration to a black background with white targets,
             % no sound and smaller targets
-            obj.el.backgroundcolour = BlackIndex(obj.el.window);
+            obj.el.backgroundcolour =rand(3, 1)% BlackIndex(obj.el.window);
             obj.el.msgfontcolour  = WhiteIndex(obj.el.window);
             obj.el.imgtitlecolour = WhiteIndex(obj.el.window);
             obj.el.targetbeep = 0;
@@ -104,7 +110,7 @@ classdef (Abstract) AbstractStimulus < handle
             end;
         end
         
-        function startEyelink(obj)
+        function configureTracker(obj)
             % SET UP TRACKER CONFIGURATION
             % Setting the proper recording resolution, proper calibration type,
             % as well as the data file content;
@@ -147,6 +153,29 @@ classdef (Abstract) AbstractStimulus < handle
             Eyelink('command', 'button_function 5 "accept_target_fixation"');
         end
         
+        function checkDummy(obj)
+            if obj.props.usingEyelink
+            % Hide the mouse cursor and setup the eye calibration window
+            Screen('HideCursorHelper', obj.window);
+            end
+            % enter Eyetracker camera setup mode, calibration and validation
+            EyelinkDoTrackerSetup(obj.el);
+            
+        end
+        
+        function runStimulus(obj)
+            obj.configureEDF()
+            obj.setupScreen()
+            obj.configureEyelink()
+            obj.connectToEyelink()
+            obj.configureTracker()
+            obj.checkDummy()
+            obj.runTrials()
+            obj.endExperiment()
+            obj.cleanup()
+                
+        end
+        
         
             
     end
@@ -158,6 +187,8 @@ classdef (Abstract) AbstractStimulus < handle
             Eyelink('Shutdown');
             Screen('CloseAll');
         end
+        
+        
     end
 end
 
