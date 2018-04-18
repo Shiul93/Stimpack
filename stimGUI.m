@@ -22,7 +22,7 @@ function varargout = stimGUI(varargin)
 
 % Edit the above text to modify the response to help stimGUI
 
-% Last Modified by GUIDE v2.5 20-Mar-2018 18:05:46
+% Last Modified by GUIDE v2.5 18-Apr-2018 18:32:50
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -54,7 +54,12 @@ function stimGUI_OpeningFcn(hObject, eventdata, handles, varargin)
 
 % Choose default command line output for stimGUI
 handles.output = hObject;
-
+disp('STIMGUI');
+disp(nargin)
+if nargin > 3
+    disp(varargin{1});
+    handles.stimpack = varargin{1};
+end
 % Update handles structure
 guidata(hObject, handles);
 
@@ -73,8 +78,12 @@ function varargout = stimGUI_OutputFcn(hObject, eventdata, handles)
 varargout{1} = handles.output;
 
 
-% --- Executes on button press in pushbutton2.
-function pushbutton2_Callback(hObject, eventdata, handles)
-% hObject    handle to pushbutton2 (see GCBO)
+% --- Executes on button press in fixationButton.
+function fixationButton_Callback(hObject, eventdata, handles)
+% hObject    handle to fixationButton (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+    disp('FIXATIONBUTTON')
+    disp(handles.stimpack)
+    fixationGUI(handles.stimpack)
+    close(stimGUI)

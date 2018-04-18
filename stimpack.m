@@ -13,8 +13,8 @@ classdef stimpack < handle
         function obj = stimpack(varargin)
 			
             obj.props = stimProps();
-			obj.initialiseGUI;
-            obj.props.path
+            obj.props.path = pwd;
+            obj.initialiseGUI();
 
 			
         end
@@ -23,9 +23,25 @@ classdef stimpack < handle
     % HIDDEN METHODS
     methods (Hidden = true)
         function initialiseGUI(obj) 
-            stimGUI()
+            stimGUI(obj)
         end
     end
+    
+%     methods (Static)
+%         function singleton = getInstance
+%              persistent local
+%              if isempty(local)
+%                 local = stimpack();
+%              end
+%              singleton = local;
+%         end
+%         function run
+%             sp = stimpack.getInstance();
+%             sp.initialiseGUI()
+%         end
+%             
+%         
+%     end
     
 end
 

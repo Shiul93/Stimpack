@@ -22,7 +22,7 @@ function varargout = fixationGUI(varargin)
 
 % Edit the above text to modify the response to help fixationGUI
 
-% Last Modified by GUIDE v2.5 22-Mar-2018 18:49:02
+% Last Modified by GUIDE v2.5 18-Apr-2018 17:06:29
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -54,6 +54,9 @@ function fixationGUI_OpeningFcn(hObject, eventdata, handles, varargin)
 
 % Choose default command line output for fixationGUI
 handles.output = hObject;
+if nargin > 3
+    handles.stimpack = varargin{1};
+end
 
 % Update handles structure
 guidata(hObject, handles);
@@ -85,13 +88,18 @@ function runButton_Callback(hObject, eventdata, handles)
 % hObject    handle to runButton (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-
+disp('Run Fixation');
+stimulus = FixationStimulus(handles.stimpack);
+stimulus.runStimulus();
 
 % --- Executes on button press in cancelButton.
 function cancelButton_Callback(hObject, eventdata, handles)
 % hObject    handle to cancelButton (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+disp('Cancel Fixation')
+handles.stimpack.initialiseGUI();
+close(fixationGUI);
 
 
 
@@ -187,18 +195,18 @@ end
 
 
 
-function dotSizeInput_Callback(hObject, eventdata, handles)
-% hObject    handle to dotSizeInput (see GCBO)
+function dotSizeField_Callback(hObject, eventdata, handles)
+% hObject    handle to dotSizeField (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-% Hints: get(hObject,'String') returns contents of dotSizeInput as text
-%        str2double(get(hObject,'String')) returns contents of dotSizeInput as a double
+% Hints: get(hObject,'String') returns contents of dotSizeField as text
+%        str2double(get(hObject,'String')) returns contents of dotSizeField as a double
 
 
 % --- Executes during object creation, after setting all properties.
-function dotSizeInput_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to dotSizeInput (see GCBO)
+function dotSizeField_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to dotSizeField (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
 
@@ -256,18 +264,41 @@ end
 
 
 
-function edit12_Callback(hObject, eventdata, handles)
-% hObject    handle to edit12 (see GCBO)
+function bgColorField_Callback(hObject, eventdata, handles)
+% hObject    handle to bgColorField (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-% Hints: get(hObject,'String') returns contents of edit12 as text
-%        str2double(get(hObject,'String')) returns contents of edit12 as a double
+% Hints: get(hObject,'String') returns contents of bgColorField as text
+%        str2double(get(hObject,'String')) returns contents of bgColorField as a double
 
 
 % --- Executes during object creation, after setting all properties.
-function edit12_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to edit12 (see GCBO)
+function bgColorField_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to bgColorField (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function trialsTimeField_Callback(hObject, eventdata, handles)
+% hObject    handle to trialsTimeField (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of trialsTimeField as text
+%        str2double(get(hObject,'String')) returns contents of trialsTimeField as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function trialsTimeField_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to trialsTimeField (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
 
