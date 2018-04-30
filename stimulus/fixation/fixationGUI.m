@@ -101,7 +101,7 @@ handles.stimpack.initialiseGUI();
 function fixationTimeField_Callback(hObject, eventdata, handles)
 disp('fixationTime Callback');
 disp(hObject.String)
-handles.stimulus.timeFix = str2double(hObject.String)
+handles.stimulus.timeFix = str2double(hObject.String)/1000;
 
 
 % --- Executes during object creation, after setting all properties.
@@ -112,7 +112,7 @@ end
 
 
 function abortTimeField_Callback(hObject, eventdata, handles)
-disp('fixationTime Callback');
+disp('abortTime Callback');
 disp(hObject.String)
 handles.stimulus.abortTime = str2double(hObject.String)/1000;
 

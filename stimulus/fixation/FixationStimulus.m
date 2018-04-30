@@ -11,7 +11,7 @@ classdef FixationStimulus < AbstractStimulus
         dotColour@double = [255 255 255 255]
         backgroundColour@double = [0 0 0 255]
         interTrialTime@double = 1;
-        abortTime@double = 500;
+        abortTime@double = 0.5;
         edfFile@char = '';
         pathsave@char = '';
         taskname@char = 'FixationTask';
@@ -65,13 +65,17 @@ classdef FixationStimulus < AbstractStimulus
             %EyelinkDoDriftCorrection(obj.el);
 
             stopTrial=false;
-
+            
+            
             while (trial <= numTrials) || numTrials == 0
                disp(sprintf('Trial nº%d',trial));
+               
+               % Stimulus dot
                fixationDot = [-obj.dotSize -obj.dotSize obj.dotSize obj.dotSize];
                fixationDot = CenterRect(fixationDot, obj.wRect);   
-               % TODO Revisar esto
-               fixationOK = [-obj.dotSize+2 -obj.dotSize+2 obj.dotSize+2 obj.dotSize+2];
+               
+               % Green dot when succesful trial
+               fixationOK = [-obj.dotSize-2 -obj.dotSize-2 obj.dotSize+2 obj.dotSize+2];
                fixationOK = CenterRect(fixationOK, obj.wRect); 
 
                % Set the fixation window on the center of the screen
@@ -101,15 +105,6 @@ classdef FixationStimulus < AbstractStimulus
                 Eyelink('command', 'draw_cross %d %d 15', obj.winWidth/2,obj.winHeight/2);
                 Eyelink('command', 'draw_box %d %d %d %d 15', obj.fixationWindow(1), obj.fixationWindow(2), obj.fixationWindow(3), obj.fixationWindow(4));
 
-                % STEP 7.2
-                % Do a drift correction at the beginning of each trial
-                % Performing drift correction (checking) is optional for
-                % EyeLink 1000 eye trackers. Drift correcting at different
-                % locations x and y depending on where the ball will start
-                % we change the location of the drift correction to match that of
-                % the target start position
-
-
                 % STEP 7.3
                 % start recording eye position (preceded by a short pause so that
                 % the tracker can finish the mode transition)
@@ -124,6 +119,7 @@ classdef FixationStimulus < AbstractStimulus
                 if eye_used == 2
                     eye_used = 1; % use the right_eye data
                 end
+                
                 % record a few samples before we actually start displaying
                 % otherwise you may lose a few msec of data
                 WaitSecs(0.1);
@@ -134,8 +130,10 @@ classdef FixationStimulus < AbstractStimulus
                 Screen('FillRect', obj.window, obj.backgroundColour);
                 Screen('FillOval', obj.window,obj.dotColour, fixationDot);
                 Screen('Flip',obj.window);
+                % Mark zero-plot time in data file
                 Eyelink('Message', 'SYNCTIME');
 
+                % TTL 1 -> Start of the trial
                 sendTTL(1 , obj.stimPk.props.usingDataPixx);
 
                 % get screen image from the first display to use as Data Viewer
@@ -145,64 +143,70 @@ classdef FixationStimulus < AbstractStimulus
                     imageArray = Screen('GetImage', obj.window);
                     firstRun =0;
                 end
+                
                 fixating=0;        
-                % set fixation display to be randomly chose between 650 and 1500
-                fixateTime = GetSecs + obj.timeFix; % + 200/1000;
-                graceTime = GetSecs; % + 200/1000;
-                while GetSecs < fixateTime
 
+                fixateTime = GetSecs + obj.abortTime; % + 200/1000;
+                graceTime = GetSecs; % + 200/1000;
+                
+                % Time of the fixation start
+                fixationTime = -1;
+                
+                infix = 0;
+                
+                % Fixate time of the trial, the subject has fixateTime
+                % millisconds to fixate the sight on the stimulus
+                while (GetSecs < fixateTime) && ~infix
                     if obj.props.usingEyelink
                         error=Eyelink('CheckRecording');
                         if(error~=0)
                             break;
                         end
-
-                        if Eyelink( 'NewFloatSampleAvailable') > 0
-                            % get the sample in the form of an event structure
-                            evt = Eyelink( 'NewestFloatSample');
-                            evt.gx;
-                            evt.gy;
-
-                            if eye_used ~= -1 % do we know which eye to use yet?
-                                % if we do, get current gaze position from sample
-                                mx = evt.gx(eye_used+1); % +1 as we're accessing MATLAB array
-                                my = evt.gy(eye_used+1);
-                                % do we have valid data and is the pupil visible?
-                                if mx~=obj.el.MISSING_DATA && my~=obj.el.MISSING_DATA && evt.pa(eye_used+1)>0
-                                    %mx=x;
-                                    %my=y;
-                                end
-                            end
-                        end
-                    else
-
-                        % Query current mouse cursor position (our "pseudo-eyetracker") -
-                        % (mx,my) is our gaze position.
-                        [mx, my]=GetMouse(obj.window); %#ok<*NASGU>
-
                     end
+
+                    [mx, my] = obj.getEyeCoordinates();
+                    
                     
                     %Si se fija por primera vez se envia un mensaje Fixation start 
                     if obj.infixationWindow(mx,my) && ~infix
                         %disp('Fixed')
                         Eyelink('Message', 'Fixation Start');
+                        fixationTime = GetSecs;
                         %Beeper(el.calibration_success_beep(1), el.calibration_success_beep(2), el.calibration_success_beep(3));
                         infix = 1;
-                    % Si ya se ha fijado, se da un tiempo para recuperar la fijación,
-                    % sino se envia un mensaje de fijacion rota
-                    
-                    elseif ~obj.infixationWindow(mx,my) && infix && GetSecs > graceTime
 
-                        %Screen('DrawTexture', obj.window, sad);
-                        %Screen('Flip',obj.window);
-                        %disp('broke fix');
-                        Eyelink('Message', 'Fixation broke or grace time ended');
-                        sendTTL(2 , obj.stimPk.props.usingDataPixx);
-                        infix = 0;
-                             fixating=1;
-                        break;
                     end
                 end
+                
+                if ~infix
+                    % Send message for fixation not achieved and cancel
+                    % trial
+                    sendTTL(4 , obj.stimPk.props.usingDataPixx);
+                else 
+                    disp('Fixate loop');
+                    while (GetSecs < fixationTime + obj.timeFix)
+                        if obj.props.usingEyelink
+                            error=Eyelink('CheckRecording');
+                            if(error~=0)
+                                break;
+                            end
+                        end
+
+                        [mx, my] = obj.getEyeCoordinates();
+                    
+                        if ~obj.infixationWindow(mx,my) && infix 
+
+                            %Screen('DrawTexture', obj.window, sad);
+                            %Screen('Flip',obj.window);
+                            %disp('broke fix');
+                            Eyelink('Message', 'Fixation broke or grace time ended');
+                            sendTTL(2 , obj.stimPk.props.usingDataPixx);
+                            infix = 0;
+                            break;
+                        end
+                    end
+                end
+               
                 %Si pasa el tiempo y sigue fijado
                 if infix
                     Screen('FillOval', obj.window,[0 255 0], fixationOK);
@@ -225,11 +229,14 @@ classdef FixationStimulus < AbstractStimulus
                         fixating=1;
                     WaitSecs(1);
                 end        
-                if fixating==0
-                      %disp('not fix');
-                      sendTTL(4, obj.stimPk.props.usingDataPixx);
-                end
 
+
+                
+                
+                
+                
+                
+                
                 % STEP 7.5
                 % add 100 msec of data to catch final events and blank display
                 WaitSecs(0.1);
@@ -402,8 +409,38 @@ classdef FixationStimulus < AbstractStimulus
         end
         
         
-        
+        function [mx, my] = getEyeCoordinates(obj)
+            if obj.props.usingEyelink
+                                
+
+                                if Eyelink( 'NewFloatSampleAvailable') > 0
+                                    % get the sample in the form of an event structure
+                                    evt = Eyelink( 'NewestFloatSample');
+                                    evt.gx;
+                                    evt.gy;
+
+                                    if eye_used ~= -1 % do we know which eye to use yet?
+                                        % if we do, get current gaze position from sample
+                                        mx = evt.gx(eye_used+1); % +1 as we're accessing MATLAB array
+                                        my = evt.gy(eye_used+1);
+                                        % do we have valid data and is the pupil visible?
+                                        if mx~=obj.el.MISSING_DATA && my~=obj.el.MISSING_DATA && evt.pa(eye_used+1)>0
+                                            %mx=x;
+                                            %my=y;
+                                        end
+                                    end
+                                end
+                            else
+
+                                % Query current mouse cursor position (our "pseudo-eyetracker") -
+                                % (mx,my) is our gaze position.
+                                [mx, my]=GetMouse(obj.window); %#ok<*NASGU>
+
+            end
+        end
     end
+    
+    
     
 end
 
