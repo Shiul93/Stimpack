@@ -22,7 +22,7 @@ function varargout = fixationGUI(varargin)
 
 % Edit the above text to modify the response to help fixationGUI
 
-% Last Modified by GUIDE v2.5 18-Apr-2018 17:06:29
+% Last Modified by GUIDE v2.5 23-Apr-2018 17:26:01
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -56,6 +56,7 @@ function fixationGUI_OpeningFcn(hObject, eventdata, handles, varargin)
 handles.output = hObject;
 if nargin > 3
     handles.stimpack = varargin{1};
+    handles.stimulus = FixationStimulus(handles.stimpack);
 end
 
 % Update handles structure
@@ -85,87 +86,38 @@ function Untitled_1_Callback(hObject, eventdata, handles)
 
 % --- Executes on button press in runButton.
 function runButton_Callback(hObject, eventdata, handles)
-% hObject    handle to runButton (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
 disp('Run Fixation');
-stimulus = FixationStimulus(handles.stimpack);
-stimulus.runStimulus();
+
+handles.stimulus.runStimulus();
 
 % --- Executes on button press in cancelButton.
 function cancelButton_Callback(hObject, eventdata, handles)
-% hObject    handle to cancelButton (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
 disp('Cancel Fixation')
-handles.stimpack.initialiseGUI();
 close(fixationGUI);
+handles.stimpack.initialiseGUI();
 
 
 
 function fixationTimeField_Callback(hObject, eventdata, handles)
-% hObject    handle to fixationTimeField (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of fixationTimeField as text
-%        str2double(get(hObject,'String')) returns contents of fixationTimeField as a double
+disp('fixationTime Callback');
+disp(hObject.String)
+handles.stimulus.timeFix = str2double(hObject.String)
 
 
 % --- Executes during object creation, after setting all properties.
 function fixationTimeField_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to fixationTimeField (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    empty - handles not created until after all CreateFcns called
-
-% Hint: edit controls usually have a white background on Windows.
-%       See ISPC and COMPUTER.
 if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor','white');
 end
-
-
-
-function stimulationTimeField_Callback(hObject, eventdata, handles)
-% hObject    handle to stimulationTimeField (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of stimulationTimeField as text
-%        str2double(get(hObject,'String')) returns contents of stimulationTimeField as a double
-
-
-% --- Executes during object creation, after setting all properties.
-function stimulationTimeField_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to stimulationTimeField (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    empty - handles not created until after all CreateFcns called
-
-% Hint: edit controls usually have a white background on Windows.
-%       See ISPC and COMPUTER.
-if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
-    set(hObject,'BackgroundColor','white');
-end
-
 
 
 function abortTimeField_Callback(hObject, eventdata, handles)
-% hObject    handle to abortTimeField (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of abortTimeField as text
-%        str2double(get(hObject,'String')) returns contents of abortTimeField as a double
-
+disp('fixationTime Callback');
+disp(hObject.String)
+handles.stimulus.abortTime = str2double(hObject.String)/1000;
 
 % --- Executes during object creation, after setting all properties.
 function abortTimeField_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to abortTimeField (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    empty - handles not created until after all CreateFcns called
-
-% Hint: edit controls usually have a white background on Windows.
-%       See ISPC and COMPUTER.
 if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor','white');
 end
@@ -173,22 +125,11 @@ end
 
 
 function rewardTimeField_Callback(hObject, eventdata, handles)
-% hObject    handle to rewardTimeField (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of rewardTimeField as text
-%        str2double(get(hObject,'String')) returns contents of rewardTimeField as a double
+handles.stimpack.props.rewardTime = str2double(hObject.String);
 
 
 % --- Executes during object creation, after setting all properties.
 function rewardTimeField_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to rewardTimeField (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    empty - handles not created until after all CreateFcns called
-
-% Hint: edit controls usually have a white background on Windows.
-%       See ISPC and COMPUTER.
 if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor','white');
 end
@@ -196,45 +137,26 @@ end
 
 
 function dotSizeField_Callback(hObject, eventdata, handles)
-% hObject    handle to dotSizeField (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of dotSizeField as text
-%        str2double(get(hObject,'String')) returns contents of dotSizeField as a double
+disp('fixationTime Callback');
+disp(hObject.String)
+handles.stimulus.dotSize = str2double(hObject.String)
 
 
 % --- Executes during object creation, after setting all properties.
 function dotSizeField_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to dotSizeField (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    empty - handles not created until after all CreateFcns called
-
-% Hint: edit controls usually have a white background on Windows.
-%       See ISPC and COMPUTER.
 if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor','white');
 end
 
 
 
-function edit9_Callback(hObject, eventdata, handles)
-% hObject    handle to edit9 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of edit9 as text
-%        str2double(get(hObject,'String')) returns contents of edit9 as a double
-
+function windowSizeField_Callback(hObject, eventdata, handles)
+disp('fixationTime Callback');
+disp(hObject.String)
+handles.stimulus.fixWinSize = str2double(hObject.String)
 
 % --- Executes during object creation, after setting all properties.
-function edit9_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to edit9 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    empty - handles not created until after all CreateFcns called
-
-% Hint: edit controls usually have a white background on Windows.
-%       See ISPC and COMPUTER.
+function windowSizeField_CreateFcn(hObject, eventdata, handles)
 if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor','white');
 end
@@ -242,22 +164,12 @@ end
 
 
 function stimulusColorField_Callback(hObject, eventdata, handles)
-% hObject    handle to stimulusColorField (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
+handles.stimulus.dotColour = str2double(strsplit(hObject.String));
 
-% Hints: get(hObject,'String') returns contents of stimulusColorField as text
-%        str2double(get(hObject,'String')) returns contents of stimulusColorField as a double
 
 
 % --- Executes during object creation, after setting all properties.
 function stimulusColorField_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to stimulusColorField (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    empty - handles not created until after all CreateFcns called
-
-% Hint: edit controls usually have a white background on Windows.
-%       See ISPC and COMPUTER.
 if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor','white');
 end
@@ -265,12 +177,8 @@ end
 
 
 function bgColorField_Callback(hObject, eventdata, handles)
-% hObject    handle to bgColorField (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
+handles.stimulus.backgroundColour = str2double(strsplit(hObject.String));
 
-% Hints: get(hObject,'String') returns contents of bgColorField as text
-%        str2double(get(hObject,'String')) returns contents of bgColorField as a double
 
 
 % --- Executes during object creation, after setting all properties.
@@ -299,6 +207,30 @@ function trialsTimeField_Callback(hObject, eventdata, handles)
 % --- Executes during object creation, after setting all properties.
 function trialsTimeField_CreateFcn(hObject, eventdata, handles)
 % hObject    handle to trialsTimeField (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function edfField_Callback(hObject, eventdata, handles)
+% hObject    handle to edfField (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of edfField as text
+%        str2double(get(hObject,'String')) returns contents of edfField as a double
+handles.stimulus.edfFile = hObject.String
+
+
+% --- Executes during object creation, after setting all properties.
+function edfField_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to edfField (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
 

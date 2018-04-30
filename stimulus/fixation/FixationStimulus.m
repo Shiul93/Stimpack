@@ -3,11 +3,18 @@ classdef FixationStimulus < AbstractStimulus
     %   Detailed explanation goes here
     
     properties
-        edfFile@char = 'asd';
         fixWinSize@double = 50;
         fixationWindow
         timeFix@double=0.5;
+        stimulationTime@double = 5000;
         dotSize@double = 10;
+        dotColour@double = [255 255 255 255]
+        backgroundColour@double = [0 0 0 255]
+        interTrialTime@double = 1;
+        abortTime@double = 500;
+        edfFile@char = '';
+        pathsave@char = '';
+        taskname@char = 'FixationTask';
 
     end
     
@@ -22,14 +29,30 @@ classdef FixationStimulus < AbstractStimulus
         
         function configureEDF(obj)
             disp('ConfigureEDF');
+            % Obtain filename
+           
+            if obj.stimPk.props.usingEyelink
+                num = clock;
+                folder = ['FixationTask_' num2str(num(1)) '_' num2str(num(2)) '_' num2str(num(3)) '_'...
+                          num2str(num(4)) '_' num2str(num(5)) '_' num2str(floor(num(6)))];  
+
+                obj.pathsave=[obj.stimPk.props.path '/DATA/' folder];
+                mkdir(obj.pathsave);
+                rehash();
+
+                if isempty(obj.edfFile)
+                    obj.edfFile = 'FixTask';
+                end
+            end 
+            
         end
         
         function runTrials(obj)
             disp('runTrials');
             trial = 1;
-            numTrials = 25;
+            numTrials = 10;
             index = 1;
-            
+
             firstRun = 1;
             infix = 0;
             keyTicks = 0;
@@ -39,23 +62,29 @@ classdef FixationStimulus < AbstractStimulus
 
             % repeat until we have 3 sucessful trials
 
-            %EyelinkDoDriftCorrection(el);
+            %EyelinkDoDriftCorrection(obj.el);
 
             stopTrial=false;
 
-            while trial <= numTrials
-
-                 fixationDot = [-obj.dotSize -obj.dotSize obj.dotSize obj.dotSize];
-                 fixationDot = CenterRect(fixationDot, obj.wRect);   
+            while (trial <= numTrials) || numTrials == 0
+               disp(sprintf('Trial nº%d',trial));
+               fixationDot = [-obj.dotSize -obj.dotSize obj.dotSize obj.dotSize];
+               fixationDot = CenterRect(fixationDot, obj.wRect);   
+               % TODO Revisar esto
                fixationOK = [-obj.dotSize+2 -obj.dotSize+2 obj.dotSize+2 obj.dotSize+2];
-               fixationOK = CenterRect(fixationOK, obj.wRect);  
+               fixationOK = CenterRect(fixationOK, obj.wRect); 
+
+               % Set the fixation window on the center of the screen
                obj.fixationWindow = [-obj.fixWinSize -obj.fixWinSize obj.fixWinSize obj.fixWinSize];
                obj.fixationWindow = CenterRect(obj.fixationWindow, obj.wRect);
 
-                if stopTrial==false
+               % While not indicated to stop run trials
+               if stopTrial==false
 
                 % wait a second between trials
                 % WaitSecs(1);
+                
+                
                 % STEP 7.1
                 % Sending a 'TRIALID' message to mark the start of a trial in Data
                 % Viewer.  This is different than the start of recording message
@@ -102,12 +131,12 @@ classdef FixationStimulus < AbstractStimulus
                 % STEP 7.4
                 % Prepare and show the screen.
                 Screen('BlendFunction', obj.window, GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-                Screen('FillRect', obj.window, obj.el.backgroundcolour);
-                Screen('FillOval', obj.window,[255 255 255], fixationDot);
+                Screen('FillRect', obj.window, obj.backgroundColour);
+                Screen('FillOval', obj.window,obj.dotColour, fixationDot);
                 Screen('Flip',obj.window);
                 Eyelink('Message', 'SYNCTIME');
 
-                sendTTL(1);
+                sendTTL(1 , obj.stimPk.props.usingDataPixx);
 
                 % get screen image from the first display to use as Data Viewer
                 % trial overlay. Note this call is very slow and will affect your
@@ -118,8 +147,8 @@ classdef FixationStimulus < AbstractStimulus
                 end
                 fixating=0;        
                 % set fixation display to be randomly chose between 650 and 1500
-                fixateTime = GetSecs + obj.timeFix + 200/1000;
-                graceTime = GetSecs + 200/1000;
+                fixateTime = GetSecs + obj.timeFix; % + 200/1000;
+                graceTime = GetSecs; % + 200/1000;
                 while GetSecs < fixateTime
 
                     if obj.props.usingEyelink
@@ -152,34 +181,39 @@ classdef FixationStimulus < AbstractStimulus
                         [mx, my]=GetMouse(obj.window); %#ok<*NASGU>
 
                     end
+                    
+                    %Si se fija por primera vez se envia un mensaje Fixation start 
                     if obj.infixationWindow(mx,my) && ~infix
-
+                        %disp('Fixed')
                         Eyelink('Message', 'Fixation Start');
                         %Beeper(el.calibration_success_beep(1), el.calibration_success_beep(2), el.calibration_success_beep(3));
                         infix = 1;
+                    % Si ya se ha fijado, se da un tiempo para recuperar la fijación,
+                    % sino se envia un mensaje de fijacion rota
+                    
                     elseif ~obj.infixationWindow(mx,my) && infix && GetSecs > graceTime
 
                         %Screen('DrawTexture', obj.window, sad);
                         %Screen('Flip',obj.window);
-                        disp('broke fix');
+                        %disp('broke fix');
                         Eyelink('Message', 'Fixation broke or grace time ended');
-                        sendTTL(2);
+                        sendTTL(2 , obj.stimPk.props.usingDataPixx);
                         infix = 0;
                              fixating=1;
                         break;
                     end
                 end
-
+                %Si pasa el tiempo y sigue fijado
                 if infix
                     Screen('FillOval', obj.window,[0 255 0], fixationOK);
                     Screen('Flip',obj.window);
-                    disp('fixed success!!');
+                    %disp('fixed success!!');
                     if obj.props.usingLabJack
-                        timedTTL(lJack,0,rewardTime);
+                        timedTTL(lJack,0,obj.props.barewardTime);
                     else
                         disp('Reward!');
                     end
-                    sendTTL(3);
+                    sendTTL(3, obj.stimPk.props.usingDataPixx);
                     Eyelink('Message', 'Fixed Success :-)');
                     sprintf('Trial completed. Trial %d of %d\n', trial, numTrials);
                     timeNow=GetSecs;
@@ -187,13 +221,13 @@ classdef FixationStimulus < AbstractStimulus
                     res(trial,2)=timeNow-graceTime;
                     %res(trial,3)=obj.fixWinSize;
                     %res(trial,4)=fixateTime;
-                    trial = trial + 1;
+                    %trial = trial + 1;
                         fixating=1;
                     WaitSecs(1);
                 end        
                 if fixating==0
-                      disp('not fix');
-                      sendTTL(3);
+                      %disp('not fix');
+                      sendTTL(4, obj.stimPk.props.usingDataPixx);
                 end
 
                 % STEP 7.5
@@ -203,7 +237,7 @@ classdef FixationStimulus < AbstractStimulus
 
                 index = index + 1;
 
-                Screen('FillRect', obj.window, obj.el.backgroundcolour);
+                Screen('FillRect', obj.window, obj.backgroundColour);
                 Screen('Flip', obj.window);
 
                 %imwrite(imageArray, 'imgfile.jpg', 'jpg');
@@ -245,7 +279,7 @@ classdef FixationStimulus < AbstractStimulus
                 % file after this message.
                 Eyelink('Message', 'TRIAL_RESULT 0');
 
-                timeEnd = GetSecs+1;
+                timeEnd = GetSecs+obj.interTrialTime;
 
                 while GetSecs<timeEnd
 
@@ -326,12 +360,39 @@ classdef FixationStimulus < AbstractStimulus
 
                 else break;
                 end
+            trial = trial+1;
 
             end
         end
         
         function endExperiment(obj)
             disp('endExperiment');
+             % End of Experiment; close the file first
+            % close graphics window, close data file and shut down tracker
+            Screen('CloseAll');
+            Eyelink('Command', 'set_idle_mode');
+            WaitSecs(0.5);
+            if obj.stimPk.props.usingEyelink
+                Eyelink('CloseFile');
+
+            % download data file
+            
+                try
+                    fprintf('Receiving data file ''%s''\n', obj.edfFile );
+                    status=Eyelink('ReceiveFile');
+                    if status > 0
+                        fprintf('ReceiveFile status %d\n', status);
+                    end
+                    if 2==exist(obj.edfFile, 'file')
+                        fprintf('Data file ''%s'' can be found in ''%s''\n', obj.edfFile, pwd );
+                        source=['/Users/opticka/Desktop/oRioN/protocols/' obj.edfFile '.edf'];
+                        destination = [obj.pathsave '/' obj.edfFile '.edf'];
+                        movefile(source,destination);
+                    end
+                catch %#ok<*CTCH>
+                    fprintf('Problem receiving data file ''%s''\n', obj.edfFile );
+                end
+            end
         end
         
         function fix = infixationWindow(obj,mx,my)

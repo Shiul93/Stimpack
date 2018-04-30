@@ -7,7 +7,10 @@ classdef (Abstract) AbstractStimulus < handle
         % Reference to global properties
         props@stimProps;
         % Reference to main class
-        stimPk@stimpack;        
+        stimPk@stimpack;     
+        
+        lJack;
+
         el;
     end
     
@@ -15,6 +18,8 @@ classdef (Abstract) AbstractStimulus < handle
         
         % EDF File to save experiment
         edfFile@char
+        pathsave@char
+        taskname@char
         
     end
     
@@ -29,14 +34,44 @@ classdef (Abstract) AbstractStimulus < handle
     end
     
     methods (Abstract)
-        configureEDF(obj);
         runTrials(obj);
         endExperiment(obj);
     end
     
     methods 
-        
-        
+        function configureEDF(obj)
+            disp('ConfigureEDF');
+            % Obtain filename
+           
+            if obj.stimPk.props.usingEyelink
+                num = clock;
+                folder = [ obj.taskname '_' num2str(num(1)) '_' num2str(num(2)) '_' num2str(num(3)) '_'...
+                          num2str(num(4)) '_' num2str(num(5)) '_' num2str(floor(num(6)))];  
+
+                obj.pathsave=[obj.stimPk.props.path '/DATA/' folder];
+                mkdir(obj.pathsave);
+                rehash();
+
+                if isempty(obj.edfFile)
+                    obj.edfFile = obj.taskname;
+                end
+            end 
+            
+        end
+            
+
+        function setupDataPixxLabJack(obj)
+            % labJack initializing
+            if obj.props.usingLabJack
+                obj.lJack = labJack('name','runinstance','readResponse', false,'verbose',false);
+            end
+            % dataPixx initializing
+            if obj.props.usingDataPixx
+                Datapixx('Open');
+                Datapixx('StopAllSchedules');
+                Datapixx('RegWrRd');    % Synchronize Datapixx registers to local register cache
+            end
+        end
         function setupScreen(obj)
             % Open a graphics window on the main screen
             % using the PsychToolbox's Screen function.
@@ -58,17 +93,26 @@ classdef (Abstract) AbstractStimulus < handle
         end
         
         function configureEyelink(obj)
+            % Close the connection if EyeLink is already connected
+            if Eyelink('IsConnected')
+                disp('Restarting connection to eyelink')
+                Eyelink('Command', 'clear_screen %d', 0);
+                Eyelink('Shutdown');            
+            end
+
             % Provide Eyelink with details about the graphics environment
             % and perform some initializations. The information is returned
             % in a structure that also contains useful defaults
             % and control codes (e.g. tracker state bit and Eyelink key values).
-
-            %Eyelink('SetAddress', '10.1.1.1');
+            Eyelink('SetAddress', obj.stimPk.props.eyelinkIp);
+            
             obj.el=EyelinkInitDefaults(obj.window);
 
             % We are changing calibration to a black background with white targets,
             % no sound and smaller targets
-            obj.el.backgroundcolour =rand(3, 1)% BlackIndex(obj.el.window);
+            
+            % Colors of the initial eyelink window
+            obj.el.backgroundcolour = BlackIndex(obj.el.window);
             obj.el.msgfontcolour  = WhiteIndex(obj.el.window);
             obj.el.imgtitlecolour = WhiteIndex(obj.el.window);
             obj.el.targetbeep = 0;
@@ -104,7 +148,9 @@ classdef (Abstract) AbstractStimulus < handle
             end
 
             % make sure we're still connected.
-            if Eyelink('IsConnected')~=1 && obj.props.usingEyelink
+            %if Eyelink('IsConnected')~=1 && obj.props.usingEyelink
+
+            if Eyelink('IsConnected') && obj.props.usingEyelink
                 obj.cleanup;
                 return;
             end;
@@ -114,7 +160,7 @@ classdef (Abstract) AbstractStimulus < handle
             % SET UP TRACKER CONFIGURATION
             % Setting the proper recording resolution, proper calibration type,
             % as well as the data file content;
-            Eyelink('command', 'add_file_preamble_text ''Recorded by EyelinkToolbox demo-experiment''');
+            Eyelink('command', 'add_file_preamble_text ''Recorded by stimpack''');
 
             % This command is crucial to map the gaze positions from the tracker to
             % screen pixel positions to determine fixation
@@ -165,6 +211,7 @@ classdef (Abstract) AbstractStimulus < handle
         
         function runStimulus(obj)
             obj.configureEDF()
+            obj.setupDataPixxLabJack()
             obj.setupScreen()
             obj.configureEyelink()
             obj.connectToEyelink()

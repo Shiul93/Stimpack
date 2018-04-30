@@ -1,7 +1,25 @@
-function value = sendTTL( number )
+function value = sendTTL( line , usingDataPixx )
 %SENDTTL Summary of this function goes here
 %   Detailed explanation goes here
-    switch number
+    if usingDataPixx
+        if ~exist('line','var') || line > 8 || line < 1
+					fprintf('1-8 lines (pins 17-24) are available on dataPixx only!\n')
+					return
+        end
+        line = 2^(line-1);
+        val = bitshift(line,16);
+        mask = bitshift(line,16);
+        Datapixx('SetDoutValues', 0, mask);
+        Datapixx('RegWr');
+        Datapixx('SetDoutValues', val, mask);
+        Datapixx('RegWr');
+        WaitSecs(0.001);
+        Datapixx('SetDoutValues', 0, mask);
+        Datapixx('RegWr');
+        
+    end
+    
+    switch line
         case 1
             value = 'Start';
         case 2 
@@ -16,6 +34,10 @@ function value = sendTTL( number )
             value = 'Eyes on distractor';
         case 7 
             value = 'Eyes on target';
+    end
+    disp(value);
+    
+        
 
 end
 
