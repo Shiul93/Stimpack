@@ -14,7 +14,6 @@ classdef (Abstract) AbstractStimulus < handle
         el;
         paused@logical = false;
         
-        externalControl@char = '';
     end
     
     properties (Abstract = true)
@@ -43,6 +42,9 @@ classdef (Abstract) AbstractStimulus < handle
     end
     
     methods 
+        
+        
+
         function configureEDF(obj)
             disp('ConfigureEDF');
             % Obtain filename
@@ -214,6 +216,7 @@ classdef (Abstract) AbstractStimulus < handle
         end
         
         function runStimulus(obj)
+
             obj.configureEDF()
             obj.setupDataPixxLabJack()
             obj.setupScreen()

@@ -59,6 +59,8 @@ if nargin > 3
     handles.stimulus = FixationStimulus(handles.stimpack);
 end
 
+
+
 % Update handles structure
 guidata(hObject, handles);
 
@@ -114,6 +116,7 @@ end
 function abortTimeField_Callback(hObject, eventdata, handles)
 disp('abortTime Callback');
 disp(hObject.String)
+
 handles.stimulus.abortTime = str2double(hObject.String)/1000;
 
 % --- Executes during object creation, after setting all properties.
@@ -252,3 +255,10 @@ function trialNumberField_CreateFcn(hObject, eventdata, handles)
 if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor','white');
 end
+
+
+
+function displayThis()
+disp('Displaying this shit')
+
+

@@ -12,13 +12,13 @@ classdef stimProps < handle
         usingLabJack@logical = false
         
         %psychToolbox
-        ptbSkipSync@logical = false
+        ptbSkipSync@logical = true
         
         % 
         eyelinkIp@char = '10.1.1.1'
         
         %
-        stimScreen@double = 0
+        stimScreen@double = 1
         
         %
         rewardTime@double = 50

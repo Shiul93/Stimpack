@@ -16,6 +16,10 @@ classdef FixationStimulus < AbstractStimulus
         pathsave@char = '';
         taskname@char = 'FixationTask';
         numTrials = Inf;
+        externalControl@char = '';
+        results@double = [0 0 0];
+        testvar@double = 0;
+
 
     end
     
@@ -29,6 +33,7 @@ classdef FixationStimulus < AbstractStimulus
         end
         
         function configureEDF(obj)
+
             disp('ConfigureEDF');
             % Obtain filename
            
@@ -48,7 +53,28 @@ classdef FixationStimulus < AbstractStimulus
             
         end
         
+        
+        function controlUI(obj)
+            %create an annotation object 
+                        figure;
+
+            ellipse_position = [0.4 0.6 0.1 0.2];
+            ellipse_h = annotation('ellipse',ellipse_position,...
+                                'facecolor', [1 0 0]);
+
+            %create an editable textbox object
+            edit_box_h = uicontrol('style','edit',...
+                                'units', 'normalized',...
+                                'position', [0.3 0.4 0.4 0.1]);
+            but_h = uicontrol('style', 'pushbutton',...
+                    'string', 'Update Color',...
+                    'units', 'normalized',...
+                    'position', [0.3 0 0.4 0.2],...
+                    'callback', {@obj.dispShit,edit_box_h, ellipse_h });
+        end
+        
         function runTrials(obj)
+            
             disp('runTrials');
             trial = 1;
             index = 1;
@@ -57,6 +83,9 @@ classdef FixationStimulus < AbstractStimulus
             infix = 0;
             keyTicks = 0;
             keyHold = 1;
+            obj.results = [0 0 0];
+            obj.externalControl = '';
+            
 
 
 
@@ -65,9 +94,13 @@ classdef FixationStimulus < AbstractStimulus
             %EyelinkDoDriftCorrection(obj.el);
 
             stopTrial=false;
-            experimentControlGUI;
-            
+            experimentControlGUI(obj);
+            obj.externalControl = '';
+
             while (trial <= obj.numTrials) || obj.numTrials == 0
+              bar(obj.results);
+              drawnow
+              
                disp(sprintf('Trial nº%d',trial));
                
                % Stimulus dot
@@ -186,6 +219,7 @@ classdef FixationStimulus < AbstractStimulus
                     % Send message for fixation not achieved and cancel
                     % trial
                     sendTTL(4 , obj.stimPk.props.usingDataPixx);
+                    obj.results(2) = obj.results(2)+1;
                 else 
                     disp('Fixate loop');
                     while (GetSecs < fixationTime + obj.timeFix)
@@ -205,6 +239,7 @@ classdef FixationStimulus < AbstractStimulus
                             %disp('broke fix');
                             Eyelink('Message', 'Fixation broke or grace time ended');
                             sendTTL(2 , obj.stimPk.props.usingDataPixx);
+                            obj.results(3) = obj.results(3)+1;
                             infix = 0;
                             break;
                         end
@@ -222,6 +257,8 @@ classdef FixationStimulus < AbstractStimulus
                         disp('Reward!');
                     end
                     sendTTL(3, obj.stimPk.props.usingDataPixx);
+                    obj.results(1) = obj.results(1)+1;
+
                     Eyelink('Message', 'Fixed Success :-)');
                     sprintf('Trial completed. Trial %d of %d\n', trial, obj.numTrials);
                     timeNow=GetSecs;
@@ -290,20 +327,40 @@ classdef FixationStimulus < AbstractStimulus
                 % file after this message.
                 Eyelink('Message', 'TRIAL_RESULT 0');
 
+                % Inter trial pause used for keyboard commands 
                 timeEnd = GetSecs+obj.interTrialTime;
+                
                 while (obj.paused)||(GetSecs<timeEnd)
 
                   fInc = 150;
                   keyTicks = keyTicks + 1;  
 
                 [keyIsDown, ~, keyCode] = KbCheck(-1); %#ok<*ASGLU>
+                
+                
+                a = obj.externalControl;
+                  
+                if ~strcmp( a,'' ) 
+                    disp('External control:');
+                    disp(a);
+                    switch a
+                        case 'p'
+                            disp('Paused change')
+                           obj.paused=~obj.paused;
+                           obj.externalControl = '';
+                           a = '';
 
+                           break
+                    end
+                    
+                end 
+                
                 if keyIsDown == 1
                    pressKey = KbName(keyCode);   
                    switch pressKey
                        case 'p'
                            
-                           obj.paused=~obj.paused
+                           obj.paused=~obj.paused;
                            break;
                        case 'q' %quit
                            stopTrial=true;
@@ -444,6 +501,15 @@ classdef FixationStimulus < AbstractStimulus
                                 [mx, my]=GetMouse(obj.window); %#ok<*NASGU>
 
             end
+        end
+        
+        function sendCommand(obj, text)
+            obj.externalControl = text;
+            disp(obj.externalControl);
+        end
+            
+        function dispShit(obj)
+            disp('SHIT')
         end
     end
     
