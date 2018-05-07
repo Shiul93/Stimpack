@@ -22,7 +22,7 @@ function varargout = fixationGUI(varargin)
 
 % Edit the above text to modify the response to help fixationGUI
 
-% Last Modified by GUIDE v2.5 23-Apr-2018 17:26:01
+% Last Modified by GUIDE v2.5 03-May-2018 17:36:08
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -236,6 +236,19 @@ function edfField_CreateFcn(hObject, eventdata, handles)
 
 % Hint: edit controls usually have a white background on Windows.
 %       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function trialNumberField_Callback(hObject, eventdata, handles)
+handles.stimulus.numTrials = str2double(hObject.String);
+
+
+% --- Executes during object creation, after setting all properties.
+function trialNumberField_CreateFcn(hObject, eventdata, handles)
+
 if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor','white');
 end

@@ -12,6 +12,9 @@ classdef (Abstract) AbstractStimulus < handle
         lJack;
 
         el;
+        paused@logical = false;
+        
+        externalControl@char = '';
     end
     
     properties (Abstract = true)
@@ -20,6 +23,7 @@ classdef (Abstract) AbstractStimulus < handle
         edfFile@char
         pathsave@char
         taskname@char
+        
         
     end
     

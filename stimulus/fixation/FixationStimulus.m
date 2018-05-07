@@ -15,6 +15,7 @@ classdef FixationStimulus < AbstractStimulus
         edfFile@char = '';
         pathsave@char = '';
         taskname@char = 'FixationTask';
+        numTrials = Inf;
 
     end
     
@@ -50,7 +51,6 @@ classdef FixationStimulus < AbstractStimulus
         function runTrials(obj)
             disp('runTrials');
             trial = 1;
-            numTrials = 10;
             index = 1;
 
             firstRun = 1;
@@ -65,9 +65,9 @@ classdef FixationStimulus < AbstractStimulus
             %EyelinkDoDriftCorrection(obj.el);
 
             stopTrial=false;
+            experimentControlGUI;
             
-            
-            while (trial <= numTrials) || numTrials == 0
+            while (trial <= obj.numTrials) || obj.numTrials == 0
                disp(sprintf('Trial nº%d',trial));
                
                % Stimulus dot
@@ -97,7 +97,11 @@ classdef FixationStimulus < AbstractStimulus
                 % the data file prior to this message.       
                 Eyelink('Message', 'TRIALID %d', trial);
                 % This supplies the title at the bottom of the eyetracker display
-                Eyelink('command', 'record_status_message "TRIAL %d/%d"', trial,numTrials);
+                if (obj.numTrials == Inf) || (obj.numTrials == 0)
+                    Eyelink('command', 'record_status_message "TRIAL %d/Infinite"', trial);
+                else
+                    Eyelink('command', 'record_status_message "TRIAL %d/%d"', trial,obj.numTrials);
+                end
                 Eyelink('Command', 'set_idle_mode');
                 % clear tracker display and draw box at center
                 Eyelink('Command', 'clear_screen %d', 0);
@@ -219,7 +223,7 @@ classdef FixationStimulus < AbstractStimulus
                     end
                     sendTTL(3, obj.stimPk.props.usingDataPixx);
                     Eyelink('Message', 'Fixed Success :-)');
-                    sprintf('Trial completed. Trial %d of %d\n', trial, numTrials);
+                    sprintf('Trial completed. Trial %d of %d\n', trial, obj.numTrials);
                     timeNow=GetSecs;
                     res(trial,1)=trial;
                     res(trial,2)=timeNow-graceTime;
@@ -287,8 +291,7 @@ classdef FixationStimulus < AbstractStimulus
                 Eyelink('Message', 'TRIAL_RESULT 0');
 
                 timeEnd = GetSecs+obj.interTrialTime;
-
-                while GetSecs<timeEnd
+                while (obj.paused)||(GetSecs<timeEnd)
 
                   fInc = 150;
                   keyTicks = keyTicks + 1;  
@@ -298,6 +301,10 @@ classdef FixationStimulus < AbstractStimulus
                 if keyIsDown == 1
                    pressKey = KbName(keyCode);   
                    switch pressKey
+                       case 'p'
+                           
+                           obj.paused=~obj.paused
+                           break;
                        case 'q' %quit
                            stopTrial=true;
                            break;
