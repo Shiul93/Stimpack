@@ -22,7 +22,7 @@ function varargout = fixationGUI(varargin)
 
 % Edit the above text to modify the response to help fixationGUI
 
-% Last Modified by GUIDE v2.5 03-May-2018 17:36:08
+% Last Modified by GUIDE v2.5 09-May-2018 17:21:14
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -260,5 +260,3 @@ end
 
 function displayThis()
 disp('Displaying this shit')
-
-

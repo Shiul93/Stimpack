@@ -182,7 +182,8 @@ classdef FixationStimulus < AbstractStimulus
                 end
                 
                 fixating=0;        
-
+                
+                %Time to fixate
                 fixateTime = GetSecs + obj.abortTime; % + 200/1000;
                 graceTime = GetSecs; % + 200/1000;
                 
@@ -245,6 +246,8 @@ classdef FixationStimulus < AbstractStimulus
                         end
                     end
                 end
+                
+                (fixationTime-GetSecs)*1000
                
                 %Si pasa el tiempo y sigue fijado
                 if infix
@@ -331,24 +334,30 @@ classdef FixationStimulus < AbstractStimulus
                 timeEnd = GetSecs+obj.interTrialTime;
                 
                 while (obj.paused)||(GetSecs<timeEnd)
-
+                drawnow
                   fInc = 150;
                   keyTicks = keyTicks + 1;  
 
                 [keyIsDown, ~, keyCode] = KbCheck(-1); %#ok<*ASGLU>
                 
                 
-                a = obj.externalControl;
+                command = obj.externalControl;
                   
-                if ~strcmp( a,'' ) 
+                if ~strcmp( command,'' ) 
                     disp('External control:');
-                    disp(a);
-                    switch a
+                    disp(command);
+                    switch command
                         case 'p'
                             disp('Paused change')
                            obj.paused=~obj.paused;
                            obj.externalControl = '';
-                           a = '';
+                           command = '';
+                       case 'q'
+                            disp('End Experiment')
+                           stopTrial=true;
+                           obj.externalControl = '';
+                           command = '';
+                       
 
                            break
                     end
@@ -508,9 +517,7 @@ classdef FixationStimulus < AbstractStimulus
             disp(obj.externalControl);
         end
             
-        function dispShit(obj)
-            disp('SHIT')
-        end
+       
     end
     
     
