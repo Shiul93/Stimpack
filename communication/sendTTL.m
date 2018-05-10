@@ -18,7 +18,7 @@ function value = sendTTL( line , usingDataPixx )
         Datapixx('RegWr');
         
     end
-    
+    value = -1
     switch line
         case 1
             value = 'Start';

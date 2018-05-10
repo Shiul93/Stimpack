@@ -255,7 +255,8 @@ classdef FixationStimulus < AbstractStimulus
                     Screen('Flip',obj.window);
                     %disp('fixed success!!');
                     if obj.props.usingLabJack
-                        timedTTL(lJack,0,obj.props.barewardTime);
+                        
+                        timedTTL(obj.lJack,0,obj.props.rewardTime);
                     else
                         disp('Reward!');
                     end
@@ -483,9 +484,11 @@ classdef FixationStimulus < AbstractStimulus
         
         
         function [mx, my] = getEyeCoordinates(obj)
+            mx=0;
+            my=0;
             if obj.props.usingEyelink
                                 
-
+                                eye_used = 1;
                                 if Eyelink( 'NewFloatSampleAvailable') > 0
                                     % get the sample in the form of an event structure
                                     evt = Eyelink( 'NewestFloatSample');
@@ -498,8 +501,8 @@ classdef FixationStimulus < AbstractStimulus
                                         my = evt.gy(eye_used+1);
                                         % do we have valid data and is the pupil visible?
                                         if mx~=obj.el.MISSING_DATA && my~=obj.el.MISSING_DATA && evt.pa(eye_used+1)>0
-                                            %mx=x;
-                                            %my=y;
+                                            mx=x;
+                                            my=y;
                                         end
                                     end
                                 end

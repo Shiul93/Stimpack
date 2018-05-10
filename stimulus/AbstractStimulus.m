@@ -69,7 +69,7 @@ classdef (Abstract) AbstractStimulus < handle
         function setupDataPixxLabJack(obj)
             % labJack initializing
             if obj.props.usingLabJack
-                obj.lJack = labJack('name','runinstance','readResponse', false,'verbose',false);
+                obj.lJack = labJack('name','runinstance','openNow',1,'readResponse', false,'verbose',true);
             end
             % dataPixx initializing
             if obj.props.usingDataPixx
@@ -139,12 +139,14 @@ classdef (Abstract) AbstractStimulus < handle
             % Initialization of the connection with the Eyelink Gazetracker.
             % exit program if this fails.
 
-            if ~EyelinkInit(~obj.props.usingEyelink,1)
-                fprintf('Eyelink Init aborted.\n');
-                obj.cleanup;  % cleanup function
-                return;
-            end
-
+            %if ~EyelinkInit(~obj.props.usingEyelink,1)
+            %    fprintf('Eyelink Init aborted.\n');
+            %    obj.cleanup;  % cleanup function
+            %    return;
+            %end
+            EyelinkInit(0,0);
+            disp('Is connected')
+            Eyelink('IsConnected')
             % open file to record data to
             i = Eyelink('Openfile', obj.edfFile);
             if i~=0
@@ -156,13 +158,15 @@ classdef (Abstract) AbstractStimulus < handle
             % make sure we're still connected.
             %if Eyelink('IsConnected')~=1 && obj.props.usingEyelink
 
-            if Eyelink('IsConnected') && obj.props.usingEyelink
-                obj.cleanup;
-                return;
-            end;
+            %if Eyelink('IsConnected') && obj.props.usingEyelink
+            %    obj.cleanup;
+            %    return;
+            %end;
         end
         
         function configureTracker(obj)
+            
+            
             % SET UP TRACKER CONFIGURATION
             % Setting the proper recording resolution, proper calibration type,
             % as well as the data file content;
@@ -208,7 +212,7 @@ classdef (Abstract) AbstractStimulus < handle
         function checkDummy(obj)
             if obj.props.usingEyelink
             % Hide the mouse cursor and setup the eye calibration window
-            Screen('HideCursorHelper', obj.window);
+            %Screen('HideCursorHelper', obj.window);
             end
             % enter Eyetracker camera setup mode, calibration and validation
             EyelinkDoTrackerSetup(obj.el);
