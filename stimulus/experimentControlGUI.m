@@ -22,7 +22,7 @@ function varargout = experimentControlGUI(varargin)
 
 % Edit the above text to modify the response to help experimentControlGUI
 
-% Last Modified by GUIDE v2.5 07-May-2018 18:39:27
+% Last Modified by GUIDE v2.5 14-May-2018 17:45:50
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -93,7 +93,11 @@ function pauseButton_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 handles.stimulus.externalControl = 'p';
-disp('Button')
+if handles.stimulus.paused
+    set(hObject,'string','PAUSE')
+else
+    set(hObject,'string','RESUME')
+end
 
 
 
@@ -113,19 +117,19 @@ function scaButton_Callback(hObject, eventdata, handles)
 sca
 
 
-% --- Executes on button press in pushbutton5.
-function pushbutton5_Callback(hObject, eventdata, handles)
-% hObject    handle to pushbutton5 (see GCBO)
+% --- Executes on button press in rewardButton.
+function rewardButton_Callback(hObject, eventdata, handles)
+% hObject    handle to rewardButton (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+handles.stimulus.externalControl = 'r';
 
-
-% --- Executes on button press in startTimerButton.
-function startTimerButton_Callback(hObject, eventdata, handles)
-% hObject    handle to startTimerButton (see GCBO)
+% --- Executes on button press in sendMarkButton.
+function sendMarkButton_Callback(hObject, eventdata, handles)
+% hObject    handle to sendMarkButton (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-disp(handles.stimulus.testvar)
+handles.stimulus.externalControl = 'm';
 
 % --- Executes on button press in pushbutton7.
 function pushbutton7_Callback(hObject, eventdata, handles)

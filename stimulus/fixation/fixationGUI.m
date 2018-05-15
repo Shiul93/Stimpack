@@ -22,7 +22,7 @@ function varargout = fixationGUI(varargin)
 
 % Edit the above text to modify the response to help fixationGUI
 
-% Last Modified by GUIDE v2.5 09-May-2018 17:21:14
+% Last Modified by GUIDE v2.5 14-May-2018 16:39:13
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -117,7 +117,7 @@ function abortTimeField_Callback(hObject, eventdata, handles)
 disp('abortTime Callback');
 disp(hObject.String)
 
-handles.stimulus.abortTime = str2double(hObject.String)/1000;
+handles.stimulus.waitingFixationTime = str2double(hObject.String)/1000;
 
 % --- Executes during object creation, after setting all properties.
 function abortTimeField_CreateFcn(hObject, eventdata, handles)
@@ -198,18 +198,18 @@ end
 
 
 
-function trialsTimeField_Callback(hObject, eventdata, handles)
-% hObject    handle to trialsTimeField (see GCBO)
+function interTrialTimeField_Callback(hObject, eventdata, handles)
+% hObject    handle to interTrialTimeField (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-% Hints: get(hObject,'String') returns contents of trialsTimeField as text
-%        str2double(get(hObject,'String')) returns contents of trialsTimeField as a double
+% Hints: get(hObject,'String') returns contents of interTrialTimeField as text
+%        str2double(get(hObject,'String')) returns contents of interTrialTimeField as a double
 
 
 % --- Executes during object creation, after setting all properties.
-function trialsTimeField_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to trialsTimeField (see GCBO)
+function interTrialTimeField_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to interTrialTimeField (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
 

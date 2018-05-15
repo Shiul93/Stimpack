@@ -32,6 +32,7 @@ classdef (Abstract) AbstractStimulus < handle
         wRect
         winWidth@double
         winHeight@double
+        eyeUsed@double = 0
         
         
     end
@@ -144,8 +145,20 @@ classdef (Abstract) AbstractStimulus < handle
             %    obj.cleanup;  % cleanup function
             %    return;
             %end
-            EyelinkInit(0,0);
-            disp('Is connected')
+            
+            if obj.props.usingEyelink
+                % EyelinkInit(0,0);
+                if ~EyelinkInit(0,1)
+                    fprintf('Eyelink Init aborted.\n');
+                    obj.cleanup;  % cleanup function
+                    return;
+                end
+            elseif ~EyelinkInit(1,1)
+                fprintf('Eyelink Init aborted.\n');
+                obj.cleanup;  % cleanup function
+                return;
+            end
+            disp('Is connected?')
             Eyelink('IsConnected')
             % open file to record data to
             i = Eyelink('Openfile', obj.edfFile);
@@ -207,6 +220,13 @@ classdef (Abstract) AbstractStimulus < handle
 
             % calibration/drift correction target
             Eyelink('command', 'button_function 5 "accept_target_fixation"');
+            
+            obj.eyeUsed = Eyelink('EyeAvailable'); % get eye that's tracked  
+            % returns 0 (LEFT_EYE), 1 (RIGHT_EYE) or 2 (BINOCULAR) depending on what data is
+            if obj.eyeUsed == 2
+                obj.eyeUsed = 1; % use the right_eye data
+            end
+            
         end
         
         function checkDummy(obj)
@@ -234,8 +254,102 @@ classdef (Abstract) AbstractStimulus < handle
                 
         end
         
+        function [mx, my] = getEyeCoordinates(obj)
+            mx=0;
+            my=0;
+            if obj.props.usingEyelink
+                                
+                obj.eyeUsed = 1;
+                if Eyelink( 'NewFloatSampleAvailable') > 0
+                    % get the sample in the form of an event structure
+                    evt = Eyelink( 'NewestFloatSample');
+                    evt.gx;
+                    evt.gy;
+
+                    if obj.eyeUsed ~= -1 % do we know which eye to use yet?
+                        % if we do, get current gaze position from sample
+                        mx = evt.gx(obj.eyeUsed+1); % +1 as we're accessing MATLAB array
+                        my = evt.gy(obj.eyeUsed+1);
+                        % do we have valid data and is the pupil visible?
+                        if mx~=obj.el.MISSING_DATA && my~=obj.el.MISSING_DATA && evt.pa(obj.eyeUsed+1)>0
+                            mx=x;
+                            my=y;
+                        end
+                    end
+                end
+            else
+
+                % Query current mouse cursor position (our "pseudo-eyetracker") -
+                % (mx,my) is our gaze position.
+                [mx, my]=GetMouse(obj.window); %#ok<*NASGU>
+
+            end
+        end
         
+        function fix = infixationWindow(obj,mx,my)
+            % determine if gx and gy are within fixation window
+            fix = mx > obj.fixationWindow(1) &&  mx <  obj.fixationWindow(3) && ...
+            my > obj.fixationWindow(2) && my < obj.fixationWindow(4) ;
+        end
+        
+        function eyelinkStartRecording(obj)
+            % EYELINKSTARTRECORDING
+            %
+            % start recording eye position (preceded by a short pause so that
+            % the tracker can finish the mode transition)
+            % The paramerters for the 'StartRecording' call controls the
+            % file_samples, file_events, link_samples, link_events availability
             
+            Eyelink('Command', 'set_idle_mode');
+            WaitSecs(0.05);
+            Eyelink('StartRecording');
+            
+            % get eye that's being tracked
+            % returns 0 (LEFT_EYE), 1 (RIGHT_EYE) or 2 (BINOCULAR)
+            % depending on what data is
+            obj.eyeUsed = Eyelink('EyeAvailable'); 
+            
+            if obj.eyeUsed == 2
+                obj.eyeUsed = 1; % use the right_eye data
+            end
+
+            % record a few samples before we actually start displaying
+            % otherwise you may lose a few msec of data
+            WaitSecs(0.1);
+        end
+  
+        function dataViewerTrialInfo(obj,trialNumber)
+            % DATAVIEWERTRIALINFO 
+            %
+            % Sending a 'TRIALID' message to mark the start of a trial in Data
+            % Viewer.  This is different than the start of recording message
+            % START that is logged when the trial recording begins. The viewer
+            % will not parse any messages, events, or samples, that exist in
+            % the data file prior to this message.
+            disp(sprintf('Trial nº%d',trialNumber));
+
+            Eyelink('Message', 'TRIALID %d', trialNumber);
+            % This supplies the title at the bottom of the eyetracker display
+            if (obj.numTrials == Inf) || (obj.numTrials == 0)
+                Eyelink('command', 'record_status_message "TRIAL %d/Infinite"', trialNumber);
+            else
+                Eyelink('command', 'record_status_message "TRIAL %d/%d"', trialNumber,obj.numTrials);
+            end
+            Eyelink('Command', 'set_idle_mode');
+            % clear tracker display and draw box at center
+            Eyelink('Command', 'clear_screen %d', 0);
+            % draw fixation and fixation window shapes on host PC
+            Eyelink('command', 'draw_cross %d %d 15', obj.winWidth/2,obj.winHeight/2);
+            Eyelink('command', 'draw_box %d %d %d %d 15', obj.fixationWindow(1), obj.fixationWindow(2), obj.fixationWindow(3), obj.fixationWindow(4));
+        end
+        
+        function drawFixationPoint(obj, fixationDot)
+
+            Screen('BlendFunction', obj.window, GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+            Screen('FillRect', obj.window, obj.backgroundColour);
+            Screen('FillOval', obj.window,obj.dotColour, fixationDot);
+            Screen('Flip',obj.window);
+        end
     end
     
     methods(Static)

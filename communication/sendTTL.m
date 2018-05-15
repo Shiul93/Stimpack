@@ -18,7 +18,7 @@ function value = sendTTL( line , usingDataPixx )
         Datapixx('RegWr');
         
     end
-    value = -1
+    value = -1;
     switch line
         case 1
             value = 'Start';
@@ -33,7 +33,7 @@ function value = sendTTL( line , usingDataPixx )
         case 6 
             value = 'Eyes on distractor';
         case 7 
-            value = 'Eyes on target';
+            value = 'Mark';
     end
     disp(value);
     
