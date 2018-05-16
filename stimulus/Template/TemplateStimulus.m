@@ -1,5 +1,5 @@
-classdef FixationStimulus < AbstractStimulus
-    %TESTSTIMULUS Summary of this class goes here
+classdef TemplateStimulus < AbstractStimulus
+    %TEMPLATESTIMULUS Summary of this class goes here
     %   Detailed explanation goes here
     
     properties
@@ -14,7 +14,7 @@ classdef FixationStimulus < AbstractStimulus
         waitingFixationTime@double = 0.5;
         edfFile@char = '';
         pathsave@char = '';
-        taskname@char = 'FixationTask';
+        taskname@char = 'TEMPLATETask'; %%%%%CHANGE ME%%%%%%
         numTrials = Inf;
         externalControl@char = '';
         results@double = [0 0 0];
@@ -24,14 +24,14 @@ classdef FixationStimulus < AbstractStimulus
     end
     
     methods
-        
-        function obj = FixationStimulus(args)
+        %% CONSTRUCTOR
+        function obj = TemplateStimulus(args)
             
             obj.stimPk = args;
             obj.props = obj.stimPk.props;
             
         end
-        
+        %% EDF FILE CONFIGURATION FUNCTION
         function configureEDF(obj)
             
             disp('ConfigureEDF');
@@ -39,7 +39,7 @@ classdef FixationStimulus < AbstractStimulus
             
             if obj.stimPk.props.usingEyelink
                 num = clock;
-                folder = ['FixationTask_' num2str(num(1)) '_' num2str(num(2)) '_' num2str(num(3)) '_'...
+                folder = ['TemplateTask_' num2str(num(1)) '_' num2str(num(2)) '_' num2str(num(3)) '_'...%%%%%CHANGE ME%%%%%%
                     num2str(num(4)) '_' num2str(num(5)) '_' num2str(floor(num(6)))];
                 
                 obj.pathsave=[obj.stimPk.props.path '/DATA/' folder];
@@ -47,34 +47,17 @@ classdef FixationStimulus < AbstractStimulus
                 rehash();
                 
                 if isempty(obj.edfFile)
-                    obj.edfFile = 'FixTask';
+                    obj.edfFile = 'TEMPLATETask';%%%%%CHANGE ME%%%%%%
                 end
             end
             
         end
         
         
-        function controlUI(obj)
-            %create an annotation object
-            figure;
-            
-            ellipse_position = [0.4 0.6 0.1 0.2];
-            ellipse_h = annotation('ellipse',ellipse_position,...
-                'facecolor', [1 0 0]);
-            
-            %create an editable textbox object
-            edit_box_h = uicontrol('style','edit',...
-                'units', 'normalized',...
-                'position', [0.3 0.4 0.4 0.1]);
-            but_h = uicontrol('style', 'pushbutton',...
-                'string', 'Update Color',...
-                'units', 'normalized',...
-                'position', [0.3 0 0.4 0.2],...
-                'callback', {@obj.dispShit,edit_box_h, ellipse_h });
-        end
-        
+        %% TRIAL EXECUTION FUNCTION
         function runTrials(obj)
             
+            %% INITIALIZE VARIABLE VALUES AND CONFIGURE STIMULUS
             disp('runTrials');
             trial = 1;
             index = 1;
@@ -85,6 +68,8 @@ classdef FixationStimulus < AbstractStimulus
             keyHold = 1;
             obj.results = [0 0 0];
             obj.externalControl = '';
+            %%%%%CHANGE ME%%%%%%
+            %%%%%DECLARE OWN EXPERIMENT RESULTS%%%%%%
             if (obj.numTrials < Inf)
                 reactionTimes = ones(1, obj.numTrials)*(-1);
             else
@@ -115,6 +100,7 @@ classdef FixationStimulus < AbstractStimulus
             obj.fixationWindow = [-obj.fixWinSize -obj.fixWinSize obj.fixWinSize obj.fixWinSize];
             obj.fixationWindow = CenterRect(obj.fixationWindow, obj.wRect);
             
+            %% TRIAL LOOP
             while (((trial <= obj.numTrials) || obj.numTrials == 0) && stopTrial==false)
                 
                 
@@ -125,6 +111,7 @@ classdef FixationStimulus < AbstractStimulus
                 
                 
                 % While not indicated to stop run trials
+              
 
                     % STEP 7.1 
                     % Sending a 'TRIALID' message to mark the start of a trial in Data
@@ -142,7 +129,7 @@ classdef FixationStimulus < AbstractStimulus
                     % file_samples, file_events, link_samples, link_events availability
                     obj.eyelinkStartRecording();
                     
-                    
+                    %% START OF FIXATION PHASE %%
                     % STEP 7.4
                     % Prepare and show the screen.
                     obj.drawFixationPoint(fixationDot);
@@ -150,6 +137,10 @@ classdef FixationStimulus < AbstractStimulus
                     Eyelink('Message', 'SYNCTIME');
                     
                     % TTL 1 -> Start of the trial
+                    %%%%%CHANGE ME%%%%%%
+                    %%%%%NOT NECESARY TO USE THIS TTL MESSAGE%%%%%%
+                    %%%%%YOU CAN USE ANY LINE YOU WANT 0-7%%%%%
+                    %%%%%OR USE SENDTTLBYTE 0-254%%%%%
                     sendTTL(1 , obj.stimPk.props.usingDataPixx);
                
                     
@@ -194,6 +185,10 @@ classdef FixationStimulus < AbstractStimulus
                     if ~infix
                         % Send message for fixation not achieved and cancel
                         % trial
+                        %%%%%CHANGE ME%%%%%%
+                        %%%%%NOT NECESARY TO USE THIS TTL MESSAGE%%%%%%
+                        %%%%%YOU CAN USE ANY LINE YOU WANT 0-7%%%%%
+                        %%%%%OR USE SENDTTLBYTE 0-254%%%%%
                         sendTTL(4 , obj.stimPk.props.usingDataPixx);
                         obj.results(2) = obj.results(2)+1;
                     else
@@ -214,6 +209,10 @@ classdef FixationStimulus < AbstractStimulus
                                 %Screen('Flip',obj.window);
                                 %disp('broke fix');
                                 Eyelink('Message', 'Fixation broke or grace time ended');
+                                %%%%%CHANGE ME%%%%%%
+                                %%%%%NOT NECESARY TO USE THIS TTL MESSAGE%%%%%%
+                                %%%%%YOU CAN USE ANY LINE YOU WANT 0-7%%%%%
+                                %%%%%OR USE SENDTTLBYTE 0-254%%%%%
                                 sendTTL(2 , obj.stimPk.props.usingDataPixx);
                                 obj.results(3) = obj.results(3)+1;
                                 infix = 0;
@@ -235,20 +234,20 @@ classdef FixationStimulus < AbstractStimulus
                         else
                             disp('Reward!');
                         end
+                        %%%%%CHANGE ME%%%%%%
+                        %%%%%NOT NECESARY TO USE THIS TTL MESSAGE%%%%%%
+                        %%%%%YOU CAN USE ANY LINE YOU WANT 0-7%%%%%
+                        %%%%%OR USE SENDTTLBYTE 0-254%%%%%
                         sendTTL(3, obj.stimPk.props.usingDataPixx);
                         obj.results(1) = obj.results(1)+1;
                         
                         Eyelink('Message', 'Fixed Success :-)');
                         sprintf('Trial completed. Trial %d of %d\n', trial, obj.numTrials);
                         timeNow=GetSecs;
-                        %res(trial,1)=trial;
-                        %res(trial,2)=timeNow-graceTime;
-                        %res(trial,3)=obj.fixWinSize;
-                        %res(trial,4)=fixateTime;
-                        %trial = trial + 1;
-                        WaitSecs(1);
+                        %WaitSecs(1);
                     end
                     
+                    %% END OF FIXATION --- ADDITIONAL CODE HERE
                     
                     
                     
@@ -256,6 +255,8 @@ classdef FixationStimulus < AbstractStimulus
                     
                     
                     
+                    %% STOPPING EYE RECORDING AND CLEANING SCREEN
+                    % also send trial result data
                     % STEP 7.5
                     % add 100 msec of data to catch final events and blank display
                     WaitSecs(0.1);
@@ -279,6 +280,7 @@ classdef FixationStimulus < AbstractStimulus
                     % to the EDF file.
                     % Consider adding a short delay every few messages.
                     WaitSecs(0.001);
+                    
                     Eyelink('Message', '!V IAREA ELLIPSE %d %d %d %d %d %s', 1, floor(obj.winWidth/2-obj.dotSize), floor(obj.winHeight/2-obj.dotSize), floor(obj.winWidth/2+obj.dotSize), floor(obj.winHeight/2+obj.dotSize),'center');
                     Eyelink('Message', '!V IAREA RECTANGLE %d %d %d %d %d %s', 2, floor(obj.winWidth/2-obj.fixWinSize), floor(obj.winHeight/2-obj.fixWinSize), floor(obj.winWidth/2+obj.fixWinSize), floor(obj.winHeight/2+obj.fixWinSize),'centerWin');
                     
@@ -305,6 +307,8 @@ classdef FixationStimulus < AbstractStimulus
                     % file after this message.
                     Eyelink('Message', 'TRIAL_RESULT 0');
                     
+                    
+                    %% INTER TRIAL PAUSE --- MANAGE KEYBOARD AND CONTROL GUI EVENTS
                     % Inter trial pause used for keyboard or gui commands
                     timeEnd = GetSecs+obj.interTrialTime;
                     
@@ -371,7 +375,6 @@ classdef FixationStimulus < AbstractStimulus
                         
                     end % end of event check while
                     
-                
                 
                 trial = trial+1;
                 

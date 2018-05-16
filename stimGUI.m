@@ -22,7 +22,7 @@ function varargout = stimGUI(varargin)
 
 % Edit the above text to modify the response to help stimGUI
 
-% Last Modified by GUIDE v2.5 18-Apr-2018 18:32:50
+% Last Modified by GUIDE v2.5 16-May-2018 16:53:36
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -59,8 +59,18 @@ disp(nargin)
 if nargin > 3
     disp(varargin{1});
     handles.stimpack = varargin{1};
+    handles.props = handles.stimpack.props;
 end
+
+set(handles.skypsyncCheckbox,'value',handles.props.ptbSkipSync);
+set(handles.eyelinkCheckbox,'value',handles.props.usingEyelink);
+set(handles.datapixxCheckbox,'value',handles.props.usingDataPixx);
+set(handles.labjackCheckbox,'value',handles.props.usingLabJack);
+set(handles.monitorField,'String',handles.props.stimScreen);
+
 % Update handles structure
+
+
 guidata(hObject, handles);
 
 % UIWAIT makes stimGUI wait for user response (see UIRESUME)
@@ -87,3 +97,90 @@ function fixationButton_Callback(hObject, eventdata, handles)
     disp(handles.stimpack)
     close(stimGUI)
     fixationGUI(handles.stimpack)
+
+
+% --- Executes on button press in mappingButton.
+function mappingButton_Callback(hObject, eventdata, handles)
+% hObject    handle to mappingButton (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+    disp('MAPPINGBUTTON')
+    disp(handles.stimpack)
+    close(stimGUI)
+    mappingGUI(handles.stimpack)
+
+% --- Executes on button press in skypsyncCheckbox.
+function skypsyncCheckbox_Callback(hObject, eventdata, handles)
+% hObject    handle to skypsyncCheckbox (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hint: get(hObject,'Value') returns toggle state of skypsyncCheckbox
+if get(hObject,'Value')
+    handles.props.ptbSkipSync = true;
+else
+    handles.props.ptbSkipSync =false;
+end
+
+
+
+function monitorField_Callback(hObject, eventdata, handles)
+% hObject    handle to monitorField (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of monitorField as text
+%        str2double(get(hObject,'String')) returns contents of monitorField as a double
+handles.props.stimScreen = str2double(get(hObject,'String'))
+
+% --- Executes during object creation, after setting all properties.
+function monitorField_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to monitorField (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+% --- Executes on button press in eyelinkCheckbox.
+function eyelinkCheckbox_Callback(hObject, eventdata, handles)
+% hObject    handle to eyelinkCheckbox (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hint: get(hObject,'Value') returns toggle state of eyelinkCheckbox
+if get(hObject,'Value')
+    handles.props.usingEyelink = true;
+else
+    handles.props.usingEyelink =false;
+end
+
+% --- Executes on button press in datapixxCheckbox.
+function datapixxCheckbox_Callback(hObject, eventdata, handles)
+% hObject    handle to datapixxCheckbox (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hint: get(hObject,'Value') returns toggle state of datapixxCheckbox
+if get(hObject,'Value')
+    handles.props.usingDataPixx = true;
+else
+    handles.props.usingDataPixx =false;
+end
+
+% --- Executes on button press in labjackCheckbox.
+function labjackCheckbox_Callback(hObject, eventdata, handles)
+% hObject    handle to labjackCheckbox (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hint: get(hObject,'Value') returns toggle state of labjackCheckbox
+if get(hObject,'Value')
+    handles.props.usingLabJack = true;
+else
+    handles.props.usingLabJack =false;
+end

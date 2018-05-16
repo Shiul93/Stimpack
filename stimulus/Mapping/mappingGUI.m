@@ -1,35 +1,35 @@
-function varargout = templateGUI(varargin)
-% TEMPLATEGUI MATLAB code for templateGUI.fig
-%      TEMPLATEGUI, by itself, creates a new TEMPLATEGUI or raises the existing
+function varargout = mappingGUI(varargin)
+% MAPPINGGUI MATLAB code for mappingGUI.fig
+%      MAPPINGGUI, by itself, creates a new MAPPINGGUI or raises the existing
 %      singleton*.
 %
-%      H = TEMPLATEGUI returns the handle to a new TEMPLATEGUI or the handle to
+%      H = MAPPINGGUI returns the handle to a new MAPPINGGUI or the handle to
 %      the existing singleton*.
 %
-%      TEMPLATEGUI('CALLBACK',hObject,eventData,handles,...) calls the local
-%      function named CALLBACK in TEMPLATEGUI.M with the given input arguments.
+%      MAPPINGGUI('CALLBACK',hObject,eventData,handles,...) calls the local
+%      function named CALLBACK in MAPPINGGUI.M with the given input arguments.
 %
-%      TEMPLATEGUI('Property','Value',...) creates a new TEMPLATEGUI or raises the
+%      MAPPINGGUI('Property','Value',...) creates a new MAPPINGGUI or raises the
 %      existing singleton*.  Starting from the left, property value pairs are
-%      applied to the GUI before templateGUI_OpeningFcn gets called.  An
+%      applied to the GUI before mappingGUI_OpeningFcn gets called.  An
 %      unrecognized property name or invalid value makes property application
-%      stop.  All inputs are passed to templateGUI_OpeningFcn via varargin.
+%      stop.  All inputs are passed to mappingGUI_OpeningFcn via varargin.
 %
 %      *See GUI Options on GUIDE's Tools menu.  Choose "GUI allows only one
 %      instance to run (singleton)".
 %
 % See also: GUIDE, GUIDATA, GUIHANDLES
 
-% Edit the above text to modify the response to help templateGUI
+% Edit the above text to modify the response to help mappingGUI
 
-% Last Modified by GUIDE v2.5 16-May-2018 18:05:16
+% Last Modified by GUIDE v2.5 16-May-2018 17:59:20
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
 gui_State = struct('gui_Name',       mfilename, ...
                    'gui_Singleton',  gui_Singleton, ...
-                   'gui_OpeningFcn', @templateGUI_OpeningFcn, ...
-                   'gui_OutputFcn',  @templateGUI_OutputFcn, ...
+                   'gui_OpeningFcn', @mappingGUI_OpeningFcn, ...
+                   'gui_OutputFcn',  @mappingGUI_OutputFcn, ...
                    'gui_LayoutFcn',  [] , ...
                    'gui_Callback',   []);
 if nargin && ischar(varargin{1})
@@ -44,19 +44,19 @@ end
 % End initialization code - DO NOT EDIT
 
 
-% --- Executes just before templateGUI is made visible.
-function templateGUI_OpeningFcn(hObject, eventdata, handles, varargin)
+% --- Executes just before mappingGUI is made visible.
+function mappingGUI_OpeningFcn(hObject, eventdata, handles, varargin)
 % This function has no output args, see OutputFcn.
 % hObject    handle to figure
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-% varargin   command line arguments to templateGUI (see VARARGIN)
+% varargin   command line arguments to mappingGUI (see VARARGIN)
 
-% Choose default command line output for templateGUI
+% Choose default command line output for mappingGUI
 handles.output = hObject;
 if nargin > 3
     handles.stimpack = varargin{1};
-    handles.stimulus = FixationStimulus(handles.stimpack);
+    handles.stimulus = MappingStimulus(handles.stimpack);
 end
 
 
@@ -64,12 +64,12 @@ end
 % Update handles structure
 guidata(hObject, handles);
 
-% UIWAIT makes templateGUI wait for user response (see UIRESUME)
+% UIWAIT makes mappingGUI wait for user response (see UIRESUME)
 % uiwait(handles.TaskName);
 
 
 % --- Outputs from this function are returned to the command line.
-function varargout = templateGUI_OutputFcn(hObject, eventdata, handles) 
+function varargout = mappingGUI_OutputFcn(hObject, eventdata, handles) 
 % varargout  cell array for returning output args (see VARARGOUT);
 % hObject    handle to figure
 % eventdata  reserved - to be defined in a future version of MATLAB
@@ -94,8 +94,8 @@ handles.stimulus.runStimulus();
 
 % --- Executes on button press in cancelButton.
 function cancelButton_Callback(hObject, eventdata, handles)
-disp('Cancel Fixation')
-close(fixationGUI);
+disp('Cancel Mapping')
+close(mappingGUI);
 handles.stimpack.initialiseGUI();
 
 

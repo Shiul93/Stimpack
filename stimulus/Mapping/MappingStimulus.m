@@ -1,4 +1,4 @@
-classdef FixationStimulus < AbstractStimulus
+classdef MappingStimulus < AbstractStimulus
     %TESTSTIMULUS Summary of this class goes here
     %   Detailed explanation goes here
     
@@ -14,7 +14,7 @@ classdef FixationStimulus < AbstractStimulus
         waitingFixationTime@double = 0.5;
         edfFile@char = '';
         pathsave@char = '';
-        taskname@char = 'FixationTask';
+        taskname@char = 'MappingTask';
         numTrials = Inf;
         externalControl@char = '';
         results@double = [0 0 0];
@@ -25,7 +25,7 @@ classdef FixationStimulus < AbstractStimulus
     
     methods
         
-        function obj = FixationStimulus(args)
+        function obj = MappingStimulus(args)
             
             obj.stimPk = args;
             obj.props = obj.stimPk.props;
@@ -39,7 +39,7 @@ classdef FixationStimulus < AbstractStimulus
             
             if obj.stimPk.props.usingEyelink
                 num = clock;
-                folder = ['FixationTask_' num2str(num(1)) '_' num2str(num(2)) '_' num2str(num(3)) '_'...
+                folder = ['MappingTask_' num2str(num(1)) '_' num2str(num(2)) '_' num2str(num(3)) '_'...
                     num2str(num(4)) '_' num2str(num(5)) '_' num2str(floor(num(6)))];
                 
                 obj.pathsave=[obj.stimPk.props.path '/DATA/' folder];
@@ -47,7 +47,7 @@ classdef FixationStimulus < AbstractStimulus
                 rehash();
                 
                 if isempty(obj.edfFile)
-                    obj.edfFile = 'FixTask';
+                    obj.edfFile = 'MappingTask';
                 end
             end
             
