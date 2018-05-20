@@ -8,15 +8,14 @@ classdef FixationStimulus < AbstractStimulus
         timeFix@double=0.5;
         stimulationTime@double = 5000;
         dotSize@double = 10;
-        dotColour@double = [255 255 255 255]
-        backgroundColour@double = [0 0 0 255]
+        dotColour@double = [255 255 255 255];
+        backgroundColour@double = [0 0 0 255];
         interTrialTime@double = 1;
         waitingFixationTime@double = 0.5;
         edfFile@char = '';
         pathsave@char = '';
         taskname@char = 'FixationTask';
         numTrials = Inf;
-        externalControl@char = '';
         results@double = [0 0 0];
         testvar@double = 0;
         
@@ -146,6 +145,7 @@ classdef FixationStimulus < AbstractStimulus
                     % STEP 7.4
                     % Prepare and show the screen.
                     obj.drawFixationPoint(fixationDot);
+                    Screen('Flip',obj.window);
                     % Mark zero-plot time in data file
                     Eyelink('Message', 'SYNCTIME');
                     

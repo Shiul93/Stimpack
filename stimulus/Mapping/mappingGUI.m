@@ -22,7 +22,7 @@ function varargout = mappingGUI(varargin)
 
 % Edit the above text to modify the response to help mappingGUI
 
-% Last Modified by GUIDE v2.5 16-May-2018 17:59:20
+% Last Modified by GUIDE v2.5 18-May-2018 12:03:27
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -59,6 +59,30 @@ if nargin > 3
     handles.stimulus = MappingStimulus(handles.stimpack);
 end
 
+% Common options
+set(handles.fixationTimeField,'String',handles.stimulus.timeFix*1000);
+set(handles.abortTimeField,'String',handles.stimulus.waitingFixationTime*1000);
+set(handles.rewardTimeField,'String',handles.stimpack.props.rewardTime);
+set(handles.trialNumberField,'String',handles.stimulus.numTrials);
+set(handles.interTrialTimeField,'String',handles.stimulus.interTrialTime*1000);
+set(handles.edfField,'String',handles.stimulus.edfFile);
+
+% Fixation options
+set(handles.dotSizeField,'String',handles.stimulus.dotSize);
+set(handles.windowSizeField,'String',handles.stimulus.fixWinSize);
+set(handles.dotColorField,'String', num2str(handles.stimulus.dotColour));
+set(handles.bgColorField,'String', num2str(handles.stimulus.backgroundColour));
+
+% Stimulus options
+set(handles.stimTimeField,'String',handles.stimulus.stimulationTime*1000);
+set(handles.stimCoordsField,'String',num2str(handles.stimulus.stimCoords));
+set(handles.stimSizeField,'String',handles.stimulus.stimSize);
+set(handles.stimColorField,'String',num2str(handles.stimulus.stimColor));
+
+
+% set(handles.Field,'String',handles.stimulus);
+
+
 
 
 % Update handles structure
@@ -77,13 +101,6 @@ function varargout = mappingGUI_OutputFcn(hObject, eventdata, handles)
 
 % Get default command line output from handles structure
 varargout{1} = handles.output;
-
-
-% --------------------------------------------------------------------
-function Untitled_1_Callback(hObject, eventdata, handles)
-% hObject    handle to Untitled_1 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
 
 
 % --- Executes on button press in runButton.
@@ -140,10 +157,9 @@ end
 
 
 function dotSizeField_Callback(hObject, eventdata, handles)
-disp('fixationTime Callback');
-disp(hObject.String)
-handles.stimulus.dotSize = str2double(hObject.String)
-
+disp('dotSize callback');
+handles.stimulus.dotSize = str2double(hObject.String);
+disp(handles.stimulus.dotSize)
 
 % --- Executes during object creation, after setting all properties.
 function dotSizeField_CreateFcn(hObject, eventdata, handles)
@@ -166,13 +182,13 @@ end
 
 
 
-function stimulusColorField_Callback(hObject, eventdata, handles)
+function dotColorField_Callback(hObject, eventdata, handles)
 handles.stimulus.dotColour = str2double(strsplit(hObject.String));
 
 
 
 % --- Executes during object creation, after setting all properties.
-function stimulusColorField_CreateFcn(hObject, eventdata, handles)
+function dotColorField_CreateFcn(hObject, eventdata, handles)
 if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor','white');
 end
@@ -205,6 +221,7 @@ function interTrialTimeField_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of interTrialTimeField as text
 %        str2double(get(hObject,'String')) returns contents of interTrialTimeField as a double
+handles.stimulus.interTrialTime = str2double(hObject.String)/1000;
 
 
 % --- Executes during object creation, after setting all properties.
@@ -228,7 +245,7 @@ function edfField_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of edfField as text
 %        str2double(get(hObject,'String')) returns contents of edfField as a double
-handles.stimulus.edfFile = hObject.String
+handles.stimulus.edfFile = hObject.String;
 
 
 % --- Executes during object creation, after setting all properties.
@@ -257,6 +274,96 @@ if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgr
 end
 
 
+function stimTimeField_Callback(hObject, eventdata, handles)
+% hObject    handle to stimTimeField (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
 
-function displayThis()
-disp('Displaying this shit')
+% Hints: get(hObject,'String') returns contents of stimTimeField as text
+%        str2double(get(hObject,'String')) returns contents of stimTimeField as a double
+handles.stimulus.stimulationTime = str2double(hObject.String)/1000;
+
+
+% --- Executes during object creation, after setting all properties.
+function stimTimeField_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to stimTimeField (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function stimCoordsField_Callback(hObject, eventdata, handles)
+% hObject    handle to stimCoordsField (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of stimCoordsField as text
+%        str2double(get(hObject,'String')) returns contents of stimCoordsField as a double
+handles.stimulus.stimCoords = str2double(strsplit(hObject.String));
+
+
+% --- Executes during object creation, after setting all properties.
+function stimCoordsField_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to stimCoordsField (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function stimSizeField_Callback(hObject, eventdata, handles)
+% hObject    handle to stimSizeField (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of stimSizeField as text
+%        str2double(get(hObject,'String')) returns contents of stimSizeField as a double
+handles.stimulus.stimSize = str2double(hObject.String);
+
+
+% --- Executes during object creation, after setting all properties.
+function stimSizeField_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to stimSizeField (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function stimColorField_Callback(hObject, eventdata, handles)
+% hObject    handle to stimColorField (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of stimColorField as text
+%        str2double(get(hObject,'String')) returns contents of stimColorField as a double
+handles.stimulus.stimColor = str2double(strsplit(hObject.String));
+
+
+% --- Executes during object creation, after setting all properties.
+function stimColorField_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to stimColorField (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end

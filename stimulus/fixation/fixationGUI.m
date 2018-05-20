@@ -59,6 +59,19 @@ if nargin > 3
     handles.stimulus = FixationStimulus(handles.stimpack);
 end
 
+% Common options
+set(handles.fixationTimeField,'String',handles.stimulus.timeFix*1000);
+set(handles.abortTimeField,'String',handles.stimulus.waitingFixationTime*1000);
+set(handles.rewardTimeField,'String',handles.stimpack.props.rewardTime);
+set(handles.trialNumberField,'String',handles.stimulus.numTrials);
+set(handles.interTrialTimeField,'String',handles.stimulus.interTrialTime*1000);
+set(handles.edfField,'String',handles.stimulus.edfFile);
+
+% Fixation options
+set(handles.dotSizeField,'String',handles.stimulus.dotSize);
+set(handles.windowSizeField,'String',handles.stimulus.fixWinSize);
+set(handles.stimulusColorField,'String', num2str(handles.stimulus.dotColour));
+set(handles.bgColorField,'String', num2str(handles.stimulus.backgroundColour));
 
 
 % Update handles structure

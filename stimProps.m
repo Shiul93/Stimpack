@@ -7,8 +7,8 @@ classdef stimProps < handle
         % path info
         path@char = './'
         % Device enable
-        usingEyelink@logical = true
-        usingDataPixx@logical = true
+        usingEyelink@logical = false
+        usingDataPixx@logical = false
         usingLabJack@logical = false
         
         %psychToolbox
@@ -18,7 +18,7 @@ classdef stimProps < handle
         eyelinkIp@char = '10.1.1.1'
         
         %
-        stimScreen@double = 0
+        stimScreen@double = 1
         
         %
         rewardTime@double = 100

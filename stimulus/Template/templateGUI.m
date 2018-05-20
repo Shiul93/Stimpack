@@ -60,6 +60,19 @@ if nargin > 3
 end
 
 
+% Common options
+set(handles.fixationTimeField,'String',handles.stimulus.timeFix*1000);
+set(handles.abortTimeField,'String',handles.stimulus.waitingFixationTime*1000);
+set(handles.rewardTimeField,'String',handles.stimpack.props.rewardTime);
+set(handles.trialNumberField,'String',handles.stimulus.numTrials);
+set(handles.interTrialTimeField,'String',handles.stimulus.interTrialTime*1000);
+set(handles.edfField,'String',handles.stimulusedfFile);
+
+% Fixation options
+set(handles.dotSizeField,'String',handles.stimulus.dotSize);
+set(handles.windowSizeField,'String',handles.stimulus.fixWinSize);
+set(handles.dotColorField,'String', num2str(handles.stimulus.dotColour));
+set(handles.bgColorField,'String', num2str(handles.stimulus.backgroundColour)); 
 
 % Update handles structure
 guidata(hObject, handles);
@@ -77,13 +90,6 @@ function varargout = templateGUI_OutputFcn(hObject, eventdata, handles)
 
 % Get default command line output from handles structure
 varargout{1} = handles.output;
-
-
-% --------------------------------------------------------------------
-function Untitled_1_Callback(hObject, eventdata, handles)
-% hObject    handle to Untitled_1 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
 
 
 % --- Executes on button press in runButton.

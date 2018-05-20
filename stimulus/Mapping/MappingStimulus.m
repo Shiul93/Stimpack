@@ -3,22 +3,50 @@ classdef MappingStimulus < AbstractStimulus
     %   Detailed explanation goes here
     
     properties
+        
+        % Fixation window size
         fixWinSize@double = 50;
+        
         fixationWindow
-        timeFix@double=0.5;
-        stimulationTime@double = 5000;
+        
+        
+        % Stimulation duration
+        stimulationTime@double = 5;
+        
+        % Fixation dot size
         dotSize@double = 10;
+        
+        % Fixation dot color
         dotColour@double = [255 255 255 255]
+        
+        % Background color
         backgroundColour@double = [0 0 0 255]
+        
+        % Time between trials
         interTrialTime@double = 1;
+        
+        % Time to achieve fixation
         waitingFixationTime@double = 0.5;
+        
+        % Time to stay fixated
+        timeFix@double=0.5;
+        
+        stimCoords@double = [0 0];
+        
+        stimSize@double = 50;
+        
+        stimColor@double = [255 255 255 255];
+        
+        
         edfFile@char = '';
         pathsave@char = '';
         taskname@char = 'MappingTask';
-        numTrials = Inf;
-        externalControl@char = '';
+        numTrials@double = Inf;
+        
         results@double = [0 0 0];
         testvar@double = 0;
+        
+        
         
         
     end
@@ -54,25 +82,7 @@ classdef MappingStimulus < AbstractStimulus
         end
         
         
-        function controlUI(obj)
-            %create an annotation object
-            figure;
-            
-            ellipse_position = [0.4 0.6 0.1 0.2];
-            ellipse_h = annotation('ellipse',ellipse_position,...
-                'facecolor', [1 0 0]);
-            
-            %create an editable textbox object
-            edit_box_h = uicontrol('style','edit',...
-                'units', 'normalized',...
-                'position', [0.3 0.4 0.4 0.1]);
-            but_h = uicontrol('style', 'pushbutton',...
-                'string', 'Update Color',...
-                'units', 'normalized',...
-                'position', [0.3 0 0.4 0.2],...
-                'callback', {@obj.dispShit,edit_box_h, ellipse_h });
-        end
-        
+      
         function runTrials(obj)
             
             disp('runTrials');
@@ -101,7 +111,7 @@ classdef MappingStimulus < AbstractStimulus
             experimentControlGUI(obj);
             obj.externalControl = '';
             
-            % Stimulus dot
+            % Fixation dot
             % Size array ex:[-10   -10    10    10]
             fixationDot = [-obj.dotSize -obj.dotSize obj.dotSize obj.dotSize];
             % Position array ex:[1270  710  1290  730]
@@ -146,6 +156,9 @@ classdef MappingStimulus < AbstractStimulus
                     % STEP 7.4
                     % Prepare and show the screen.
                     obj.drawFixationPoint(fixationDot);
+                    % Draw the image buffer in the screen
+                    Screen('Flip',obj.window);
+
                     % Mark zero-plot time in data file
                     Eyelink('Message', 'SYNCTIME');
                     
@@ -197,6 +210,7 @@ classdef MappingStimulus < AbstractStimulus
                         sendTTL(4 , obj.stimPk.props.usingDataPixx);
                         obj.results(2) = obj.results(2)+1;
                     else
+                        
                         disp('Fixate loop');
                         while (GetSecs < fixationTime + obj.timeFix)
                             if obj.props.usingEyelink
@@ -226,7 +240,38 @@ classdef MappingStimulus < AbstractStimulus
                     
                     %Si pasa el tiempo y sigue fijado
                     if infix
-                        Screen('FillOval', obj.window,[0 255 0], fixationOK);
+                        obj.drawFixationPoint(fixationDot);
+                        % Draw the image buffer in the screen
+                        obj.drawStimulus([0,1000],100);
+                        Screen('Flip',obj.window);
+                        % Stimulation loop
+                        startStimTime = GetSecs;
+                        a = obj.stimulationTime
+                        while ((GetSecs < startStimTime + obj.stimulationTime) && infix)
+                            time = GetSecs <( startStimTime  + obj.stimulationTime)
+                            if obj.props.usingEyelink
+                                error=Eyelink('CheckRecording');
+                                if(error~=0)
+                                    break;
+                                end
+                            end
+                            
+                            [mx, my] = obj.getEyeCoordinates();
+                            
+                            if ~obj.infixationWindow(mx,my) && infix
+                                
+                               
+                                disp('broke fix');                                
+                                infix = 0;
+                            end
+                        end
+                        
+                        if infix
+                            Screen('FillOval', obj.window,[0 255 0], fixationOK);
+                        else
+                            Screen('FillOval', obj.window,[255 0 0], fixationOK);
+                        end
+
                         Screen('Flip',obj.window);
                         %disp('fixed success!!');
                         if obj.props.usingLabJack
@@ -240,13 +285,8 @@ classdef MappingStimulus < AbstractStimulus
                         
                         Eyelink('Message', 'Fixed Success :-)');
                         sprintf('Trial completed. Trial %d of %d\n', trial, obj.numTrials);
-                        timeNow=GetSecs;
-                        %res(trial,1)=trial;
-                        %res(trial,2)=timeNow-graceTime;
-                        %res(trial,3)=obj.fixWinSize;
-                        %res(trial,4)=fixateTime;
-                        %trial = trial + 1;
-                        WaitSecs(1);
+                       
+                       
                     end
                     
                     
@@ -417,6 +457,7 @@ classdef MappingStimulus < AbstractStimulus
             obj.externalControl = text;
             disp(obj.externalControl);
         end
+        
         
         
     end

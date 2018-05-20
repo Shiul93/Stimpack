@@ -33,6 +33,7 @@ classdef (Abstract) AbstractStimulus < handle
         winWidth@double
         winHeight@double
         eyeUsed@double = 0
+        externalControl@char = '';
         
         
     end
@@ -348,7 +349,16 @@ classdef (Abstract) AbstractStimulus < handle
             Screen('BlendFunction', obj.window, GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
             Screen('FillRect', obj.window, obj.backgroundColour);
             Screen('FillOval', obj.window,obj.dotColour, fixationDot);
-            Screen('Flip',obj.window);
+        end
+        
+        function drawStimulus(obj, position, size)
+            %stimulus = [position(1)-size position(2)-size position(1)+size position(2)+size]
+            %stimulus = CenterRect(stimulus, obj.wRect)
+            %stimulus = [-size size size size]
+
+            %stimulus = CenterRectOnPointd(stimulus, position(1), position(2))
+            %Screen('FillOval', obj.window,[1,1,1,0], stimulus);
+            Screen('DrawDots', obj.window, [position(1) position(2)], size, obj.dotColour, [], 2);
         end
     end
     
