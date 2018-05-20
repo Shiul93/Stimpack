@@ -35,6 +35,19 @@ classdef (Abstract) AbstractStimulus < handle
         eyeUsed@double = 0
         externalControl@char = '';
         
+        fixWinSize@double = 50;
+        fixationWindow;
+        timeFix@double=0.5;
+        dotSize@double = 10;
+        dotColour@double = [255 255 255 255];
+        backgroundColour@double = [0 0 0 255];
+        interTrialTime@double = 1;
+        waitingFixationTime@double = 0.5;
+        numTrials = Inf;
+        
+        fixationDot@double;
+
+        
         
     end
     
@@ -344,11 +357,11 @@ classdef (Abstract) AbstractStimulus < handle
             Eyelink('command', 'draw_box %d %d %d %d 15', obj.fixationWindow(1), obj.fixationWindow(2), obj.fixationWindow(3), obj.fixationWindow(4));
         end
         
-        function drawFixationPoint(obj, fixationDot)
+        function drawFixationPoint(obj)
 
             Screen('BlendFunction', obj.window, GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
             Screen('FillRect', obj.window, obj.backgroundColour);
-            Screen('FillOval', obj.window,obj.dotColour, fixationDot);
+            Screen('FillOval', obj.window,obj.dotColour, obj.fixationDot);
         end
         
         function drawStimulus(obj, position, size)

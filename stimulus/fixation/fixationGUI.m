@@ -92,13 +92,6 @@ function varargout = fixationGUI_OutputFcn(hObject, eventdata, handles)
 varargout{1} = handles.output;
 
 
-% --------------------------------------------------------------------
-function Untitled_1_Callback(hObject, eventdata, handles)
-% hObject    handle to Untitled_1 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-
 % --- Executes on button press in runButton.
 function runButton_Callback(hObject, eventdata, handles)
 disp('Run Fixation');

@@ -3,20 +3,12 @@ classdef TemplateStimulus < AbstractStimulus
     %   Detailed explanation goes here
     
     properties
-        fixWinSize@double = 50;
-        fixationWindow
-        timeFix@double=0.5;
-        stimulationTime@double = 5000;
-        dotSize@double = 10;
-        dotColour@double = [255 255 255 255]
-        backgroundColour@double = [0 0 0 255]
-        interTrialTime@double = 1;
-        waitingFixationTime@double = 0.5;
+        
+        
         edfFile@char = '';
         pathsave@char = '';
         taskname@char = 'TEMPLATETask'; %%%%%CHANGE ME%%%%%%
-        numTrials = Inf;
-        externalControl@char = '';
+        
         results@double = [0 0 0];
         testvar@double = 0;
         
@@ -86,23 +78,23 @@ classdef TemplateStimulus < AbstractStimulus
             experimentControlGUI(obj);
             obj.externalControl = '';
             
-            % Stimulus dot
-            % Size array ex:[-10   -10    10    10]
-            fixationDot = [-obj.dotSize -obj.dotSize obj.dotSize obj.dotSize];
-            % Position array ex:[1270  710  1290  730]
-            fixationDot = CenterRect(fixationDot, obj.wRect);
-
-            % Green dot when succesful trial
-            fixationOK = [-obj.dotSize-2 -obj.dotSize-2 obj.dotSize+2 obj.dotSize+2];
-            fixationOK = CenterRect(fixationOK, obj.wRect);
-
-            % Set the fixation window on the center of the screen
-            obj.fixationWindow = [-obj.fixWinSize -obj.fixWinSize obj.fixWinSize obj.fixWinSize];
-            obj.fixationWindow = CenterRect(obj.fixationWindow, obj.wRect);
             
             %% TRIAL LOOP
             while (((trial <= obj.numTrials) || obj.numTrials == 0) && stopTrial==false)
-                
+                % Stimulus dot
+                % Size array ex:[-10   -10    10    10]
+                obj.fixationDot = [-obj.dotSize -obj.dotSize obj.dotSize obj.dotSize];
+                % Position array ex:[1270  710  1290  730]
+                obj.fixationDot = CenterRect(obj.fixationDot, obj.wRect);
+
+                % Green dot when succesful trial
+                fixationOK = [-obj.dotSize-2 -obj.dotSize-2 obj.dotSize+2 obj.dotSize+2];
+                fixationOK = CenterRect(fixationOK, obj.wRect);
+
+                % Set the fixation window on the center of the screen
+                obj.fixationWindow = [-obj.fixWinSize -obj.fixWinSize obj.fixWinSize obj.fixWinSize];
+                obj.fixationWindow = CenterRect(obj.fixationWindow, obj.wRect);
+            
                 
                 bar(reactionTimes);
                 drawnow
@@ -132,7 +124,10 @@ classdef TemplateStimulus < AbstractStimulus
                     %% START OF FIXATION PHASE %%
                     % STEP 7.4
                     % Prepare and show the screen.
-                    obj.drawFixationPoint(fixationDot);
+                    obj.drawFixationPoint();
+                    % Draw the image buffer in the screen
+                    Screen('Flip',obj.window);
+                    
                     % Mark zero-plot time in data file
                     Eyelink('Message', 'SYNCTIME');
                     

@@ -4,32 +4,13 @@ classdef MappingStimulus < AbstractStimulus
     
     properties
         
-        % Fixation window size
-        fixWinSize@double = 50;
         
-        fixationWindow
         
         
         % Stimulation duration
         stimulationTime@double = 5;
         
-        % Fixation dot size
-        dotSize@double = 10;
-        
-        % Fixation dot color
-        dotColour@double = [255 255 255 255]
-        
-        % Background color
-        backgroundColour@double = [0 0 0 255]
-        
-        % Time between trials
-        interTrialTime@double = 1;
-        
-        % Time to achieve fixation
-        waitingFixationTime@double = 0.5;
-        
-        % Time to stay fixated
-        timeFix@double=0.5;
+
         
         stimCoords@double = [0 0];
         
@@ -113,9 +94,9 @@ classdef MappingStimulus < AbstractStimulus
             
             % Fixation dot
             % Size array ex:[-10   -10    10    10]
-            fixationDot = [-obj.dotSize -obj.dotSize obj.dotSize obj.dotSize];
+            obj.fixationDot = [-obj.dotSize -obj.dotSize obj.dotSize obj.dotSize];
             % Position array ex:[1270  710  1290  730]
-            fixationDot = CenterRect(fixationDot, obj.wRect);
+            obj.fixationDot = CenterRect(obj.fixationDot, obj.wRect);
 
             % Green dot when succesful trial
             fixationOK = [-obj.dotSize-2 -obj.dotSize-2 obj.dotSize+2 obj.dotSize+2];
@@ -155,7 +136,7 @@ classdef MappingStimulus < AbstractStimulus
                     
                     % STEP 7.4
                     % Prepare and show the screen.
-                    obj.drawFixationPoint(fixationDot);
+                    obj.drawFixationPoint();
                     % Draw the image buffer in the screen
                     Screen('Flip',obj.window);
 
