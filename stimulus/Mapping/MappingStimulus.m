@@ -22,7 +22,6 @@ classdef MappingStimulus < AbstractStimulus
         edfFile@char = '';
         pathsave@char = '';
         taskname@char = 'MappingTask';
-        numTrials@double = Inf;
         
         results@double = [0 0 0];
         testvar@double = 0;
@@ -223,7 +222,7 @@ classdef MappingStimulus < AbstractStimulus
                     if infix
                         obj.drawFixationPoint(fixationDot);
                         % Draw the image buffer in the screen
-                        obj.drawStimulus([0,1000],100);
+                        obj.drawStimulus([obj.stimCoords(1),obj.stimCoords(2)],obj.stimSize);
                         Screen('Flip',obj.window);
                         % Stimulation loop
                         startStimTime = GetSecs;
