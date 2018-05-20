@@ -364,15 +364,7 @@ classdef (Abstract) AbstractStimulus < handle
             Screen('FillOval', obj.window,obj.dotColour, obj.fixationDot);
         end
         
-        function drawStimulus(obj, position, size)
-            %stimulus = [position(1)-size position(2)-size position(1)+size position(2)+size]
-            %stimulus = CenterRect(stimulus, obj.wRect)
-            %stimulus = [-size size size size]
-
-            %stimulus = CenterRectOnPointd(stimulus, position(1), position(2))
-            %Screen('FillOval', obj.window,[1,1,1,0], stimulus);
-            Screen('DrawDots', obj.window, [position(1) position(2)], size, obj.dotColour, [], 2);
-        end
+        
     end
     
     methods(Static)

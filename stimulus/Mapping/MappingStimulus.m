@@ -220,7 +220,7 @@ classdef MappingStimulus < AbstractStimulus
                     
                     %Si pasa el tiempo y sigue fijado
                     if infix
-                        obj.drawFixationPoint(fixationDot);
+                        obj.drawFixationPoint();
                         % Draw the image buffer in the screen
                         obj.drawStimulus([obj.stimCoords(1),obj.stimCoords(2)],obj.stimSize);
                         Screen('Flip',obj.window);
@@ -439,7 +439,15 @@ classdef MappingStimulus < AbstractStimulus
         end
         
         
-        
+       function drawStimulus(obj, position, size)
+            %stimulus = [position(1)-size position(2)-size position(1)+size position(2)+size]
+            %stimulus = CenterRect(stimulus, obj.wRect)
+            %stimulus = [-size size size size]
+
+            %stimulus = CenterRectOnPointd(stimulus, position(1), position(2))
+            %Screen('FillOval', obj.window,[1,1,1,0], stimulus);
+            Screen('DrawDots', obj.window, [position(1) position(2)], size, obj.stimColor, [], 2);
+        end 
     end
     
     
