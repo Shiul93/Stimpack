@@ -165,7 +165,7 @@ classdef FixationStimulus < AbstractStimulus
                         end
                     end
                     
-                    [mx, my] = obj.getEyeCoordinates();
+                    [mx, my] = obj.getEyeCoordinates()
                     
                     
                     %Si se fija por primera vez se envia un mensaje Fixation start
@@ -199,7 +199,7 @@ classdef FixationStimulus < AbstractStimulus
                         
                         [mx, my] = obj.getEyeCoordinates();
                         
-                        if ~obj.infixationWindow(mx,my) && infix
+                        if ~obj.infixationWindow(mx,my) && infix && mx && my
                             
                             %Screen('DrawTexture', obj.window, sad);
                             %Screen('Flip',obj.window);
@@ -323,14 +323,13 @@ classdef FixationStimulus < AbstractStimulus
                                 disp('Reward')
                                 if obj.props.usingLabJack
                                     if keyTicks > keyHold
-                                        timedTTL(lJack,0,500);
-                                        disp('reward!! (0.5 s)');
+                                        timedTTL(obj.lJack,0,obj.props.rewardTime);
                                         keyHold = keyTicks + fInc;
                                     end
                                 end
                             case 'm'
                                 disp('Mark')
-                                sendTTL(7,obj.props.usingDataPixx);
+                                sendTTLByte(127,obj.props.usingDataPixx);
                                 
                                 
                         end
@@ -352,7 +351,7 @@ classdef FixationStimulus < AbstractStimulus
                                 
                             case 'space'
                                 if keyTicks > keyHold
-                                    timedTTL(obj. lJack,0,500);
+                                    timedTTL(obj.lJack,0,obj.props.rewardTime);
                                     disp('reward!! (0.5 s)');
                                     keyHold = keyTicks + fInc;
                                 end

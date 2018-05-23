@@ -273,7 +273,7 @@ classdef (Abstract) AbstractStimulus < handle
             my=0;
             if obj.props.usingEyelink
                                 
-                obj.eyeUsed = 1;
+                obj.eyeUsed = 0;
                 if Eyelink( 'NewFloatSampleAvailable') > 0
                     % get the sample in the form of an event structure
                     evt = Eyelink( 'NewestFloatSample');
@@ -285,10 +285,10 @@ classdef (Abstract) AbstractStimulus < handle
                         mx = evt.gx(obj.eyeUsed+1); % +1 as we're accessing MATLAB array
                         my = evt.gy(obj.eyeUsed+1);
                         % do we have valid data and is the pupil visible?
-                        if mx~=obj.el.MISSING_DATA && my~=obj.el.MISSING_DATA && evt.pa(obj.eyeUsed+1)>0
-                            mx=x;
-                            my=y;
-                        end
+                        %if mx~=obj.el.MISSING_DATA && my~=obj.el.MISSING_DATA && evt.pa(obj.eyeUsed+1)>0
+                        %    mx=x;
+                        %    my=y;
+                        %end
                     end
                 end
             else
