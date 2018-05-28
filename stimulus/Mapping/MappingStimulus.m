@@ -9,7 +9,7 @@ classdef MappingStimulus < AbstractStimulus
         
         % Stimulation duration
         stimulationTime@double = 5;
-        
+        trial@double = 1;
 
         
         stimCoords@double = [0 0];
@@ -18,6 +18,8 @@ classdef MappingStimulus < AbstractStimulus
         
         stimColor@double = [255 255 255 255];
         
+        stimResolution = 1;
+        stimQuadrant = 1;
         
         edfFile@char = '';
         pathsave@char = '';
@@ -25,6 +27,7 @@ classdef MappingStimulus < AbstractStimulus
         
         results@double = [0 0 0];
         testvar@double = 0;
+        
         
         
         
@@ -105,7 +108,7 @@ classdef MappingStimulus < AbstractStimulus
             obj.fixationWindow = [-obj.fixWinSize -obj.fixWinSize obj.fixWinSize obj.fixWinSize];
             obj.fixationWindow = CenterRect(obj.fixationWindow, obj.wRect);
             
-            while (((trial <= obj.numTrials) || obj.numTrials == 0) && stopTrial==false)
+            while (((obj.trial <= obj.numTrials) || obj.numTrials == 0) && stopTrial==false)
                 
                 
                 bar(reactionTimes);
@@ -123,7 +126,7 @@ classdef MappingStimulus < AbstractStimulus
                     % will not parse any messages, events, or samples, that exist in
                     % the data file prior to this message.
                     
-                    obj.dataViewerTrialInfo(trial);
+                    obj.dataViewerTrialInfo(obj.trial);
                     
                     % STEP 7.3
                     % start recording eye position (preceded by a short pause so that
@@ -181,7 +184,7 @@ classdef MappingStimulus < AbstractStimulus
                         end
                     end
                     if (infix)
-                        reactionTimes(trial) = GetSecs -startTime;
+                        reactionTimes(obj.trial) = GetSecs -startTime;
                     end
                     
                     if ~infix
@@ -222,13 +225,14 @@ classdef MappingStimulus < AbstractStimulus
                     if infix
                         obj.drawFixationPoint();
                         % Draw the image buffer in the screen
-                        obj.drawStimulus([obj.stimCoords(1),obj.stimCoords(2)],obj.stimSize);
+                        %obj.drawStimulus([obj.stimCoords(1),obj.stimCoords(2)],obj.stimSize);
+                        obj.drawStimulus();
                         Screen('Flip',obj.window);
                         % Stimulation loop
                         startStimTime = GetSecs;
                         a = obj.stimulationTime
                         while ((GetSecs < startStimTime + obj.stimulationTime) && infix)
-                            time = GetSecs <( startStimTime  + obj.stimulationTime)
+                            time = GetSecs <( startStimTime  + obj.stimulationTime);
                             if obj.props.usingEyelink
                                 error=Eyelink('CheckRecording');
                                 if(error~=0)
@@ -264,7 +268,7 @@ classdef MappingStimulus < AbstractStimulus
                         obj.results(1) = obj.results(1)+1;
                         
                         Eyelink('Message', 'Fixed Success :-)');
-                        sprintf('Trial completed. Trial %d of %d\n', trial, obj.numTrials);
+                        sprintf('Trial completed. Trial %d of %d\n', obj.trial, obj.numTrials);
                        
                        
                     end
@@ -393,7 +397,7 @@ classdef MappingStimulus < AbstractStimulus
                     
                 
                 
-                trial = trial+1;
+                obj.trial = obj.trial+1;
                 
             end
         end
@@ -439,15 +443,145 @@ classdef MappingStimulus < AbstractStimulus
         end
         
         
-       function drawStimulus(obj, position, size)
+       function drawStimulus(obj)
             %stimulus = [position(1)-size position(2)-size position(1)+size position(2)+size]
             %stimulus = CenterRect(stimulus, obj.wRect)
             %stimulus = [-size size size size]
 
             %stimulus = CenterRectOnPointd(stimulus, position(1), position(2))
             %Screen('FillOval', obj.window,[1,1,1,0], stimulus);
-            Screen('DrawDots', obj.window, [position(1) position(2)], size, obj.stimColor, [], 2);
-        end 
+               
+            x1 = 0;
+            x2 = 0;
+            y1 = 0;
+            y2 = 0;
+            disp('trial')
+            disp(obj.trial)
+             [x1, y1, x2, y2 ]= obj.computeQuadrantCoords(2,mod(obj.trial,16)+1) ;
+             stimulus = [x1 y1 x2 y2];
+             Screen('FillRect', obj.window, obj.stimColor, stimulus);
+
+       end 
+       
+       function q = computeR2Quadrant(obj, quadrant, subQuadrant)
+           q = 2 ^ quadrant + subQuadrant;
+       end
+       
+       function [x1, y1, x2, y2] = computeQuadrantCoords(obj,res,quad)
+           if res == 1 
+               switch quad
+                   case 1
+                       x1 = 0;
+                       y1 = 0;
+                       x2 = obj.winWidth/2;
+                       y2 = obj.winHeight/2;
+                   case 2
+                       x1 = obj.winWidth/2;
+                       y1 = 0;
+                       x2 = obj.winWidth;
+                       y2 = obj.winHeight/2;
+                   case 3
+                       x1 = 0;
+                       y1 = obj.winHeight/2;
+                       x2 = obj.winWidth/2;
+                       y2 = obj.winHeight;
+                   case 4
+                       x1 = obj.winWidth/2;
+                       y1 = obj.winHeight/2;                       
+                       x2 = obj.winWidth;
+                       y2 = obj.winHeight;
+                       
+               end
+                   
+           elseif res == 2
+               switch quad
+                   case 1
+                       x1 = 0;
+                       y1 = 0;
+                       x2 = obj.winWidth/4;
+                       y2 = obj.winHeight/4;
+                   case 2
+                       x1 = obj.winWidth/4;
+                       y1 = 0;
+                       x2 = obj.winWidth/2;
+                       y2 = obj.winHeight/4;
+                   case 3
+                       x1 = 0;
+                       y1 = obj.winHeight/4;
+                       x2 = obj.winWidth/4;
+                       y2 = obj.winHeight/2;
+                   case 4
+                       x1 = obj.winWidth/4;
+                       y1 = obj.winHeight/4;                       
+                       x2 = obj.winWidth/2;
+                       y2 = obj.winHeight/2;
+                   case 5
+                       x1 = obj.winWidth/2;
+                       y1 = 0;
+                       x2 = obj.winWidth*3/4;
+                       y2 = obj.winHeight/4;
+                   case 6
+                       x1 = obj.winWidth*3/4;
+                       y1 = 0;
+                       x2 = obj.winWidth;
+                       y2 = obj.winHeight/4;
+                   case 7
+                       x1 = obj.winWidth/2;
+                       y1 = obj.winHeight/4;
+                       x2 = obj.winWidth*3/4;
+                       y2 = obj.winHeight/2;
+                   case 8
+                       x1 = obj.winWidth*3/4;
+                       y1 = obj.winHeight/4;                       
+                       x2 = obj.winWidth;
+                       y2 = obj.winHeight/2;
+                       
+                   case 9
+                       x1 = 0;
+                       y1 = obj.winHeight/2;
+                       x2 = obj.winWidth/4;
+                       y2 = obj.winHeight*3/4;
+                   case 10
+                       x1 = obj.winWidth/4;
+                       y1 = obj.winHeight/2;
+                       x2 = obj.winWidth/2;
+                       y2 = obj.winHeight*3/4;
+                   case 11
+                       x1 = 0;
+                       y1 = obj.winHeight*3/4;
+                       x2 = obj.winWidth/4;
+                       y2 = obj.winHeight;
+                   case 12
+                       x1 = obj.winWidth/4;
+                       y1 = obj.winHeight*3/4;                       
+                       x2 = obj.winWidth/2;
+                       y2 = obj.winHeight;
+                   case 13
+                       x1 = obj.winWidth/2;
+                       y1 = obj.winHeight/2;
+                       x2 = obj.winWidth*3/4;
+                       y2 = obj.winHeight*3/4;
+                   case 14
+                       x1 = obj.winWidth*3/4;
+                       y1 = obj.winHeight/2;
+                       x2 = obj.winWidth;
+                       y2 = obj.winHeight*3/4;
+                   case 15
+                       x1 = obj.winWidth/2;
+                       y1 = obj.winHeight*3/4;
+                       x2 = obj.winWidth*3/4;
+                       y2 = obj.winHeight;
+                   case 16
+                       x1 = obj.winWidth*3/4;
+                       y1 = obj.winHeight*3/4;                       
+                       x2 = obj.winWidth;
+                       y2 = obj.winHeight;
+                       
+               end
+           else
+               
+           end
+       end
     end
     
     
