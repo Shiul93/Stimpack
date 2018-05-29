@@ -21,24 +21,8 @@ function value = sendTTLByte( byte , usingDataPixx )
         Datapixx('RegWr');
         
     end
-    value = -1;
-    switch line
-        case 1
-            value = 'Start';
-        case 2 
-            value = 'Broke Fix';
-        case 3
-            value = 'Fixation Achieved';
-        case 4
-            value = 'No Fix';
-        case 5
-            value = 'Not choose';
-        case 6 
-            value = 'Eyes on distractor';
-        case 7 
-            value = 'Mark';
-    end
-    disp(value);
+    disp('Sending Byte')
+    disp(byte);
     
         
 

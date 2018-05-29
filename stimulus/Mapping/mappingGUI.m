@@ -27,11 +27,11 @@ function varargout = mappingGUI(varargin)
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
 gui_State = struct('gui_Name',       mfilename, ...
-                   'gui_Singleton',  gui_Singleton, ...
-                   'gui_OpeningFcn', @mappingGUI_OpeningFcn, ...
-                   'gui_OutputFcn',  @mappingGUI_OutputFcn, ...
-                   'gui_LayoutFcn',  [] , ...
-                   'gui_Callback',   []);
+    'gui_Singleton',  gui_Singleton, ...
+    'gui_OpeningFcn', @mappingGUI_OpeningFcn, ...
+    'gui_OutputFcn',  @mappingGUI_OutputFcn, ...
+    'gui_LayoutFcn',  [] , ...
+    'gui_Callback',   []);
 if nargin && ischar(varargin{1})
     gui_State.gui_Callback = str2func(varargin{1});
 end
@@ -86,11 +86,11 @@ if (handles.currentSQbutton > 0)
 end
 
 if (handles.stimulus.autoQ)
-    set(handles.qArray(handles.autoQbutton),'ForegroundColor','red');
+    set(handles.autoQbutton,'ForegroundColor','red');
 end
 
 if (handles.stimulus.autoSQ)
-    set(handles.qArray(handles.autoSQbutton),'ForegroundColor','red');
+    set(handles.autoSQbutton,'ForegroundColor','red');
 end
 % set(handles.Field,'String',handles.stimulus);
 
@@ -105,7 +105,7 @@ guidata(hObject, handles);
 
 
 % --- Outputs from this function are returned to the command line.
-function varargout = mappingGUI_OutputFcn(hObject, eventdata, handles) 
+function varargout = mappingGUI_OutputFcn(hObject, eventdata, handles)
 % varargout  cell array for returning output args (see VARARGOUT);
 % hObject    handle to figure
 % eventdata  reserved - to be defined in a future version of MATLAB
@@ -403,13 +403,13 @@ if handles.currentSQbutton == 1
     handles.currentSQbutton = 0;
 else
     handles.stimulus.stimSubQuadrant = 1;
-    handles.currentSQbutton = 1;    
+    handles.currentSQbutton = 1;
     set(handles.sqArray(handles.currentSQbutton),'ForegroundColor','red');
 end
 guidata(hObject, handles);
 
-    
-    
+
+
 
 % --- Executes on button press in sq2button.
 function sq2button_Callback(hObject, eventdata, handles)
@@ -425,12 +425,12 @@ if handles.currentSQbutton == 2
     handles.currentSQbutton = 0;
 else
     handles.stimulus.stimSubQuadrant = 2;
-    handles.currentSQbutton = 2;    
+    handles.currentSQbutton = 2;
     set(handles.sqArray(handles.currentSQbutton),'ForegroundColor','red');
 end
 guidata(hObject, handles);
 
-    
+
 
 % --- Executes on button press in sq3button.
 function sq3button_Callback(hObject, eventdata, handles)
@@ -446,12 +446,12 @@ if handles.currentSQbutton == 3
     handles.currentSQbutton = 0;
 else
     handles.stimulus.stimSubQuadrant = 3;
-    handles.currentSQbutton = 3;    
+    handles.currentSQbutton = 3;
     set(handles.sqArray(handles.currentSQbutton),'ForegroundColor','red');
 end
 guidata(hObject, handles);
 
-    
+
 
 
 % --- Executes on button press in sq4button.
@@ -468,12 +468,12 @@ if handles.currentSQbutton == 4
     handles.currentSQbutton = 0;
 else
     handles.stimulus.stimSubQuadrant = 4;
-    handles.currentSQbutton = 4;    
+    handles.currentSQbutton = 4;
     set(handles.sqArray(handles.currentSQbutton),'ForegroundColor','red');
 end
 guidata(hObject, handles);
 
-    
+
 
 
 
@@ -482,10 +482,23 @@ function autoQbutton_Callback(hObject, eventdata, handles)
 % hObject    handle to autoQbutton (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-
+if (handles.stimulus.autoQ)
+    handles.stimulus.autoQ = false;
+    set(hObject,'ForegroundColor','black');
+else
+    handles.stimulus.autoQ = true;
+    set(hObject,'ForegroundColor','red');
+end
 
 % --- Executes on button press in autoSQbutton.
 function autoSQbutton_Callback(hObject, eventdata, handles)
 % hObject    handle to autoSQbutton (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+if (handles.stimulus.autoSQ)
+    handles.stimulus.autoSQ = false;
+    set(hObject,'ForegroundColor','black');
+else
+    handles.stimulus.autoSQ = true;
+    set(hObject,'ForegroundColor','red');
+end
