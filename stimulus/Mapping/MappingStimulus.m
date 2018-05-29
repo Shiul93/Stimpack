@@ -8,18 +8,15 @@ classdef MappingStimulus < AbstractStimulus
         
         
         % Stimulation duration
-        stimulationTime@double = 5;
+        stimulationTime@double = 0.1;
         trial@double = 1;
 
-        
-        stimCoords@double = [0 0];
-        
-        stimSize@double = 50;
+       
         
         stimColor@double = [255 255 255 255];
         
-        stimResolution = 1;
         stimQuadrant = 1;
+        stimSubQuadrant = 0;
         
         edfFile@char = '';
         pathsave@char = '';
@@ -27,8 +24,10 @@ classdef MappingStimulus < AbstractStimulus
         
         results@double = [0 0 0];
         testvar@double = 0;
-        
-        
+        axes 
+        autoQ@logical = false;
+        autoSQ@logical = false;
+
         
         
         
@@ -69,11 +68,6 @@ classdef MappingStimulus < AbstractStimulus
         function runTrials(obj)
             
             disp('runTrials');
-            trial = 1;
-            index = 1;
-            
-            firstRun = 1;
-            infix = 0;
             keyTicks = 0;
             keyHold = 1;
             obj.results = [0 0 0];
@@ -110,8 +104,11 @@ classdef MappingStimulus < AbstractStimulus
             
             while (((obj.trial <= obj.numTrials) || obj.numTrials == 0) && stopTrial==false)
                 
+                % TTL 1 -> Start of the trial
+                sendTTLByte(1 , obj.stimPk.props.usingDataPixx);
                 
-                bar(reactionTimes);
+                plot(obj.axes, rand(1,obj.trial));
+               
                 drawnow
                 
                 
@@ -141,12 +138,13 @@ classdef MappingStimulus < AbstractStimulus
                     obj.drawFixationPoint();
                     % Draw the image buffer in the screen
                     Screen('Flip',obj.window);
+                    % TTL 2 -> Show fixation point
+                    sendTTLByte(2 , obj.stimPk.props.usingDataPixx);
 
                     % Mark zero-plot time in data file
                     Eyelink('Message', 'SYNCTIME');
                     
-                    % TTL 1 -> Start of the trial
-                    sendTTL(1 , obj.stimPk.props.usingDataPixx);
+                    
                
                     
                     %Time to fixate
@@ -176,6 +174,10 @@ classdef MappingStimulus < AbstractStimulus
                         %Si se fija por primera vez se envia un mensaje Fixation start
                         if obj.infixationWindow(mx,my) && ~infix
                             %disp('Fixed')
+                            
+                            % TTL 3 -> Fixation started
+                            sendTTLByte(3 , obj.stimPk.props.usingDataPixx);
+                            
                             Eyelink('Message', 'Fixation Start');
                             fixationTime = GetSecs;
                             %Beeper(el.calibration_success_beep(1), el.calibration_success_beep(2), el.calibration_success_beep(3));
@@ -190,7 +192,8 @@ classdef MappingStimulus < AbstractStimulus
                     if ~infix
                         % Send message for fixation not achieved and cancel
                         % trial
-                        sendTTL(4 , obj.stimPk.props.usingDataPixx);
+                        % TTL 6 -> Fixation not achieved
+                        sendTTLByte(6 , obj.stimPk.props.usingDataPixx);
                         obj.results(2) = obj.results(2)+1;
                     else
                         
@@ -210,8 +213,9 @@ classdef MappingStimulus < AbstractStimulus
                                 %Screen('DrawTexture', obj.window, sad);
                                 %Screen('Flip',obj.window);
                                 %disp('broke fix');
-                                Eyelink('Message', 'Fixation broke or grace time ended');
-                                sendTTL(2 , obj.stimPk.props.usingDataPixx);
+                                Eyelink('Message', 'Fixation broken');
+                                % TTL 6 -> Fixation broken
+                                sendTTLByte(5 , obj.stimPk.props.usingDataPixx);
                                 obj.results(3) = obj.results(3)+1;
                                 infix = 0;
                                 break;
@@ -227,6 +231,8 @@ classdef MappingStimulus < AbstractStimulus
                         % Draw the image buffer in the screen
                         %obj.drawStimulus([obj.stimCoords(1),obj.stimCoords(2)],obj.stimSize);
                         obj.drawStimulus();
+                        % Send correspondent TTL for the shown stimulus
+                        obj.sendStimulusTTL();
                         Screen('Flip',obj.window);
                         % Stimulation loop
                         startStimTime = GetSecs;
@@ -244,30 +250,39 @@ classdef MappingStimulus < AbstractStimulus
                             
                             if ~obj.infixationWindow(mx,my) && infix
                                 
-                               
+                                Eyelink('Message', 'Fixation broken');
+                                % TTL 5 -> Fixation broken
+                                sendTTLByte(5 , obj.stimPk.props.usingDataPixx);
                                 disp('broke fix');                                
                                 infix = 0;
                             end
                         end
                         
+                        
                         if infix
                             Screen('FillOval', obj.window,[0 255 0], fixationOK);
+                            %disp('fixed success!!');
+                            % TTL 4 -> Succesful trial
+                            sendTTL(4, obj.stimPk.props.usingDataPixx);
+                            Screen('FillOval', obj.window,[0 255 0], fixationOK);
+                           
+
+                            if obj.props.usingLabJack
+
+                                timedTTL(obj.lJack,0,obj.props.rewardTime);
+                            else
+                                disp('Reward!');
+                            end
+                            obj.results(1) = obj.results(1)+1;
+
+                            Eyelink('Message', 'Trial completed succesfully');
+                            
                         else
                             Screen('FillOval', obj.window,[255 0 0], fixationOK);
                         end
 
                         Screen('Flip',obj.window);
-                        %disp('fixed success!!');
-                        if obj.props.usingLabJack
-                            
-                            timedTTL(obj.lJack,0,obj.props.rewardTime);
-                        else
-                            disp('Reward!');
-                        end
-                        sendTTL(3, obj.stimPk.props.usingDataPixx);
-                        obj.results(1) = obj.results(1)+1;
                         
-                        Eyelink('Message', 'Fixed Success :-)');
                         sprintf('Trial completed. Trial %d of %d\n', obj.trial, obj.numTrials);
                        
                        
@@ -314,7 +329,7 @@ classdef MappingStimulus < AbstractStimulus
                     % See "Protocol for EyeLink Data to Viewer Integration-> Trial
                     % Message Commands" section of the EyeLink Data Viewer User Manual
                     WaitSecs(0.001);
-                    Eyelink('Message', '!V TRIAL_VAR index %d', trial);
+                    Eyelink('Message', '!V TRIAL_VAR index %d', obj.trial);
                     %Eyelink('Message', '!V TRIAL_VAR imgfile %s', 'imgfile.jpg');
                     if infix
                         Eyelink('Message', '!V TRIAL_VAR trialOutcome %s', 'succesful');
@@ -457,14 +472,20 @@ classdef MappingStimulus < AbstractStimulus
             y2 = 0;
             disp('trial')
             disp(obj.trial)
-             [x1, y1, x2, y2 ]= obj.computeQuadrantCoords(2,mod(obj.trial,16)+1) ;
+            
+           
+            if obj.stimSubQuadrant
+                [x1, y1, x2, y2 ]= obj.computeQuadrantCoords(2, obj.computeR2Quadrant()) ;
+            else
+                [x1, y1, x2, y2 ]= obj.computeQuadrantCoords(1,obj.stimQuadrant) ;
+            end
              stimulus = [x1 y1 x2 y2];
              Screen('FillRect', obj.window, obj.stimColor, stimulus);
 
        end 
        
-       function q = computeR2Quadrant(obj, quadrant, subQuadrant)
-           q = 2 ^ quadrant + subQuadrant;
+       function q = computeR2Quadrant(obj)
+           q = ( 4 * obj.stimQuadrant) + obj.stimSubQuadrant -4;
        end
        
        function [x1, y1, x2, y2] = computeQuadrantCoords(obj,res,quad)
@@ -582,6 +603,15 @@ classdef MappingStimulus < AbstractStimulus
                
            end
        end
+       
+       function sendStimulusTTL(obj)
+           if obj.stimSubQuadrant
+                sendTTLByte(obj.computeR2Quadrant()+10, obj.props.usingDataPixx);
+           else
+                sendTTLByte(obj.stimQuadrant+6, obj.props.usingDataPixx);
+           end
+       end
+
     end
     
     

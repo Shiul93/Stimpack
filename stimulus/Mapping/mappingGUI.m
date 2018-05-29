@@ -22,7 +22,7 @@ function varargout = mappingGUI(varargin)
 
 % Edit the above text to modify the response to help mappingGUI
 
-% Last Modified by GUIDE v2.5 18-May-2018 12:03:27
+% Last Modified by GUIDE v2.5 29-May-2018 13:45:39
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -75,11 +75,23 @@ set(handles.bgColorField,'String', num2str(handles.stimulus.backgroundColour));
 
 % Stimulus options
 set(handles.stimTimeField,'String',handles.stimulus.stimulationTime*1000);
-set(handles.stimCoordsField,'String',num2str(handles.stimulus.stimCoords));
-set(handles.stimSizeField,'String',handles.stimulus.stimSize);
 set(handles.stimColorField,'String',num2str(handles.stimulus.stimColor));
+handles.currentQbutton = handles.stimulus.stimQuadrant;
+handles.currentSQbutton =  handles.stimulus.stimSubQuadrant;
+handles.qArray =[ handles.q1button handles.q2button handles.q3button handles.q4button];
+handles.sqArray =[ handles.sq1button handles.sq2button handles.sq3button handles.sq4button];
+set(handles.qArray(handles.currentQbutton),'ForegroundColor','red');
+if (handles.currentSQbutton > 0)
+    set(handles.qArray(handles.currentSQbutton),'ForegroundColor','red');
+end
 
+if (handles.stimulus.autoQ)
+    set(handles.qArray(handles.autoQbutton),'ForegroundColor','red');
+end
 
+if (handles.stimulus.autoSQ)
+    set(handles.qArray(handles.autoSQbutton),'ForegroundColor','red');
+end
 % set(handles.Field,'String',handles.stimulus);
 
 
@@ -298,53 +310,6 @@ end
 
 
 
-function stimCoordsField_Callback(hObject, eventdata, handles)
-% hObject    handle to stimCoordsField (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of stimCoordsField as text
-%        str2double(get(hObject,'String')) returns contents of stimCoordsField as a double
-handles.stimulus.stimCoords = str2double(strsplit(hObject.String));
-
-
-% --- Executes during object creation, after setting all properties.
-function stimCoordsField_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to stimCoordsField (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    empty - handles not created until after all CreateFcns called
-
-% Hint: edit controls usually have a white background on Windows.
-%       See ISPC and COMPUTER.
-if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
-    set(hObject,'BackgroundColor','white');
-end
-
-
-
-function stimSizeField_Callback(hObject, eventdata, handles)
-% hObject    handle to stimSizeField (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of stimSizeField as text
-%        str2double(get(hObject,'String')) returns contents of stimSizeField as a double
-handles.stimulus.stimSize = str2double(hObject.String);
-
-
-% --- Executes during object creation, after setting all properties.
-function stimSizeField_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to stimSizeField (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    empty - handles not created until after all CreateFcns called
-
-% Hint: edit controls usually have a white background on Windows.
-%       See ISPC and COMPUTER.
-if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
-    set(hObject,'BackgroundColor','white');
-end
-
-
 
 function stimColorField_Callback(hObject, eventdata, handles)
 % hObject    handle to stimColorField (see GCBO)
@@ -367,3 +332,160 @@ function stimColorField_CreateFcn(hObject, eventdata, handles)
 if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor','white');
 end
+
+
+
+
+% --- Executes on button press in q1button.
+function q1button_Callback(hObject, eventdata, handles)
+% hObject    handle to q1button (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+set(handles.qArray(handles.currentQbutton),'ForegroundColor','black');
+handles.currentQbutton = 1;
+handles.stimulus.stimQuadrant = 1;
+set(hObject,'ForegroundColor','red');
+guidata(hObject, handles);
+
+
+
+
+% --- Executes on button press in q2button.
+function q2button_Callback(hObject, eventdata, handles)
+% hObject    handle to q2button (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+set(handles.qArray(handles.currentQbutton),'ForegroundColor','black');
+handles.currentQbutton = 2;
+handles.stimulus.stimQuadrant = 2;
+set(hObject,'ForegroundColor','red');
+guidata(hObject, handles);
+
+
+
+
+% --- Executes on button press in q3button.
+function q3button_Callback(hObject, eventdata, handles)
+% hObject    handle to q3button (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+set(handles.qArray(handles.currentQbutton),'ForegroundColor','black');
+handles.currentQbutton = 3;
+handles.stimulus.stimQuadrant = 3;
+set(hObject,'ForegroundColor','red');
+guidata(hObject, handles);
+
+
+
+% --- Executes on button press in q4button.
+function q4button_Callback(hObject, eventdata, handles)
+% hObject    handle to q4button (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+set(handles.qArray(handles.currentQbutton),'ForegroundColor','black');
+handles.currentQbutton = 4;
+handles.stimulus.stimQuadrant = 4;
+set(hObject,'ForegroundColor','red');
+guidata(hObject, handles);
+
+
+% --- Executes on button press in sq1button.
+function sq1button_Callback(hObject, eventdata, handles)
+% hObject    handle to sq1button (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+if handles.currentSQbutton > 0
+    set(handles.sqArray(handles.currentSQbutton),'ForegroundColor','black');
+end
+
+if handles.currentSQbutton == 1
+    handles.stimulus.stimSubQuadrant = 0;
+    handles.currentSQbutton = 0;
+else
+    handles.stimulus.stimSubQuadrant = 1;
+    handles.currentSQbutton = 1;    
+    set(handles.sqArray(handles.currentSQbutton),'ForegroundColor','red');
+end
+guidata(hObject, handles);
+
+    
+    
+
+% --- Executes on button press in sq2button.
+function sq2button_Callback(hObject, eventdata, handles)
+% hObject    handle to sq2button (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+if handles.currentSQbutton > 0
+    set(handles.sqArray(handles.currentSQbutton),'ForegroundColor','black');
+end
+
+if handles.currentSQbutton == 2
+    handles.stimulus.stimSubQuadrant = 0;
+    handles.currentSQbutton = 0;
+else
+    handles.stimulus.stimSubQuadrant = 2;
+    handles.currentSQbutton = 2;    
+    set(handles.sqArray(handles.currentSQbutton),'ForegroundColor','red');
+end
+guidata(hObject, handles);
+
+    
+
+% --- Executes on button press in sq3button.
+function sq3button_Callback(hObject, eventdata, handles)
+% hObject    handle to sq3button (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+if handles.currentSQbutton > 0
+    set(handles.sqArray(handles.currentSQbutton),'ForegroundColor','black');
+end
+
+if handles.currentSQbutton == 3
+    handles.stimulus.stimSubQuadrant = 0;
+    handles.currentSQbutton = 0;
+else
+    handles.stimulus.stimSubQuadrant = 3;
+    handles.currentSQbutton = 3;    
+    set(handles.sqArray(handles.currentSQbutton),'ForegroundColor','red');
+end
+guidata(hObject, handles);
+
+    
+
+
+% --- Executes on button press in sq4button.
+function sq4button_Callback(hObject, eventdata, handles)
+% hObject    handle to sq4button (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+if handles.currentSQbutton > 0
+    set(handles.sqArray(handles.currentSQbutton),'ForegroundColor','black');
+end
+
+if handles.currentSQbutton == 4
+    handles.stimulus.stimSubQuadrant = 0;
+    handles.currentSQbutton = 0;
+else
+    handles.stimulus.stimSubQuadrant = 4;
+    handles.currentSQbutton = 4;    
+    set(handles.sqArray(handles.currentSQbutton),'ForegroundColor','red');
+end
+guidata(hObject, handles);
+
+    
+
+
+
+% --- Executes on button press in autoQbutton.
+function autoQbutton_Callback(hObject, eventdata, handles)
+% hObject    handle to autoQbutton (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+
+% --- Executes on button press in autoSQbutton.
+function autoSQbutton_Callback(hObject, eventdata, handles)
+% hObject    handle to autoSQbutton (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)

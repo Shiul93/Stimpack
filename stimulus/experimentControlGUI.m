@@ -64,6 +64,8 @@ end
 guidata(hObject, handles);
 handles.comm = '';
 
+handles.stimulus.axes = handles.axes;
+
 %//set the current figure handle to main application data
 setappdata(0,'figureHandle',gcf);
 
