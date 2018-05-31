@@ -22,7 +22,7 @@ function varargout = templateGUI(varargin)
 
 % Edit the above text to modify the response to help templateGUI
 
-% Last Modified by GUIDE v2.5 16-May-2018 18:05:16
+% Last Modified by GUIDE v2.5 31-May-2018 18:33:49
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -73,6 +73,9 @@ set(handles.dotSizeField,'String',handles.stimulus.dotSize);
 set(handles.windowSizeField,'String',handles.stimulus.fixWinSize);
 set(handles.dotColorField,'String', num2str(handles.stimulus.dotColour));
 set(handles.bgColorField,'String', num2str(handles.stimulus.backgroundColour)); 
+
+
+handles.stimulus.axes = handles.axes;
 
 % Update handles structure
 guidata(hObject, handles);
@@ -266,3 +269,47 @@ end
 
 function displayThis()
 disp('Displaying this shit')
+
+
+% --- Executes on button press in scaButton.
+function scaButton_Callback(hObject, eventdata, handles)
+% hObject    handle to scaButton (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+sca
+
+% --- Executes on button press in sendMarkButton.
+function sendMarkButton_Callback(hObject, eventdata, handles)
+% hObject    handle to sendMarkButton (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+handles.stimulus.externalControl = 'm';
+
+
+% --- Executes on button press in rewardButton.
+function rewardButton_Callback(hObject, eventdata, handles)
+% hObject    handle to rewardButton (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+handles.stimulus.externalControl = 'r';
+
+
+% --- Executes on button press in pauseButton.
+function pauseButton_Callback(hObject, eventdata, handles)
+% hObject    handle to pauseButton (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+handles.stimulus.externalControl = 'p';
+if handles.stimulus.paused
+    set(hObject,'string','PAUSE')
+else
+    set(hObject,'string','RESUME')
+end
+
+% --- Executes on button press in stopButton.
+function stopButton_Callback(hObject, eventdata, handles)
+% hObject    handle to stopButton (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+set(handles.pauseButton,'string','PAUSE')
+handles.stimulus.externalControl = 'q';

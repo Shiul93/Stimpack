@@ -51,11 +51,8 @@ classdef TemplateStimulus < AbstractStimulus
             
             %% INITIALIZE VARIABLE VALUES AND CONFIGURE STIMULUS
             disp('runTrials');
-            trial = 1;
-            index = 1;
+            obj.trial = 1;
             
-            firstRun = 1;
-            infix = 0;
             keyTicks = 0;
             keyHold = 1;
             obj.results = [0 0 0];
@@ -75,12 +72,11 @@ classdef TemplateStimulus < AbstractStimulus
             %EyelinkDoDriftCorrection(obj.el);
             
             stopTrial=false;
-            experimentControlGUI(obj);
             obj.externalControl = '';
             
             
             %% TRIAL LOOP
-            while (((trial <= obj.numTrials) || obj.numTrials == 0) && stopTrial==false)
+            while (((obj.trial <= obj.numTrials) || obj.numTrials == 0) && stopTrial==false)
                 % Stimulus dot
                 % Size array ex:[-10   -10    10    10]
                 obj.fixationDot = [-obj.dotSize -obj.dotSize obj.dotSize obj.dotSize];
@@ -96,7 +92,6 @@ classdef TemplateStimulus < AbstractStimulus
                 obj.fixationWindow = CenterRect(obj.fixationWindow, obj.wRect);
             
                 
-                bar(reactionTimes);
                 drawnow
                 
                 
@@ -112,7 +107,7 @@ classdef TemplateStimulus < AbstractStimulus
                     % will not parse any messages, events, or samples, that exist in
                     % the data file prior to this message.
                     
-                    obj.dataViewerTrialInfo(trial);
+                    obj.dataViewerTrialInfo(obj.trial);
                     
                     % STEP 7.3
                     % start recording eye position (preceded by a short pause so that
@@ -174,7 +169,7 @@ classdef TemplateStimulus < AbstractStimulus
                         end
                     end
                     if (infix)
-                        reactionTimes(trial) = GetSecs -startTime;
+                        reactionTimes(obj.trial) = GetSecs -startTime;
                     end
                     
                     if ~infix
@@ -237,7 +232,7 @@ classdef TemplateStimulus < AbstractStimulus
                         obj.results(1) = obj.results(1)+1;
                         
                         Eyelink('Message', 'Fixed Success :-)');
-                        sprintf('Trial completed. Trial %d of %d\n', trial, obj.numTrials);
+                        sprintf('Trial completed. Trial %d of %d\n', obj.trial, obj.numTrials);
                         timeNow=GetSecs;
                         %WaitSecs(1);
                     end
@@ -267,7 +262,7 @@ classdef TemplateStimulus < AbstractStimulus
                     
                     % STEP 7.6
                     % Send out necessary integration messages for data analysis
-                    % Send out interest area information for the trial
+                    % Send out interest area information for the obj.trial
                     % See "Protocol for EyeLink Data to Viewer Integration-> Interest
                     % Area Commands" section of the EyeLink Data Viewer User Manual
                     % IMPORTANT! Don't send too many messages in a very short period of
@@ -287,7 +282,7 @@ classdef TemplateStimulus < AbstractStimulus
                     % See "Protocol for EyeLink Data to Viewer Integration-> Trial
                     % Message Commands" section of the EyeLink Data Viewer User Manual
                     WaitSecs(0.001);
-                    Eyelink('Message', '!V TRIAL_VAR index %d', trial);
+                    Eyelink('Message', '!V TRIAL_VAR index %d', obj.trial);
                     %Eyelink('Message', '!V TRIAL_VAR imgfile %s', 'imgfile.jpg');
                     if infix
                         Eyelink('Message', '!V TRIAL_VAR trialOutcome %s', 'succesful');
@@ -371,7 +366,7 @@ classdef TemplateStimulus < AbstractStimulus
                     end % end of event check while
                     
                 
-                trial = trial+1;
+                obj.trial = obj.trial+1;
                 
             end
         end

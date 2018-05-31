@@ -547,4 +547,6 @@ function stopButton_Callback(hObject, eventdata, handles)
 % hObject    handle to stopButton (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+set(handles.pauseButton,'string','PAUSE')
+
 handles.stimulus.externalControl = 'q';
