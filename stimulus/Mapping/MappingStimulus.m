@@ -85,7 +85,7 @@ classdef MappingStimulus < AbstractStimulus
             %EyelinkDoDriftCorrection(obj.el);
             
             stopTrial=false;
-            experimentControlGUI(obj);
+            %experimentControlGUI(obj);
             obj.externalControl = '';
             
             % Fixation dot
