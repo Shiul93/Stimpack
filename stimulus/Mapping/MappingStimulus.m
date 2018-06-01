@@ -9,7 +9,7 @@ classdef MappingStimulus < AbstractStimulus
         
         % Stimulation duration
         stimulationTime@double = 0.1;
-        trial@double = 1;
+        
         
         
         

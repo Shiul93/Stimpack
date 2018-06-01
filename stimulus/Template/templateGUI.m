@@ -22,7 +22,7 @@ function varargout = templateGUI(varargin)
 
 % Edit the above text to modify the response to help templateGUI
 
-% Last Modified by GUIDE v2.5 31-May-2018 18:33:49
+% Last Modified by GUIDE v2.5 31-May-2018 19:12:26
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -104,6 +104,8 @@ handles.stimulus.runStimulus();
 % --- Executes on button press in cancelButton.
 function cancelButton_Callback(hObject, eventdata, handles)
 disp('Cancel Fixation')
+set(handles.pauseButton,'string','PAUSE')
+handles.stimulus.externalControl = 'q';
 close(fixationGUI);
 handles.stimpack.initialiseGUI();
 
@@ -175,13 +177,13 @@ end
 
 
 
-function stimulusColorField_Callback(hObject, eventdata, handles)
+function dotColorField_Callback(hObject, eventdata, handles)
 handles.stimulus.dotColour = str2double(strsplit(hObject.String));
 
 
 
 % --- Executes during object creation, after setting all properties.
-function stimulusColorField_CreateFcn(hObject, eventdata, handles)
+function dotColorField_CreateFcn(hObject, eventdata, handles)
 if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor','white');
 end

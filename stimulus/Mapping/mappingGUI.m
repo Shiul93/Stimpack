@@ -125,6 +125,8 @@ handles.stimulus.runStimulus();
 % --- Executes on button press in cancelButton.
 function cancelButton_Callback(hObject, eventdata, handles)
 disp('Cancel Mapping')
+set(handles.pauseButton,'string','PAUSE')
+handles.stimulus.externalControl = 'q';
 close(mappingGUI);
 handles.stimpack.initialiseGUI();
 

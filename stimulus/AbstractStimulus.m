@@ -13,6 +13,7 @@ classdef (Abstract) AbstractStimulus < handle
 
         el;
         paused@logical = false;
+        trial@double = 1;
         
     end
     

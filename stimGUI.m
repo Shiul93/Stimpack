@@ -22,7 +22,7 @@ function varargout = stimGUI(varargin)
 
 % Edit the above text to modify the response to help stimGUI
 
-% Last Modified by GUIDE v2.5 16-May-2018 16:53:36
+% Last Modified by GUIDE v2.5 31-May-2018 19:09:30
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -184,3 +184,15 @@ if get(hObject,'Value')
 else
     handles.props.usingLabJack =false;
 end
+
+
+% --- Executes on button press in workingMemoryButton.
+function workingMemoryButton_Callback(hObject, eventdata, handles)
+% hObject    handle to workingMemoryButton (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+    disp('MAPPINGBUTTON')
+    disp(handles.stimpack)
+    close(stimGUI)
+    workingMemoryGUI(handles.stimpack)
+
