@@ -97,16 +97,16 @@ classdef FixationStimulus < AbstractStimulus
                 
                 % Stimulus dot
                 % Size array ex:[-10   -10    10    10]
-                obj.fixationDot = [-obj.dotSize -obj.dotSize obj.dotSize obj.dotSize];
+                obj.fixationDot = [-obj.dotSize/2 -obj.dotSize/2 obj.dotSize/2 obj.dotSize/2];
                 % Position array ex:[1270  710  1290  730]
                 obj.fixationDot = CenterRect(obj.fixationDot, obj.wRect);
                 
                 % Green dot when succesful trial
-                fixationOK = [-obj.dotSize-2 -obj.dotSize-2 obj.dotSize+2 obj.dotSize+2];
+                fixationOK = [-obj.dotSize/2-2 -obj.dotSize/2-2 obj.dotSize/2+2 obj.dotSize/2+2];
                 fixationOK = CenterRect(fixationOK, obj.wRect);
                 
                 % Set the fixation window on the center of the screen
-                obj.fixationWindow = [-obj.fixWinSize -obj.fixWinSize obj.fixWinSize obj.fixWinSize];
+                obj.fixationWindow = [-obj.fixWinSize/2 -obj.fixWinSize/2 obj.fixWinSize/2 obj.fixWinSize/2];
                 obj.fixationWindow = CenterRect(obj.fixationWindow, obj.wRect);
                 
                 bar(reactionTimes);
