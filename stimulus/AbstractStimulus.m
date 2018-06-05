@@ -365,6 +365,15 @@ classdef (Abstract) AbstractStimulus < handle
             Screen('FillOval', obj.window,obj.dotColour, obj.fixationDot);
         end
         
+        function error = checkErrorRecording(obj)
+            if obj.props.usingEyelink
+                        error=Eyelink('CheckRecording');
+            else
+                error = 0;
+            end
+                  
+        end
+        
         
     end
     

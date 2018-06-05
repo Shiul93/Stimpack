@@ -167,10 +167,6 @@ classdef WorkingMemoryStimulus < AbstractStimulus
                 Eyelink('Message', 'SYNCTIME');
                 
                 % TTL 1 -> Start of the trial
-                %%%%%CHANGE ME%%%%%%
-                %%%%%NOT NECESARY TO USE THIS TTL MESSAGE%%%%%%
-                %%%%%YOU CAN USE ANY LINE YOU WANT 0-7%%%%%
-                %%%%%OR USE SENDTTLBYTE 0-254%%%%%
                 sendTTL(1 , obj.stimPk.props.usingDataPixx);
                 
                 
@@ -192,68 +188,67 @@ classdef WorkingMemoryStimulus < AbstractStimulus
                 % Fixate time of the trial, the subject has fixateTime
                 % millisconds to fixate the sight on the stimulus
                 while (GetSecs < fixateTime) && ~infix
-                    if obj.props.usingEyelink
-                        error=Eyelink('CheckRecording');
-                        if(error~=0)
-                            break;
-                        end
+                    
+                    if obj.checkErrorRecording()
+                        break
                     end
                     
                     [mx, my] = obj.getEyeCoordinates();
                     
                     
-                    %Si se fija por primera vez se envia un mensaje Fixation start
+                    % First moment of fixation 
                     if obj.infixationWindow(mx,my) && ~infix
-                        %disp('Fixed')
+                        % TTL 1 -> Start of the trial
+                        sendTTL(1 , obj.stimPk.props.usingDataPixx);
+                        
                         Eyelink('Message', 'Fixation Start');
                         fixationTime = GetSecs;
-                        %Beeper(el.calibration_success_beep(1), el.calibration_success_beep(2), el.calibration_success_beep(3));
+                        
+                        % The subject is now fixating its sight on the
+                        % fixation dot
                         infix = 1;
                         
                     end
                 end
                 
                 
-                if (infix)
-                    reactionTimes(obj.trial) = GetSecs -startTime;
-                end
-                
+                % If the time to fixate has passed and the subject didn't
+                % fixate on the objective
                 if ~infix
                     % Send message for fixation not achieved and cancel
                     % trial
-                    %%%%%CHANGE ME%%%%%%
-                    %%%%%NOT NECESARY TO USE THIS TTL MESSAGE%%%%%%
-                    %%%%%YOU CAN USE ANY LINE YOU WANT 0-7%%%%%
-                    %%%%%OR USE SENDTTLBYTE 0-254%%%%%
-                    sendTTL(4 , obj.stimPk.props.usingDataPixx);
-                    obj.results(2) = obj.results(2)+1;
+                    
+                    % TTL 3 -> Fixation not achieved
+                    sendTTL(3 , obj.stimPk.props.usingDataPixx);
+                    
+                    
                 else
                     disp('Fixate loop');
                     while (GetSecs < fixationTime + obj.timeFix)
-                        if obj.props.usingEyelink
-                            error=Eyelink('CheckRecording');
-                            if(error~=0)
-                                break;
-                            end
+                        if obj.checkErrorRecording()
+                            break
                         end
                         
                         [mx, my] = obj.getEyeCoordinates();
                         
                         if ~obj.infixationWindow(mx,my) && infix
-                            
-                            %Screen('DrawTexture', obj.window, sad);
-                            %Screen('Flip',obj.window);
-                            %disp('broke fix');
-                            Eyelink('Message', 'Fixation broke');
-                            %%%%%CHANGE ME%%%%%%
-                            %%%%%NOT NECESARY TO USE THIS TTL MESSAGE%%%%%%
-                            %%%%%YOU CAN USE ANY LINE YOU WANT 0-7%%%%%
-                            %%%%%OR USE SENDTTLBYTE 0-254%%%%%
-                            sendTTL(2 , obj.stimPk.props.usingDataPixx);
-                            obj.results(3) = obj.results(3)+1;
+                            Eyelink('Message', 'Fixation broken');
+                            % TTL 12 -> Fixation broken
+                            sendTTL(12 , obj.stimPk.props.usingDataPixx);
                             infix = 0;
                             break;
                         end
+                    end
+                    
+                    %If the subject is still fixating we send a TTL
+                    %indicating the first phase is completed
+                    if infix
+                        % TTL 2 -> Fixation achieved
+                        sendTTL(2 , obj.stimPk.props.usingDataPixx);
+                    else
+                        % Show red dot indicating the failure
+                        Screen('FillOval', obj.window,[255 0 0], fixationOK);
+                        Screen('Flip',obj.window);
                     end
                 end
                 
@@ -263,24 +258,30 @@ classdef WorkingMemoryStimulus < AbstractStimulus
                 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
                 %Si pasa el tiempo y sigue fijado
                 if infix
+                    % Generate random direction for the grating, used when
+                    % the arrow is active
                     obj.randdir = randi(2,1,1)-1;
                     
-                    % Draw the image buffer in the screen
-                    %obj.drawStimulus([obj.stimCoords(1),obj.stimCoords(2)],obj.stimSize);
-                    % Send correspondent TTL for the shown stimulus
+                    % Set starting time
+                    startStimTime = GetSecs;
+                    
+                    % TTL 4 -> Show S1 stimulus
+                    sendTTL(4 , obj.stimPk.props.usingDataPixx);
                     
                     % Stimulation loop
-                    startStimTime = GetSecs;
                     while ((GetSecs < startStimTime + obj.s1Time) && infix)
+                        
+                        % Draw the fixation point and the stimulus in the
+                        % screen
                         obj.drawFixationPoint();
+                        
+                        % Drawstimulus contains the flip function call
                         obj.drawStimulus(obj.showArrow,1);
                         
                         
-                        if obj.props.usingEyelink
-                            error=Eyelink('CheckRecording');
-                            if(error~=0)
-                                break;
-                            end
+                        
+                        if obj.checkErrorRecording()
+                            break
                         end
                         
                         [mx, my] = obj.getEyeCoordinates();
@@ -288,16 +289,15 @@ classdef WorkingMemoryStimulus < AbstractStimulus
                         if ~obj.infixationWindow(mx,my) && infix
                             
                             Eyelink('Message', 'Fixation broken');
-                            % TTL 5 -> Fixation broken
-                            sendTTLByte(5 , obj.stimPk.props.usingDataPixx);
-                            disp('broke fix');
+                            % TTL 12 -> Fixation broken
+                            sendTTL(12 , obj.stimPk.props.usingDataPixx);
                             infix = 0;
                         end
                     end
                     
                     
                     if ~infix
-                        
+                        % Show red dot indicating the failure
                         Screen('FillOval', obj.window,[255 0 0], fixationOK);
                         Screen('Flip',obj.window);
                         
@@ -314,34 +314,32 @@ classdef WorkingMemoryStimulus < AbstractStimulus
                 if infix
                     startStimTime = GetSecs;
                     obj.drawFixationPoint();
+                    
+                    % TTL 5 -> S1 disappears, enter delay phase
+                    sendTTL(12 , obj.stimPk.props.usingDataPixx);
                     Screen('Flip',obj.window);
                     
                     
                     while ((GetSecs < startStimTime + obj.gratingDelay) && infix)
                         
                         
-                        if obj.props.usingEyelink
-                            error=Eyelink('CheckRecording');
-                            if(error~=0)
-                                break;
-                            end
+                        if obj.checkErrorRecording()
+                            break
                         end
-                        
                         [mx, my] = obj.getEyeCoordinates();
                         
                         if ~obj.infixationWindow(mx,my) && infix
                             
                             Eyelink('Message', 'Fixation broken');
-                            % TTL 5 -> Fixation broken
-                            sendTTLByte(5 , obj.stimPk.props.usingDataPixx);
-                            disp('broke fix');
+                            % TTL 12 -> Fixation broken
+                            sendTTL(12 , obj.stimPk.props.usingDataPixx);
                             infix = 0;
                         end
                     end
                     
                     
                     if ~infix
-                        
+                        % Show red dot indicating the failure
                         Screen('FillOval', obj.window,[255 0 0], fixationOK);
                         Screen('Flip',obj.window);
                         
@@ -355,24 +353,27 @@ classdef WorkingMemoryStimulus < AbstractStimulus
                 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
                 
                 if infix
+                    % Generate random direction for the grating
                     obj.randdir = randi(2,1,1)-1;
                     
-                    % Draw the image buffer in the screen
-                    %obj.drawStimulus([obj.stimCoords(1),obj.stimCoords(2)],obj.stimSize);
-                    % Send correspondent TTL for the shown stimulus
+                   
+                    % Set starting time
+                    startStimTime = GetSecs;
+                    
+                    % TTL 6 -> Show S2 stimulus
+                    sendTTL(6 , obj.stimPk.props.usingDataPixx);
                     
                     % Stimulation loop
-                    startStimTime = GetSecs;
                     while ((GetSecs < startStimTime + obj.s2Time) && infix)
+                        
+                        % Its needed to draw on every iteration to get
+                        % the animation effect in the grating
                         obj.drawFixationPoint();
                         obj.drawStimulus(false,2);
                         
                         
-                        if obj.props.usingEyelink
-                            error=Eyelink('CheckRecording');
-                            if(error~=0)
-                                break;
-                            end
+                        if obj.checkErrorRecording()
+                            break
                         end
                         
                         [mx, my] = obj.getEyeCoordinates();
@@ -380,16 +381,15 @@ classdef WorkingMemoryStimulus < AbstractStimulus
                         if ~obj.infixationWindow(mx,my) && infix
                             
                             Eyelink('Message', 'Fixation broken');
-                            % TTL 5 -> Fixation broken
-                            sendTTLByte(5 , obj.stimPk.props.usingDataPixx);
-                            disp('broke fix');
+                            % TTL 12 -> Fixation broken
+                            sendTTL(12 , obj.stimPk.props.usingDataPixx);
                             infix = 0;
                         end
                     end
                     
                     
                     if ~infix
-                        
+                        % Show red dot indicating the failure
                         Screen('FillOval', obj.window,[255 0 0], fixationOK);
                         Screen('Flip',obj.window);
                         
@@ -406,30 +406,32 @@ classdef WorkingMemoryStimulus < AbstractStimulus
                     infix = 0;
                     obj.drawSelectors();
                     Screen('Flip',obj.window);
+                    % TTL 7 -> Selectors appear
+                    sendTTL(7 , obj.stimPk.props.usingDataPixx);
                     
+                    % Time to achieve fixation on the desired selector
                     fixateTime = GetSecs + obj.answerFixTime;
+                    
+                    % Fixed selector 0 -> none, -1 -> left, 1 -> right
                     selectorFix = 0;
-                    while (GetSecs < fixateTime) && ~infix
-                        if obj.props.usingEyelink
-                            error=Eyelink('CheckRecording');
-                            if(error~=0)
-                                break;
-                            end
+                    
+                    % Iterate until time is consumed or sight on selector
+                    while (GetSecs < fixateTime) && ~selectorFix
+                        if obj.checkErrorRecording()
+                            break
                         end
                         
                         [mx, my] = obj.getEyeCoordinates();
                         
                         
-                        %Si se fija por primera vez se envia un mensaje Fixation start
+                        % Check if sight is in any of the selectors
                         selectorFix = obj.checkSelectors(mx,my);
-                        if  selectorFix && ~infix
-                            %disp('Fixed')
-                            Eyelink('Message', 'Fixation Start');
-                            fixationTime = GetSecs;
-                            %Beeper(el.calibration_success_beep(1), el.calibration_success_beep(2), el.calibration_success_beep(3));
+                        
+                       
+                    end
+                    
+                    if selectorFix
                             infix = 1;
-                            
-                        end
                     end
                     
                     disp('Fixated on');
@@ -437,44 +439,42 @@ classdef WorkingMemoryStimulus < AbstractStimulus
                     
                     
                     if ~infix
-                        % Send message for fixation not achieved and cancel
-                        % trial
-                        %%%%%CHANGE ME%%%%%%
-                        %%%%%NOT NECESARY TO USE THIS TTL MESSAGE%%%%%%
-                        %%%%%YOU CAN USE ANY LINE YOU WANT 0-7%%%%%
-                        %%%%%OR USE SENDTTLBYTE 0-254%%%%%
-                        sendTTL(4 , obj.stimPk.props.usingDataPixx);
-                        obj.results(2) = obj.results(2)+1;
+                        % TTL 11 -> Fixation on selector not achieved
+                        sendTTL(11 , obj.stimPk.props.usingDataPixx);
                     else
+                        % Set start time
                         fixateTime = GetSecs + obj.answerFixTime;
+                        
                         while (GetSecs < fixateTime) && infix
-                            if obj.props.usingEyelink
-                                error=Eyelink('CheckRecording');
-                                if(error~=0)
-                                    break;
-                                end
+                            if obj.checkErrorRecording()
+                                break
                             end
                             
                             [mx, my] = obj.getEyeCoordinates();
                             
                             
-                            %Si se fija por primera vez se envia un mensaje Fixation start
-                            answerFix = obj.checkSelectors(mx,my)
-                            if  answerFix==obj.trialDirection(obj.trial)
-                                
-                                infix = 1;
-                                
-                            else
+                            answerFix = obj.checkSelectors(mx,my);
+                            
+                            % If the sight isn't on the selectors cancel
+                            % trial
+                            if  ~answerFix
+                                % TTL 10 -> Broken selector fixation
+                                sendTTL(10 , obj.stimPk.props.usingDataPixx);
                                 infix = 0;
-                                
                             end
                             
                         end
                         
-                        if infix
+                        % If the answer is correct
+                        if answerFix == obj.trialDirection(obj.trial)
+                            % TTL 8 -> Succesful trial
+                            sendTTL(8 , obj.stimPk.props.usingDataPixx);
                             Screen('FillOval', obj.window,[0 255 0], fixationOK);
                             
                         else
+                            
+                            % TTL 9 -> Wrong answer
+                            sendTTL(9 , obj.stimPk.props.usingDataPixx);
                             Screen('FillOval', obj.window,[255 0 0], fixationOK);
                             
                         end
