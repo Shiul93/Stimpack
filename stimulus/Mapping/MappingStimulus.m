@@ -24,7 +24,7 @@ classdef MappingStimulus < AbstractStimulus
         
         results@double = [0 0 0];
         testvar@double = 0;
-        axes
+        
         autoQ@logical = false;
         autoSQ@logical = false;
         

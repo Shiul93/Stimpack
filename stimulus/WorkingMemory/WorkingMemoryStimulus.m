@@ -11,7 +11,7 @@ classdef WorkingMemoryStimulus < AbstractStimulus
         
         results@double = [0 0 0];
         testvar@double = 0;
-        axes
+        
         
         vbl@double = 0;
         xoffset@double = 0;
@@ -196,7 +196,7 @@ classdef WorkingMemoryStimulus < AbstractStimulus
                     [mx, my] = obj.getEyeCoordinates();
                     
                     
-                    % First moment of fixation 
+                    % First moment of fixation
                     if obj.infixationWindow(mx,my) && ~infix
                         % TTL 1 -> Start of the trial
                         sendTTL(1 , obj.stimPk.props.usingDataPixx);
@@ -356,7 +356,7 @@ classdef WorkingMemoryStimulus < AbstractStimulus
                     % Generate random direction for the grating
                     obj.randdir = randi(2,1,1)-1;
                     
-                   
+                    
                     % Set starting time
                     startStimTime = GetSecs;
                     
@@ -410,7 +410,7 @@ classdef WorkingMemoryStimulus < AbstractStimulus
                     sendTTL(7 , obj.stimPk.props.usingDataPixx);
                     
                     % Time to achieve fixation on the desired selector
-                    fixateTime = GetSecs + obj.answerFixTime;
+                    fixateTime = GetSecs + obj.answerTime;
                     
                     % Fixed selector 0 -> none, -1 -> left, 1 -> right
                     selectorFix = 0;
@@ -427,11 +427,11 @@ classdef WorkingMemoryStimulus < AbstractStimulus
                         % Check if sight is in any of the selectors
                         selectorFix = obj.checkSelectors(mx,my);
                         
-                       
+                        
                     end
                     
                     if selectorFix
-                            infix = 1;
+                        infix = 1;
                     end
                     
                     disp('Fixated on');
@@ -470,6 +470,12 @@ classdef WorkingMemoryStimulus < AbstractStimulus
                             % TTL 8 -> Succesful trial
                             sendTTL(8 , obj.stimPk.props.usingDataPixx);
                             Screen('FillOval', obj.window,[0 255 0], fixationOK);
+                            if obj.props.usingLabJack
+                                
+                                timedTTL(obj.lJack,0,obj.props.rewardTime);
+                            else
+                                disp('Reward!');
+                            end
                             
                         else
                             
@@ -533,7 +539,7 @@ classdef WorkingMemoryStimulus < AbstractStimulus
                 if infix
                     Eyelink('Message', '!V TRIAL_VAR trialOutcome %s', 'succesful');
                 else
-                    Eyelink('Message', '!V TRIAL_VAR trialOutcome %s', 'recycled');
+                    Eyelink('Message', '!V TRIAL_VAR trialOutcome %s', 'failed');
                 end
                 % STEP 9
                 % Sending a 'TRIAL_RESULT' message to mark the end of a trial in

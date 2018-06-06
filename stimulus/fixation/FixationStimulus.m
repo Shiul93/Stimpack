@@ -8,6 +8,7 @@ classdef FixationStimulus < AbstractStimulus
         pathsave@char = '';
         taskname@char = 'FixationTask';
         results@double = [0 0 0];
+        resultsLabels= {'Fixated', 'Not Fixated', 'Broken'};
         testvar@double = 0;
         
         
@@ -88,7 +89,6 @@ classdef FixationStimulus < AbstractStimulus
             %EyelinkDoDriftCorrection(obj.el);
             
             stopTrial=false;
-            experimentControlGUI(obj);
             obj.externalControl = '';
             
             
@@ -109,8 +109,6 @@ classdef FixationStimulus < AbstractStimulus
                 obj.fixationWindow = [-obj.fixWinSize/2 -obj.fixWinSize/2 obj.fixWinSize/2 obj.fixWinSize/2];
                 obj.fixationWindow = CenterRect(obj.fixationWindow, obj.wRect);
                 
-                bar(reactionTimes);
-                drawnow
                 
                 
                 
@@ -165,7 +163,7 @@ classdef FixationStimulus < AbstractStimulus
                         end
                     end
                     
-                    [mx, my] = obj.getEyeCoordinates()
+                    [mx, my] = obj.getEyeCoordinates();
                     
                     
                     %Si se fija por primera vez se envia un mensaje Fixation start
@@ -295,10 +293,17 @@ classdef FixationStimulus < AbstractStimulus
                 % not parse any messages, events, or samples that exist in the data
                 % file after this message.
                 Eyelink('Message', 'TRIAL_RESULT 0');
+               
                 
                 % Inter trial pause used for keyboard or gui commands
                 timeEnd = GetSecs+obj.interTrialTime;
                 
+                txt = {'Fixated: ';'Not Fixated: ';'Broke Fixation: '}; % strings
+                resultTxt ={ num2str(obj.results(1)); num2str(obj.results(2)); num2str(obj.results(3))};
+
+                combinedtxt = strcat(txt,resultTxt);
+                pie(obj.axes,obj.results,combinedtxt);
+
                 while (obj.paused)||(GetSecs<timeEnd)
                     drawnow
                     fInc = 150;

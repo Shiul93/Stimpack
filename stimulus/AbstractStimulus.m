@@ -47,6 +47,8 @@ classdef (Abstract) AbstractStimulus < handle
         numTrials = Inf;
         
         fixationDot@double;
+        
+        axes;
 
         
         
