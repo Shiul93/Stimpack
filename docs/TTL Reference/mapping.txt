@@ -1,0 +1,11 @@
+TTL Reference for the Mapping Task
+TTL Byte    | Correspondence
+
+1           | Trial Start 
+2           | Fixation dot aparition
+3           | Fixation start
+4           | Broke fixation
+5           | Succesful trial
+6 - 9       | Q1 stimulus presentation
+10 - 26     | Q2 Stimulus presentation
+127         | External control mark

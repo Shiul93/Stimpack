@@ -21,8 +21,8 @@ function value = sendTTLByte( byte , usingDataPixx )
         Datapixx('RegWr');
         
     end
-    disp('Sending Byte')
-    disp(byte);
+    %disp('Sending Byte')
+    %disp(byte);
     
         
 

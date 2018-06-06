@@ -167,7 +167,7 @@ classdef WorkingMemoryStimulus < AbstractStimulus
                 Eyelink('Message', 'SYNCTIME');
                 
                 % TTL 1 -> Start of the trial
-                sendTTL(1 , obj.stimPk.props.usingDataPixx);
+                sendTTLByte(1 , obj.stimPk.props.usingDataPixx);
                 
                 
                 %Time to fixate
@@ -199,7 +199,7 @@ classdef WorkingMemoryStimulus < AbstractStimulus
                     % First moment of fixation
                     if obj.infixationWindow(mx,my) && ~infix
                         % TTL 1 -> Start of the trial
-                        sendTTL(1 , obj.stimPk.props.usingDataPixx);
+                        sendTTLByte(1 , obj.stimPk.props.usingDataPixx);
                         
                         Eyelink('Message', 'Fixation Start');
                         fixationTime = GetSecs;
@@ -219,7 +219,7 @@ classdef WorkingMemoryStimulus < AbstractStimulus
                     % trial
                     
                     % TTL 3 -> Fixation not achieved
-                    sendTTL(3 , obj.stimPk.props.usingDataPixx);
+                    sendTTLByte(3 , obj.stimPk.props.usingDataPixx);
                     
                     
                 else
@@ -234,7 +234,7 @@ classdef WorkingMemoryStimulus < AbstractStimulus
                         if ~obj.infixationWindow(mx,my) && infix
                             Eyelink('Message', 'Fixation broken');
                             % TTL 12 -> Fixation broken
-                            sendTTL(12 , obj.stimPk.props.usingDataPixx);
+                            sendTTLByte(12 , obj.stimPk.props.usingDataPixx);
                             infix = 0;
                             break;
                         end
@@ -244,7 +244,7 @@ classdef WorkingMemoryStimulus < AbstractStimulus
                     %indicating the first phase is completed
                     if infix
                         % TTL 2 -> Fixation achieved
-                        sendTTL(2 , obj.stimPk.props.usingDataPixx);
+                        sendTTLByte(2 , obj.stimPk.props.usingDataPixx);
                     else
                         % Show red dot indicating the failure
                         Screen('FillOval', obj.window,[255 0 0], fixationOK);
@@ -266,7 +266,7 @@ classdef WorkingMemoryStimulus < AbstractStimulus
                     startStimTime = GetSecs;
                     
                     % TTL 4 -> Show S1 stimulus
-                    sendTTL(4 , obj.stimPk.props.usingDataPixx);
+                    sendTTLByte(4 , obj.stimPk.props.usingDataPixx);
                     
                     % Stimulation loop
                     while ((GetSecs < startStimTime + obj.s1Time) && infix)
@@ -290,7 +290,7 @@ classdef WorkingMemoryStimulus < AbstractStimulus
                             
                             Eyelink('Message', 'Fixation broken');
                             % TTL 12 -> Fixation broken
-                            sendTTL(12 , obj.stimPk.props.usingDataPixx);
+                            sendTTLByte(12 , obj.stimPk.props.usingDataPixx);
                             infix = 0;
                         end
                     end
@@ -316,7 +316,7 @@ classdef WorkingMemoryStimulus < AbstractStimulus
                     obj.drawFixationPoint();
                     
                     % TTL 5 -> S1 disappears, enter delay phase
-                    sendTTL(12 , obj.stimPk.props.usingDataPixx);
+                    sendTTLByte(12 , obj.stimPk.props.usingDataPixx);
                     Screen('Flip',obj.window);
                     
                     
@@ -332,7 +332,7 @@ classdef WorkingMemoryStimulus < AbstractStimulus
                             
                             Eyelink('Message', 'Fixation broken');
                             % TTL 12 -> Fixation broken
-                            sendTTL(12 , obj.stimPk.props.usingDataPixx);
+                            sendTTLByte(12 , obj.stimPk.props.usingDataPixx);
                             infix = 0;
                         end
                     end
@@ -361,7 +361,7 @@ classdef WorkingMemoryStimulus < AbstractStimulus
                     startStimTime = GetSecs;
                     
                     % TTL 6 -> Show S2 stimulus
-                    sendTTL(6 , obj.stimPk.props.usingDataPixx);
+                    sendTTLByte(6 , obj.stimPk.props.usingDataPixx);
                     
                     % Stimulation loop
                     while ((GetSecs < startStimTime + obj.s2Time) && infix)
@@ -382,7 +382,7 @@ classdef WorkingMemoryStimulus < AbstractStimulus
                             
                             Eyelink('Message', 'Fixation broken');
                             % TTL 12 -> Fixation broken
-                            sendTTL(12 , obj.stimPk.props.usingDataPixx);
+                            sendTTLByte(12 , obj.stimPk.props.usingDataPixx);
                             infix = 0;
                         end
                     end
@@ -407,7 +407,7 @@ classdef WorkingMemoryStimulus < AbstractStimulus
                     obj.drawSelectors();
                     Screen('Flip',obj.window);
                     % TTL 7 -> Selectors appear
-                    sendTTL(7 , obj.stimPk.props.usingDataPixx);
+                    sendTTLByte(7 , obj.stimPk.props.usingDataPixx);
                     
                     % Time to achieve fixation on the desired selector
                     fixateTime = GetSecs + obj.answerTime;
@@ -440,7 +440,7 @@ classdef WorkingMemoryStimulus < AbstractStimulus
                     
                     if ~infix
                         % TTL 11 -> Fixation on selector not achieved
-                        sendTTL(11 , obj.stimPk.props.usingDataPixx);
+                        sendTTLByte(11 , obj.stimPk.props.usingDataPixx);
                     else
                         % Set start time
                         fixateTime = GetSecs + obj.answerFixTime;
@@ -459,7 +459,7 @@ classdef WorkingMemoryStimulus < AbstractStimulus
                             % trial
                             if  ~answerFix
                                 % TTL 10 -> Broken selector fixation
-                                sendTTL(10 , obj.stimPk.props.usingDataPixx);
+                                sendTTLByte(10 , obj.stimPk.props.usingDataPixx);
                                 infix = 0;
                             end
                             
@@ -468,7 +468,7 @@ classdef WorkingMemoryStimulus < AbstractStimulus
                         % If the answer is correct
                         if answerFix == obj.trialDirection(obj.trial)
                             % TTL 8 -> Succesful trial
-                            sendTTL(8 , obj.stimPk.props.usingDataPixx);
+                            sendTTLByte(8 , obj.stimPk.props.usingDataPixx);
                             Screen('FillOval', obj.window,[0 255 0], fixationOK);
                             if obj.props.usingLabJack
                                 
@@ -480,7 +480,7 @@ classdef WorkingMemoryStimulus < AbstractStimulus
                         else
                             
                             % TTL 9 -> Wrong answer
-                            sendTTL(9 , obj.stimPk.props.usingDataPixx);
+                            sendTTLByte(9 , obj.stimPk.props.usingDataPixx);
                             Screen('FillOval', obj.window,[255 0 0], fixationOK);
                             
                         end
@@ -585,7 +585,7 @@ classdef WorkingMemoryStimulus < AbstractStimulus
                                 end
                             case 'm'
                                 disp('Mark')
-                                sendTTL(7,obj.props.usingDataPixx);
+                                sendTTLByte(7,obj.props.usingDataPixx);
                                 
                                 
                         end
@@ -658,7 +658,7 @@ classdef WorkingMemoryStimulus < AbstractStimulus
             white=WhiteIndex(obj.props.stimScreen);
             black=BlackIndex(obj.props.stimScreen);
             obj.xGratingPos = obj.winWidth /2 -obj.visiblesize/2;
-            obj.yGratingPos  = obj.winHeight/4;
+            obj.yGratingPos  = obj.winHeight/10;
             
             % Round gray to integral number, to avoid roundoff artifacts with some
             % graphics cards:
@@ -696,7 +696,7 @@ classdef WorkingMemoryStimulus < AbstractStimulus
                     else
                         rotation = 0;
                     end
-                    drawArrow(obj.window, [1000 1000], rotation, [255 255 255 255], [100 100 100 100])
+                    drawArrow(obj.window, [obj.winWidth/2 obj.winHeight/3], rotation, [255 255 255 255], [100 100 100 100])
                     if (obj.randdir)
                         obj.xoffset = obj.xoffset - obj.shiftperframe;
                     else

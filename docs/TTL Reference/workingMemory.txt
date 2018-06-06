@@ -1,0 +1,17 @@
+TTL Reference for the Working Memory Task
+
+TTL Byte    | Correspondence
+
+1           | Trial Start / Fixation dot aparition
+2           | Fixation achieved
+3           | Fixation not achieved
+4           | S1 stimulus aparition
+5           | S1 stimulus disappears - delay time
+6           | S2 stimulus apparition
+7           | Selector apparition
+8           | Correct fixation on selector
+9           | Wrong fixation on selector
+10          | Broke fixation on selector
+11          | Didn't fixate on any selector
+12          | Broke fixation (phases 1-4)
+127         | External control mark

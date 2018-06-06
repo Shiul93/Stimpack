@@ -22,7 +22,7 @@ function varargout = stimGUI(varargin)
 
 % Edit the above text to modify the response to help stimGUI
 
-% Last Modified by GUIDE v2.5 31-May-2018 19:09:30
+% Last Modified by GUIDE v2.5 06-Jun-2018 19:16:21
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -67,6 +67,9 @@ set(handles.eyelinkCheckbox,'value',handles.props.usingEyelink);
 set(handles.datapixxCheckbox,'value',handles.props.usingDataPixx);
 set(handles.labjackCheckbox,'value',handles.props.usingLabJack);
 set(handles.monitorField,'String',handles.props.stimScreen);
+set(handles.realScreenWidthField,'String',handles.props.realWidth);
+set(handles.realScreenHeightField,'String',handles.props.realHeight);
+set(handles.screenDistanceField,'String',handles.props.screenDistance);
 
 % Update handles structure
 
@@ -196,3 +199,73 @@ function workingMemoryButton_Callback(hObject, eventdata, handles)
     close(stimGUI)
     workingMemoryGUI(handles.stimpack)
 
+
+
+function realScreenHeightField_Callback(hObject, eventdata, handles)
+% hObject    handle to realScreenHeightField (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of realScreenHeightField as text
+%        str2double(get(hObject,'String')) returns contents of realScreenHeightField as a double
+handles.stimpack.props.realHeight = str2double(get(hObject,'String'));
+
+
+% --- Executes during object creation, after setting all properties.
+function realScreenHeightField_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to realScreenHeightField (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function realScreenWidthField_Callback(hObject, eventdata, handles)
+% hObject    handle to realScreenWidthField (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of realScreenWidthField as text
+%        str2double(get(hObject,'String')) returns contents of realScreenWidthField as a double
+handles.stimpack.props.realWidth = str2double(get(hObject,'String'));
+
+% --- Executes during object creation, after setting all properties.
+function realScreenWidthField_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to realScreenWidthField (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function screenDistanceField_Callback(hObject, eventdata, handles)
+% hObject    handle to screenDistanceField (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of screenDistanceField as text
+%        str2double(get(hObject,'String')) returns contents of screenDistanceField as a double
+handles.stimpack.props.screenDistance = str2double(get(hObject,'String'));
+
+
+% --- Executes during object creation, after setting all properties.
+function screenDistanceField_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to screenDistanceField (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
