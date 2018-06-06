@@ -37,9 +37,12 @@ classdef (Abstract) AbstractStimulus < handle
         externalControl@char = '';
         
         fixWinSize@double = 50;
+        fixWinSizeDegrees@double = 2;
+
         fixationWindow;
         timeFix@double=0.5;
         dotSize@double = 10;
+        dotSizeDegrees@double = 1;
         dotColour@double = [255 255 255 255];
         backgroundColour@double = [0 0 0 255];
         interTrialTime@double = 1;

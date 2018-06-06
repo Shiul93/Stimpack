@@ -18,7 +18,7 @@ classdef stimProps < handle
         eyelinkIp@char = '10.1.1.1'
         
         %
-        stimScreen@double = 1
+        stimScreen@double = 1;
         
         %
         rewardTime@double = 100

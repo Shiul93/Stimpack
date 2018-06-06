@@ -106,9 +106,15 @@ classdef WorkingMemoryStimulus < AbstractStimulus
             
             %%TRIAL LOOP
             while (((obj.trial <= obj.numTrials) || obj.numTrials == 0) && stopTrial==false)
+                
+                obj.dotSize = angle2pix(obj.dotSizeDegrees, obj.stimPk.props.screenDistance, ...
+                    obj.stimPk.props.realWidth, obj.winWidth);
+                obj.fixWinSize = angle2pix(obj.fixWinSizeDegrees, obj.stimPk.props.screenDistance, ...
+                    obj.stimPk.props.realWidth, obj.winWidth);
+                
                 % Stimulus dot
                 % Size array ex:[-10   -10    10    10]
-                obj.fixationDot = [-obj.dotSize/2 -obj.dotSize/2 obj.dotSize/2 obj.dotSize/2];
+                obj.fixationDot =round( [-obj.dotSize/2 -obj.dotSize/2 obj.dotSize/2 obj.dotSize/2]);
                 
                 % Position array ex:[1270  710  1290  730]
                 obj.fixationDot = CenterRect(obj.fixationDot, obj.wRect);
@@ -118,7 +124,7 @@ classdef WorkingMemoryStimulus < AbstractStimulus
                 fixationOK = CenterRect(fixationOK, obj.wRect);
                 
                 % Set the fixation window on the center of the screen
-                obj.fixationWindow = [-obj.fixWinSize/2 -obj.fixWinSize/2 obj.fixWinSize/2 obj.fixWinSize/2];
+                obj.fixationWindow =round( [-obj.fixWinSize/2 -obj.fixWinSize/2 obj.fixWinSize/2 obj.fixWinSize/2]);
                 obj.leftSelectionWindow = [(obj.winWidth/4)  - obj.fixWinSize/2 ...
                     (obj.winHeight/2) - obj.fixWinSize/2 ...
                     (obj.winWidth/4)  + obj.fixWinSize/2 ...

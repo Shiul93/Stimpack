@@ -77,9 +77,14 @@ classdef TemplateStimulus < AbstractStimulus
             
             %% TRIAL LOOP
             while (((obj.trial <= obj.numTrials) || obj.numTrials == 0) && stopTrial==false)
+                obj.dotSize = angle2pix(obj.dotSizeDegrees, obj.stimPk.props.screenDistance, ...
+                    obj.stimPk.props.realWidth, obj.winWidth);
+                obj.fixWinSize = angle2pix(obj.fixWinSizeDegrees, obj.stimPk.props.screenDistance, ...
+                    obj.stimPk.props.realWidth, obj.winWidth);
+                
                 % Stimulus dot
                 % Size array ex:[-10   -10    10    10]
-                obj.fixationDot = [-obj.dotSize -obj.dotSize obj.dotSize obj.dotSize];
+                obj.fixationDot =round( [-obj.dotSize -obj.dotSize obj.dotSize obj.dotSize]);
                 % Position array ex:[1270  710  1290  730]
                 obj.fixationDot = CenterRect(obj.fixationDot, obj.wRect);
 
@@ -88,7 +93,7 @@ classdef TemplateStimulus < AbstractStimulus
                 fixationOK = CenterRect(fixationOK, obj.wRect);
 
                 % Set the fixation window on the center of the screen
-                obj.fixationWindow = [-obj.fixWinSize -obj.fixWinSize obj.fixWinSize obj.fixWinSize];
+                obj.fixationWindow = round([-obj.fixWinSize -obj.fixWinSize obj.fixWinSize obj.fixWinSize]);
                 obj.fixationWindow = CenterRect(obj.fixationWindow, obj.wRect);
             
                 

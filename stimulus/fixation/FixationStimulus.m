@@ -45,33 +45,13 @@ classdef FixationStimulus < AbstractStimulus
         end
         
         
-        function controlUI(obj)
-            %create an annotation object
-            figure;
-            
-            ellipse_position = [0.4 0.6 0.1 0.2];
-            ellipse_h = annotation('ellipse',ellipse_position,...
-                'facecolor', [1 0 0]);
-            
-            %create an editable textbox object
-            edit_box_h = uicontrol('style','edit',...
-                'units', 'normalized',...
-                'position', [0.3 0.4 0.4 0.1]);
-            but_h = uicontrol('style', 'pushbutton',...
-                'string', 'Update Color',...
-                'units', 'normalized',...
-                'position', [0.3 0 0.4 0.2],...
-                'callback', {@obj.dispShit,edit_box_h, ellipse_h });
-        end
+       
         
         function runTrials(obj)
             
             disp('runTrials');
             trial = 1;
-            index = 1;
             
-            firstRun = 1;
-            infix = 0;
             keyTicks = 0;
             keyHold = 1;
             obj.results = [0 0 0];
@@ -97,7 +77,12 @@ classdef FixationStimulus < AbstractStimulus
                 
                 % Stimulus dot
                 % Size array ex:[-10   -10    10    10]
-                obj.fixationDot = [-obj.dotSize/2 -obj.dotSize/2 obj.dotSize/2 obj.dotSize/2];
+                
+                obj.dotSize = angle2pix(obj.dotSizeDegrees, obj.stimPk.props.screenDistance, ...
+                    obj.stimPk.props.realWidth, obj.winWidth);
+                obj.fixWinSize = angle2pix(obj.fixWinSizeDegrees, obj.stimPk.props.screenDistance, ...
+                    obj.stimPk.props.realWidth, obj.winWidth);
+                obj.fixationDot = round([-obj.dotSize/2 -obj.dotSize/2 obj.dotSize/2 obj.dotSize/2]);
                 % Position array ex:[1270  710  1290  730]
                 obj.fixationDot = CenterRect(obj.fixationDot, obj.wRect);
                 
@@ -106,7 +91,7 @@ classdef FixationStimulus < AbstractStimulus
                 fixationOK = CenterRect(fixationOK, obj.wRect);
                 
                 % Set the fixation window on the center of the screen
-                obj.fixationWindow = [-obj.fixWinSize/2 -obj.fixWinSize/2 obj.fixWinSize/2 obj.fixWinSize/2];
+                obj.fixationWindow = round([-obj.fixWinSize/2 -obj.fixWinSize/2 obj.fixWinSize/2 obj.fixWinSize/2]);
                 obj.fixationWindow = CenterRect(obj.fixationWindow, obj.wRect);
                 
                 

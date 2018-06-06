@@ -68,8 +68,8 @@ set(handles.interTrialTimeField,'String',handles.stimulus.interTrialTime*1000);
 set(handles.edfField,'String',handles.stimulus.edfFile);
 
 % Fixation options
-set(handles.dotSizeField,'String',handles.stimulus.dotSize);
-set(handles.windowSizeField,'String',handles.stimulus.fixWinSize);
+set(handles.dotSizeField,'String',handles.stimulus.dotSizeDegrees);
+set(handles.windowSizeField,'String',handles.stimulus.fixWinSizeDegrees);
 set(handles.stimulusColorField,'String', num2str(handles.stimulus.dotColour));
 set(handles.bgColorField,'String', num2str(handles.stimulus.backgroundColour));
 
@@ -152,7 +152,7 @@ end
 function dotSizeField_Callback(hObject, eventdata, handles)
 disp('fixationTime Callback');
 disp(hObject.String)
-handles.stimulus.dotSize = str2double(hObject.String)
+handles.stimulus.dotSizeDegrees = str2double(hObject.String);
 
 
 % --- Executes during object creation, after setting all properties.
@@ -166,7 +166,7 @@ end
 function windowSizeField_Callback(hObject, eventdata, handles)
 disp('fixationTime Callback');
 disp(hObject.String)
-handles.stimulus.fixWinSize = str2double(hObject.String)
+handles.stimulus.fixWinSize = str2double(hObject.String);
 
 % --- Executes during object creation, after setting all properties.
 function windowSizeField_CreateFcn(hObject, eventdata, handles)
