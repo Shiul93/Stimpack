@@ -140,7 +140,7 @@ classdef FixationStimulus < AbstractStimulus
                 Eyelink('Message', 'SYNCTIME');
                 
                 % TTL 1 -> Start of the trial
-                sendTTL(1 , obj.stimPk.props.usingDataPixx);
+                sendTTLByte(1 , obj.stimPk.props.usingDataPixx);
                 
                 
                 %Time to fixate
@@ -183,7 +183,7 @@ classdef FixationStimulus < AbstractStimulus
                 if ~infix
                     % Send message for fixation not achieved and cancel
                     % trial
-                    sendTTL(4 , obj.stimPk.props.usingDataPixx);
+                    sendTTLByte(4 , obj.stimPk.props.usingDataPixx);
                     obj.results(2) = obj.results(2)+1;
                 else
                     disp('Fixate loop');
@@ -203,7 +203,7 @@ classdef FixationStimulus < AbstractStimulus
                             %Screen('Flip',obj.window);
                             %disp('broke fix');
                             Eyelink('Message', 'Fixation broke or grace time ended');
-                            sendTTL(2 , obj.stimPk.props.usingDataPixx);
+                            sendTTLByte(2 , obj.stimPk.props.usingDataPixx);
                             obj.results(3) = obj.results(3)+1;
                             infix = 0;
                             break;
@@ -224,7 +224,7 @@ classdef FixationStimulus < AbstractStimulus
                     else
                         disp('Reward!');
                     end
-                    sendTTL(3, obj.stimPk.props.usingDataPixx);
+                    sendTTLByte(3, obj.stimPk.props.usingDataPixx);
                     obj.results(1) = obj.results(1)+1;
                     
                     Eyelink('Message', 'Fixed Success :-)');

@@ -1,0 +1,8 @@
+TTL Reference for the Fixation Task
+TTL Byte    | Correspondence
+
+1           | Trial Start 
+2           | Fixation broke
+3           | Fixation success
+4           | Fixation not achieved
+127         | External control mark
