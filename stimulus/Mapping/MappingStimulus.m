@@ -377,7 +377,7 @@ classdef MappingStimulus < AbstractStimulus
                                 disp('Reward')
                                 if obj.props.usingLabJack
                                     if keyTicks > keyHold
-                                        timedTTL(lJack,0,500);
+                                        timedTTL(obj.lJack,0,500);
                                         disp('reward!! (0.5 s)');
                                         keyHold = keyTicks + fInc;
                                     end

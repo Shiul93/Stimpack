@@ -23,8 +23,8 @@ classdef stimProps < handle
         %
         rewardTime@double = 100
         
-        realWidth@double = 52;
-        realHeight@double = 31;
+        realWidth@double = 40;
+        realHeight@double = 30;
         screenDistance@double = 45;
         
         

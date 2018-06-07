@@ -148,9 +148,9 @@ classdef (Abstract) AbstractStimulus < handle
             % for lower resolutions you might have to play around with these values
             % a little. If you would like to draw larger targets on lower res
             % settings please edit PsychEyelinkDispatchCallback.m and see comments
-            % in the EyelinkDrawCalibrationTarget function
+            % in the EyelinkDrawCalibraqqtionTarget function
             obj.el.calibrationtargetsize= 1;
-            obj.el.calibrationtargetwidth=0.5;
+            obj.el.calibrationtargetwidth=0;
             % call this function for changes to the calibration structure to take
             % affect
             EyelinkUpdateDefaults(obj.el);
@@ -211,7 +211,7 @@ classdef (Abstract) AbstractStimulus < handle
 
             Eyelink('message', 'DISPLAY_COORDS %ld %ld %ld %ld', 0, 0, obj.winWidth-1, obj.winHeight-1);
             % set calibration type.
-            Eyelink('command', 'calibration_type = HV9');
+            Eyelink('command', 'calibration_type = HV5');
             Eyelink('command', 'generate_default_targets = YES');
             % set parser (conservative saccade thresholds)
             Eyelink('command', 'saccade_velocity_threshold = 35');

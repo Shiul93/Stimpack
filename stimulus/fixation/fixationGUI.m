@@ -166,7 +166,7 @@ end
 function windowSizeField_Callback(hObject, eventdata, handles)
 disp('fixationTime Callback');
 disp(hObject.String)
-handles.stimulus.fixWinSize = str2double(hObject.String);
+handles.stimulus.fixWinSizeDegrees = str2double(hObject.String);
 
 % --- Executes during object creation, after setting all properties.
 function windowSizeField_CreateFcn(hObject, eventdata, handles)
@@ -282,7 +282,7 @@ function sendMarkButton_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 handles.stimulus.externalControl = 'm';
-
+timedTTL(handles.stimulus.lJack,0,100);
 
 % --- Executes on button press in rewardButton.
 function rewardButton_Callback(hObject, eventdata, handles)
@@ -290,6 +290,7 @@ function rewardButton_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 handles.stimulus.externalControl = 'r';
+
 
 
 % --- Executes on button press in pauseButton.

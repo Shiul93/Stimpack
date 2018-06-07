@@ -80,8 +80,10 @@ classdef FixationStimulus < AbstractStimulus
                 
                 obj.dotSize = angle2pix(obj.dotSizeDegrees, obj.stimPk.props.screenDistance, ...
                     obj.stimPk.props.realWidth, obj.winWidth);
+                
                 obj.fixWinSize = angle2pix(obj.fixWinSizeDegrees, obj.stimPk.props.screenDistance, ...
                     obj.stimPk.props.realWidth, obj.winWidth);
+                
                 obj.fixationDot = round([-obj.dotSize/2 -obj.dotSize/2 obj.dotSize/2 obj.dotSize/2]);
                 % Position array ex:[1270  710  1290  730]
                 obj.fixationDot = CenterRect(obj.fixationDot, obj.wRect);
@@ -93,7 +95,6 @@ classdef FixationStimulus < AbstractStimulus
                 % Set the fixation window on the center of the screen
                 obj.fixationWindow = round([-obj.fixWinSize/2 -obj.fixWinSize/2 obj.fixWinSize/2 obj.fixWinSize/2]);
                 obj.fixationWindow = CenterRect(obj.fixationWindow, obj.wRect);
-                
                 
                 
                 
@@ -149,7 +150,10 @@ classdef FixationStimulus < AbstractStimulus
                     end
                     
                     [mx, my] = obj.getEyeCoordinates();
-                    
+                    %obj.drawFixationPoint();
+
+                    %Screen('DrawDots', obj.window, [mx my], 5, [255 0 0 255], [], 2);
+                    %Screen('Flip',obj.window);
                     
                     %Si se fija por primera vez se envia un mensaje Fixation start
                     if obj.infixationWindow(mx,my) && ~infix
@@ -181,7 +185,10 @@ classdef FixationStimulus < AbstractStimulus
                         end
                         
                         [mx, my] = obj.getEyeCoordinates();
-                        
+                        %obj.drawFixationPoint();
+
+                        %Screen('DrawDots', obj.window, [mx my], 5, [255 0 0 255], [], 2);
+                        %Screen('Flip',obj.window);
                         if ~obj.infixationWindow(mx,my) && infix && mx && my
                             
                             %Screen('DrawTexture', obj.window, sad);
@@ -204,7 +211,8 @@ classdef FixationStimulus < AbstractStimulus
                     Screen('Flip',obj.window);
                     %disp('fixed success!!');
                     if obj.props.usingLabJack
-                        
+                        disp('Reward LJack!');
+
                         timedTTL(obj.lJack,0,obj.props.rewardTime);
                     else
                         disp('Reward!');
