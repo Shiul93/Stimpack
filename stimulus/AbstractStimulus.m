@@ -52,6 +52,7 @@ classdef (Abstract) AbstractStimulus < handle
         fixationDot@double;
         
         axes;
+        running = false;
 
         
         
@@ -260,17 +261,18 @@ classdef (Abstract) AbstractStimulus < handle
         end
         
         function runStimulus(obj)
-
-            obj.configureEDF()
-            obj.setupDataPixxLabJack()
-            obj.setupScreen()
-            obj.configureEyelink()
-            obj.connectToEyelink()
-            obj.configureTracker()
-            obj.checkDummy()
-            obj.runTrials()
-            obj.endExperiment()
-            obj.cleanup()
+            obj.running = true;
+            obj.configureEDF();
+            obj.setupDataPixxLabJack();
+            obj.setupScreen();
+            obj.configureEyelink();
+            obj.connectToEyelink();
+            obj.configureTracker();
+            obj.checkDummy();
+            obj.runTrials();
+            obj.endExperiment();
+            obj.cleanup();
+            obj.running = false;
                 
         end
         

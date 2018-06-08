@@ -97,9 +97,12 @@ varargout{1} = handles.output;
 
 % --- Executes on button press in runButton.
 function runButton_Callback(hObject, eventdata, handles)
-disp('Run Fixation');
+if ~handles.stimulus.running
 
-handles.stimulus.runStimulus();
+    disp('Run Task');
+
+    handles.stimulus.runStimulus();
+end
 
 % --- Executes on button press in cancelButton.
 function cancelButton_Callback(hObject, eventdata, handles)

@@ -15,15 +15,22 @@ classdef WorkingMemoryStimulus < AbstractStimulus
         
         vbl@double = 0;
         xoffset@double = 0;
-        cyclespersecond@double = 1;
-        p@double = 32;
+        
+        temporalFreq@double = 1;
+        spatialFreq@double = 32;
+        
         gratingtex
         ifi@double = 0
         shiftperframe@double = 0;
         visiblesize@double = 256;
         waitframes@double = 1;
+        
+        gratPosDegrees@double = [ 0 0 ]
         xGratingPos@double = 0;
         yGratingPos@double  = 0;
+        gratingRotation = 0;
+        
+        
         trialDirection;
         s1Time@double = 0.1;
         gratingDelay@double = 0.1;
@@ -79,20 +86,12 @@ classdef WorkingMemoryStimulus < AbstractStimulus
             
             directions = cat(1,ones(obj.numTrials/2,1),ones(obj.numTrials/2,1)*-1);
             obj.trialDirection = directions(randperm(length(directions)));
-            disp(obj.trialDirection)
             
             keyTicks = 0;
             keyHold = 1;
             obj.results = [0 0 0];
             obj.externalControl = '';
-            %%%%%CHANGE ME%%%%%%
-            %%%%%DECLARE OWN EXPERIMENT RESULTS%%%%%%
-            if (obj.numTrials < Inf)
-                reactionTimes = ones(1, obj.numTrials)*(-1);
-            else
-                reactionTimes = [];
-            end
-            
+
             
             
             % repeat until we have 3 sucessful trials
@@ -107,36 +106,11 @@ classdef WorkingMemoryStimulus < AbstractStimulus
             %%TRIAL LOOP
             while (((obj.trial <= obj.numTrials) || obj.numTrials == 0) && stopTrial==false)
                 
-                obj.dotSize = angle2pix(obj.dotSizeDegrees, obj.stimPk.props.screenDistance, ...
-                    obj.stimPk.props.realWidth, obj.winWidth);
-                obj.fixWinSize = angle2pix(obj.fixWinSizeDegrees, obj.stimPk.props.screenDistance, ...
-                    obj.stimPk.props.realWidth, obj.winWidth);
-                
-                % Stimulus dot
-                % Size array ex:[-10   -10    10    10]
-                obj.fixationDot =round( [-obj.dotSize/2 -obj.dotSize/2 obj.dotSize/2 obj.dotSize/2]);
-                
-                % Position array ex:[1270  710  1290  730]
-                obj.fixationDot = CenterRect(obj.fixationDot, obj.wRect);
+                obj.calculatePositions();
                 
                 % Green dot when succesful trial
                 fixationOK = [-obj.dotSize/2-2 -obj.dotSize/2-2 obj.dotSize/2+2 obj.dotSize/2+2];
                 fixationOK = CenterRect(fixationOK, obj.wRect);
-                
-                % Set the fixation window on the center of the screen
-                obj.fixationWindow =round( [-obj.fixWinSize/2 -obj.fixWinSize/2 obj.fixWinSize/2 obj.fixWinSize/2]);
-                obj.leftSelectionWindow = [(obj.winWidth/4)  - obj.fixWinSize/2 ...
-                    (obj.winHeight/2) - obj.fixWinSize/2 ...
-                    (obj.winWidth/4)  + obj.fixWinSize/2 ...
-                    (obj.winHeight/2) + obj.fixWinSize/2];
-                
-                obj.rightSelectionWindow = [(obj.winWidth*3/4) - obj.fixWinSize/2 ...
-                    (obj.winHeight/2) - obj.fixWinSize/2 ...
-                    (obj.winWidth*3/4)+ obj.fixWinSize/2 ...
-                    (obj.winHeight/2) + obj.fixWinSize/2];
-                
-                obj.fixationWindow = CenterRect(obj.fixationWindow, obj.wRect);
-                
                 
                 drawnow
                 
@@ -177,16 +151,14 @@ classdef WorkingMemoryStimulus < AbstractStimulus
                 
                 
                 %Time to fixate
-                fixateTime = GetSecs + obj.waitingFixationTime; % + 200/1000;
-                graceTime = GetSecs; % + 200/1000;
+                fixateTime = GetSecs + obj.waitingFixationTime; 
+
                 
                 % Time of the fixation start
                 fixationTime = -1;
                 
                 infix = 0;
-                
-                startTime = GetSecs;
-                
+                                
                 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
                 %%FIRST TASK STEP: ACHIEVE FIXATION
                 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -659,6 +631,40 @@ classdef WorkingMemoryStimulus < AbstractStimulus
             end
         end
         
+        function calculatePositions(obj)
+            obj.dotSize = angle2pix(obj.dotSizeDegrees, obj.stimPk.props.screenDistance, ...
+                obj.stimPk.props.realWidth, obj.winWidth);
+            obj.fixWinSize = angle2pix(obj.fixWinSizeDegrees, obj.stimPk.props.screenDistance, ...
+                obj.stimPk.props.realWidth, obj.winWidth);
+            
+            obj.xGratingPos = angle2pix(obj.gratPosDegrees(1), obj.stimPk.props.screenDistance, ...
+                obj.stimPk.props.realWidth, obj.winWidth);
+            
+            obj.yGratingPos = angle2pix(obj.gratPosDegrees(2), obj.stimPk.props.screenDistance, ...
+                obj.stimPk.props.realWidth, obj.winWidth);
+            % Stimulus dot
+            % Size array ex:[-10   -10    10    10]
+            obj.fixationDot =round( [-obj.dotSize/2 -obj.dotSize/2 obj.dotSize/2 obj.dotSize/2]);
+            
+            % Position array ex:[1270  710  1290  730]
+            obj.fixationDot = CenterRect(obj.fixationDot, obj.wRect);
+            
+            
+            
+            % Set the fixation window on the center of the screen
+            obj.fixationWindow =round( [-obj.fixWinSize/2 -obj.fixWinSize/2 obj.fixWinSize/2 obj.fixWinSize/2]);
+            obj.leftSelectionWindow = [(obj.winWidth/4)  - obj.fixWinSize/2 ...
+                (obj.winHeight/2) - obj.fixWinSize/2 ...
+                (obj.winWidth/4)  + obj.fixWinSize/2 ...
+                (obj.winHeight/2) + obj.fixWinSize/2];
+            
+            obj.rightSelectionWindow = [(obj.winWidth*3/4) - obj.fixWinSize/2 ...
+                (obj.winHeight/2) - obj.fixWinSize/2 ...
+                (obj.winWidth*3/4)+ obj.fixWinSize/2 ...
+                (obj.winHeight/2) + obj.fixWinSize/2];
+            
+            obj.fixationWindow = CenterRect(obj.fixationWindow, obj.wRect);
+        end
         
         function prepareGrating(obj)
             white=WhiteIndex(obj.props.stimScreen);
@@ -675,7 +681,7 @@ classdef WorkingMemoryStimulus < AbstractStimulus
             inc=white-gray;
             
             % Calculate parameters of the grating:
-            f=1/obj.p;
+            f=1/obj.spatialFreq;
             fr=f*2*pi;    % frequency in radians.
             x=meshgrid(0:obj.visiblesize-1, 1);
             grating=gray + inc*cos(fr*x);
@@ -684,7 +690,7 @@ classdef WorkingMemoryStimulus < AbstractStimulus
             obj.ifi=Screen('GetFlipInterval', obj.window);
             obj.waitframes = 1;
             waitduration = obj.waitframes * obj.ifi;
-            obj.shiftperframe= obj.cyclespersecond * obj.p * waitduration;
+            obj.shiftperframe= obj.temporalFreq * obj.spatialFreq * waitduration;
             obj.vbl=Screen('Flip', obj.window);
             obj.xoffset = 0;
             
@@ -726,10 +732,10 @@ classdef WorkingMemoryStimulus < AbstractStimulus
             % Define shifted srcRect that cuts out the properly shifted rectangular
             % area from the texture:
             srcRect=[obj.xoffset 0 obj.xoffset + obj.visiblesize obj.visiblesize];
-            dstRect=[obj.xGratingPos obj.yGratingPos obj.xGratingPos+obj.visiblesize obj.yGratingPos+obj.visiblesize];
+            dstRect=[obj.xGratingPos+obj.winWidth/2-obj.visiblesize/2 obj.yGratingPos+obj.winHeight/2-obj.visiblesize/2 obj.xGratingPos+obj.winWidth/2+obj.visiblesize/2 obj.yGratingPos+obj.winHeight/2+obj.visiblesize/2];
             % Draw grating texture: Only show subarea 'srcRect', center texture in
             % the onscreen window automatically:
-            Screen('DrawTexture', obj.window, obj.gratingtex, srcRect, dstRect);
+            Screen('DrawTexture', obj.window, obj.gratingtex, srcRect, dstRect,obj.gratingRotation);
             
             % Flip 'waitframes' monitor refresh intervals after last redraw.
             obj.vbl = Screen('Flip', obj.window, obj.vbl + (obj.waitframes - 0.5) * obj.ifi);

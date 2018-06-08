@@ -22,7 +22,7 @@ function varargout = workingMemoryGUI(varargin)
 
 % Edit the above text to modify the response to help workingMemoryGUI
 
-% Last Modified by GUIDE v2.5 01-Jun-2018 19:44:22
+% Last Modified by GUIDE v2.5 07-Jun-2018 19:42:48
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -80,6 +80,10 @@ set(handles.s2TimeField,'String',handles.stimulus.s2Time*1000);
 set(handles.answerTimeField,'String', num2str(handles.stimulus.answerTime*1000));
 set(handles.answerFixTimeField,'String', num2str(handles.stimulus.answerFixTime*1000));
 
+set(handles.spatFreqField,'String',handles.stimulus.spatialFreq);
+set(handles.tempFreqField,'String',handles.stimulus.temporalFreq);
+set(handles.gratPosField,'String', num2str(handles.stimulus.gratPosDegrees));
+set(handles.gratOriField,'String', handles.stimulus.gratingRotation);
 
 handles.stimulus.axes = handles.axes;
 
@@ -106,10 +110,13 @@ varargout{1} = handles.output;
 
 % --- Executes on button press in runButton.
 function runButton_Callback(hObject, eventdata, handles)
-disp('Run Fixation');
-set(handles.trialNumberField, 'enable', 'off')
 
-handles.stimulus.runStimulus();
+if ~handles.stimulus.running
+    disp('Run Fixation');
+    set(handles.trialNumberField, 'enable', 'off')
+
+    handles.stimulus.runStimulus();
+end
 
 % --- Executes on button press in cancelButton.
 function cancelButton_Callback(hObject, eventdata, handles)
@@ -469,3 +476,99 @@ end
     
     
     
+
+
+
+function spatFreqField_Callback(hObject, eventdata, handles)
+% hObject    handle to spatFreqField (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of spatFreqField as text
+%        str2double(get(hObject,'String')) returns contents of spatFreqField as a double
+handles.stimulus.spatialFreq = str2double(hObject.String);
+
+
+% --- Executes during object creation, after setting all properties.
+function spatFreqField_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to spatFreqField (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function tempFreqField_Callback(hObject, eventdata, handles)
+% hObject    handle to tempFreqField (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of tempFreqField as text
+%        str2double(get(hObject,'String')) returns contents of tempFreqField as a double
+handles.stimulus.temporalFreq = str2double(hObject.String);
+
+
+% --- Executes during object creation, after setting all properties.
+function tempFreqField_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to tempFreqField (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function gratPosField_Callback(hObject, eventdata, handles)
+% hObject    handle to gratPosField (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of gratPosField as text
+%        str2double(get(hObject,'String')) returns contents of gratPosField as a double
+handles.stimulus.gratPosDegrees = str2double(strsplit(hObject.String));
+
+
+% --- Executes during object creation, after setting all properties.
+function gratPosField_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to gratPosField (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function gratOriField_Callback(hObject, eventdata, handles)
+% hObject    handle to gratOriField (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of gratOriField as text
+%        str2double(get(hObject,'String')) returns contents of gratOriField as a double
+handles.stimulus.gratingRotation = str2double(hObject.String);
+
+
+% --- Executes during object creation, after setting all properties.
+function gratOriField_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to gratOriField (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
