@@ -15,18 +15,21 @@ classdef MappingStimulus < AbstractStimulus
         
         stimColor@double = [255 255 255 255];
         
-        stimQuadrant = 1;
-        stimSubQuadrant = 0;
+        stimQuadrant@double = 1;
+        stimSubQuadrant@double = 0;
         
         edfFile@char = '';
         pathsave@char = '';
         taskname@char = 'MappingTask';
-        
-        results@double = [0 0 0];
+        % [Fixed Broken NotFixated]
+        results@double = zeros(20,3);
         testvar@double = 0;
         
+        index@double = 0;
         autoQ@logical = false;
         autoSQ@logical = false;
+        
+        repeatAborts@logical = false;
         
         
         
@@ -70,7 +73,7 @@ classdef MappingStimulus < AbstractStimulus
             disp('runTrials');
             keyTicks = 0;
             keyHold = 1;
-            obj.results = [0 0 0];
+            obj.results =zeros(20,3);
             obj.externalControl = '';
             if (obj.numTrials < Inf)
                 reactionTimes = ones(1, obj.numTrials)*(-1);
@@ -90,8 +93,24 @@ classdef MappingStimulus < AbstractStimulus
             
             
             obj.trial = 1;
+            currentQ = 1;
             while (((obj.trial <= obj.numTrials) || obj.numTrials == 0) && stopTrial==false)
+                success = false;
+                lostFix = false;
                 
+                
+                if obj.autoQ
+                    currentQ = mod(obj.index,4)+1;
+                elseif obj.autoSQ
+                    currentQ = obj.computeR2Quadrant(obj.stimQuadrant,mod(obj.index,4)+1)+4;
+                else
+                    if obj.stimSubQuadrant
+                        currentQ = obj.computeR2Quadrant(obj.stimQuadrant,obj.stimSubQuadrant)+4
+                    else
+                        currentQ = obj.stimQuadrant
+                    end
+                end
+                    
                 obj.dotSize = angle2pix(obj.dotSizeDegrees, obj.stimPk.props.screenDistance, ...
                     obj.stimPk.props.realWidth, obj.winWidth);
                 obj.fixWinSize = angle2pix(obj.fixWinSizeDegrees, obj.stimPk.props.screenDistance, ...
@@ -113,7 +132,6 @@ classdef MappingStimulus < AbstractStimulus
                 % TTL 1 -> Start of the trial
                 sendTTLByte(1 , obj.stimPk.props.usingDataPixx);
                 
-                plot(obj.axes, rand(1,obj.trial));
                 
                 drawnow
                 
@@ -200,7 +218,6 @@ classdef MappingStimulus < AbstractStimulus
                     % trial
                     % TTL 6 -> Fixation not achieved
                     sendTTLByte(6 , obj.stimPk.props.usingDataPixx);
-                    obj.results(2) = obj.results(2)+1;
                 else
                     
                     disp('Fixate loop');
@@ -219,10 +236,10 @@ classdef MappingStimulus < AbstractStimulus
                             %Screen('DrawTexture', obj.window, sad);
                             %Screen('Flip',obj.window);
                             %disp('broke fix');
-                            Eyelink('Message', 'Fixation broken');
                             % TTL 6 -> Fixation broken
                             sendTTLByte(5 , obj.stimPk.props.usingDataPixx);
-                            obj.results(3) = obj.results(3)+1;
+                            Eyelink('Message', 'Fixation broken');
+                            lostFix = true;
                             infix = 0;
                             break;
                         end
@@ -237,14 +254,13 @@ classdef MappingStimulus < AbstractStimulus
                     % Draw the image buffer in the screen
                     %obj.drawStimulus([obj.stimCoords(1),obj.stimCoords(2)],obj.stimSize);
                     obj.drawStimulus();
+                    Screen('Flip',obj.window);
+
                     % Send correspondent TTL for the shown stimulus
                     obj.sendStimulusTTL();
-                    Screen('Flip',obj.window);
                     % Stimulation loop
                     startStimTime = GetSecs;
-                    a = obj.stimulationTime
                     while ((GetSecs < startStimTime + obj.stimulationTime) && infix)
-                        time = GetSecs <( startStimTime  + obj.stimulationTime);
                         if obj.props.usingEyelink
                             error=Eyelink('CheckRecording');
                             if(error~=0)
@@ -256,10 +272,13 @@ classdef MappingStimulus < AbstractStimulus
                         
                         if ~obj.infixationWindow(mx,my) && infix
                             
-                            Eyelink('Message', 'Fixation broken');
                             % TTL 5 -> Fixation broken
                             sendTTLByte(5 , obj.stimPk.props.usingDataPixx);
+                            Eyelink('Message', 'Fixation broken');
+
                             disp('broke fix');
+                            lostFix = true;
+
                             infix = 0;
                         end
                     end
@@ -272,14 +291,13 @@ classdef MappingStimulus < AbstractStimulus
                         sendTTLByte(4, obj.stimPk.props.usingDataPixx);
                         Screen('FillOval', obj.window,[0 255 0], fixationOK);
                         
-                        
+                        success = true;
                         if obj.props.usingLabJack
                             
                             timedTTL(obj.lJack,0,obj.props.rewardTime);
                         else
                             disp('Reward!');
                         end
-                        obj.results(1) = obj.results(1)+1;
                         
                         Eyelink('Message', 'Trial completed succesfully');
                         
@@ -295,9 +313,20 @@ classdef MappingStimulus < AbstractStimulus
                 end
                 
                 
-                
-                
-                
+               
+                if((~success)&& obj.repeatAborts)
+                    obj.index = obj.index;
+                else
+                    obj.index = obj.index+1;
+                end
+                if success
+                    obj.results(currentQ,1) = obj.results(currentQ,1)+1;
+                elseif lostFix
+                    obj.results(currentQ,2) = obj.results(currentQ,2)+1;
+                else
+                    obj.results(currentQ,3) = obj.results(currentQ,3)+1;
+                end
+
                 
                 
                 
@@ -350,50 +379,27 @@ classdef MappingStimulus < AbstractStimulus
                 % file after this message.
                 Eyelink('Message', 'TRIAL_RESULT 0');
                 
-                % Inter trial pause used for keyboard or gui commands
-                timeEnd = GetSecs+obj.interTrialTime;
+                txt = {'Fixated: ';'Broke Fixation: ';'Not Fixated: '}; % strings
+
+                disp(obj.results)
+                resultTxt ={ num2str(obj.results(currentQ,1)); num2str(obj.results(currentQ,2)); num2str(obj.results(currentQ,3))};
+
+                combinedtxt = strcat(txt,resultTxt);
+                pie(obj.axes,obj.results(currentQ,:),combinedtxt);
+                title(sprintf('Quadrant: %d',currentQ));
                 
-                while (obj.paused)||(GetSecs<timeEnd)
+                % Inter trial pause used for keyboard or gui commands
+                timeEnd = GetSecs+obj.interTrialTime+randi([-obj.interTrialVariation*1000 obj.interTrialVariation*1000],1,1)/1000;
+                while ((obj.paused)||(GetSecs<timeEnd))&&(~stopTrial)
                     drawnow
                     fInc = 150;
                     keyTicks = keyTicks + 1;
                     
-                    command = obj.externalControl;
-                    
-                    if ~strcmp( command,'' )
-                        disp('External control:');
-                        disp(command);
-                        switch command
-                            case 'p'
-                                disp('Paused change')
-                                obj.paused=~obj.paused;
-                                
-                            case 'q'
-                                disp('End Experiment')
-                                stopTrial=true;
-                                obj.paused=false;
-                                
-                            case 'r'
-                                disp('Reward')
-                                if obj.props.usingLabJack
-                                    if keyTicks > keyHold
-                                        timedTTL(obj.lJack,0,500);
-                                        disp('reward!! (0.5 s)');
-                                        keyHold = keyTicks + fInc;
-                                    end
-                                end
-                            case 'm'
-                                disp('Mark')
-                                sendTTLByte(7,obj.props.usingDataPixx);
-                                
-                                
-                        end
-                        obj.externalControl = '';
-                        
-                    end
+                    stopTrial = obj.checkExternalCommand();
                     
                     
-                    [keyIsDown, ~, keyCode] = KbCheck(-1); %#ok<*ASGLU>
+                    
+                    [keyIsDown, ~, keyCode] = KbCheck(-1); 
                     if keyIsDown == 1
                         pressKey = KbName(keyCode);
                         switch pressKey
@@ -476,8 +482,7 @@ classdef MappingStimulus < AbstractStimulus
             x2 = 0;
             y1 = 0;
             y2 = 0;
-            disp('trial')
-            disp(obj.trial)
+            
             
             if obj.stimSubQuadrant
                 [x1, y1, x2, y2 ]= obj.computeQuadrantCoords(2,...
@@ -487,17 +492,17 @@ classdef MappingStimulus < AbstractStimulus
             end
             
             if obj.autoQ
-                [x1, y1, x2, y2 ]= obj.computeQuadrantCoords(1, mod(obj.trial,4)+1) ;
+                [x1, y1, x2, y2 ]= obj.computeQuadrantCoords(1, mod(obj.index,4)+1) ;
             elseif obj.autoSQ
                 [x1, y1, x2, y2 ]= obj.computeQuadrantCoords(2,...
-                    obj.computeR2Quadrant(obj.stimQuadrant,mod(obj.trial,4)+1)) ;
+                    obj.computeR2Quadrant(obj.stimQuadrant,mod(obj.index,4)+1)) ;
             end
             stimulus = [x1 y1 x2 y2];
             Screen('FillRect', obj.window, obj.stimColor, stimulus);
             
         end
         
-        function q = computeR2Quadrant(obj, q , sq)
+        function q = computeR2Quadrant(obj , q , sq)
             q = ( 4 * q) + sq -4;
         end
         
@@ -622,10 +627,10 @@ classdef MappingStimulus < AbstractStimulus
             
             if obj.autoSQ
                 
-                sendTTLByte(obj.computeR2Quadrant(obj.stimQuadrant,mod(obj.trial,4)+1),...
+                sendTTLByte(obj.computeR2Quadrant(obj.stimQuadrant,mod(obj.index,4)+1),...
                     obj.props.usingDataPixx);
             elseif obj.autoQ
-                sendTTLByte(mod(obj.trial,4),...
+                sendTTLByte(mod(obj.index,4),...
                     obj.props.usingDataPixx)
                 
             elseif obj.stimSubQuadrant

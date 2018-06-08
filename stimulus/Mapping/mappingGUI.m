@@ -22,7 +22,7 @@ function varargout = mappingGUI(varargin)
 
 % Edit the above text to modify the response to help mappingGUI
 
-% Last Modified by GUIDE v2.5 31-May-2018 17:08:06
+% Last Modified by GUIDE v2.5 08-Jun-2018 19:56:55
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -65,6 +65,8 @@ set(handles.abortTimeField,'String',handles.stimulus.waitingFixationTime*1000);
 set(handles.rewardTimeField,'String',handles.stimpack.props.rewardTime);
 set(handles.trialNumberField,'String',handles.stimulus.numTrials);
 set(handles.interTrialTimeField,'String',handles.stimulus.interTrialTime*1000);
+set(handles.interTrialVariabilityField,'String',handles.stimulus.interTrialVariation*1000);
+
 set(handles.edfField,'String',handles.stimulus.edfFile);
 
 % Fixation options
@@ -81,6 +83,7 @@ handles.currentSQbutton =  handles.stimulus.stimSubQuadrant;
 handles.qArray =[ handles.q1button handles.q2button handles.q3button handles.q4button];
 handles.sqArray =[ handles.sq1button handles.sq2button handles.sq3button handles.sq4button];
 set(handles.qArray(handles.currentQbutton),'ForegroundColor','red');
+
 if (handles.currentSQbutton > 0)
     set(handles.qArray(handles.currentSQbutton),'ForegroundColor','red');
 end
@@ -93,6 +96,10 @@ if (handles.stimulus.autoSQ)
     set(handles.autoSQbutton,'ForegroundColor','red');
 end
 % set(handles.Field,'String',handles.stimulus);
+
+if (handles.stimulus.repeatAborts > 0)
+    set(handles.repeatQButton,'ForegroundColor','red');
+end
 
 handles.stimulus.axes = handles.axes;
 
@@ -553,3 +560,40 @@ function stopButton_Callback(hObject, eventdata, handles)
 set(handles.pauseButton,'string','PAUSE')
 
 handles.stimulus.externalControl = 'q';
+
+
+
+function interTrialVariabilityField_Callback(hObject, eventdata, handles)
+% hObject    handle to interTrialVariabilityField (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of interTrialVariabilityField as text
+%        str2double(get(hObject,'String')) returns contents of interTrialVariabilityField as a double
+handles.stimulus.interTrialVariation = str2double(get(hObject,'String'))/1000;
+
+% --- Executes during object creation, after setting all properties.
+function interTrialVariabilityField_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to interTrialVariabilityField (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+% --- Executes on button press in repeatQButton.
+function repeatQButton_Callback(hObject, eventdata, handles)
+% hObject    handle to repeatQButton (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+if (handles.stimulus.repeatAborts > 0)
+    handles.stimulus.repeatAborts = false;
+    set(handles.repeatQButton,'ForegroundColor','black');
+else
+    handles.stimulus.repeatAborts = true;
+    set(handles.repeatQButton,'ForegroundColor','red');
+end

@@ -305,46 +305,15 @@ classdef TemplateStimulus < AbstractStimulus
                     
                     %% INTER TRIAL PAUSE --- MANAGE KEYBOARD AND CONTROL GUI EVENTS
                     % Inter trial pause used for keyboard or gui commands
-                    timeEnd = GetSecs+obj.interTrialTime;
+                    timeEnd = GetSecs+obj.interTrialTime+randi([-obj.interTrialVariation obj.interTrialVariation],1,1);
                     
                     while (obj.paused)||(GetSecs<timeEnd)
                         drawnow
                         fInc = 150;
                         keyTicks = keyTicks + 1;
  
-                        command = obj.externalControl;
-                        
-                        if ~strcmp( command,'' )
-                            disp('External control:');
-                            disp(command);
-                            switch command
-                                case 'p'
-                                    disp('Paused change')
-                                    obj.paused=~obj.paused;
-                                  
-                                case 'q'
-                                    disp('End Experiment')
-                                    stopTrial=true;
-                                    obj.paused=false;
-                                    
-                                case 'r'
-                                    disp('Reward')
-                                    if obj.props.usingLabJack
-                                        if keyTicks > keyHold
-                                            timedTTL(lJack,0,500);
-                                            disp('reward!! (0.5 s)');
-                                            keyHold = keyTicks + fInc;
-                                        end
-                                    end
-                                case 'm'
-                                    disp('Mark')
-                                    sendTTL(7,obj.props.usingDataPixx);
-                                    
-                        
-                            end
-                            obj.externalControl = '';
+                        stopTrial = obj.checkExternalCommand();
 
-                        end
                         
                         
                         [keyIsDown, ~, keyCode] = KbCheck(-1); %#ok<*ASGLU>

@@ -46,6 +46,8 @@ classdef (Abstract) AbstractStimulus < handle
         dotColour@double = [255 255 255 255];
         backgroundColour@double = [0 0 0 255];
         interTrialTime@double = 1;
+        interTrialVariation@double = 0.2;
+
         waitingFixationTime@double = 0.5;
         numTrials = Inf;
         
@@ -379,6 +381,42 @@ classdef (Abstract) AbstractStimulus < handle
                 error = 0;
             end
                   
+        end
+        
+        function stopTrial = checkExternalCommand(obj)
+            command = obj.externalControl;
+                    stopTrial = false;
+                    if ~strcmp( command,'' )
+                        disp('External control:');
+                        disp(command);
+                        switch command
+                            case 'p'
+                                disp('Paused change')
+                                obj.paused=~obj.paused;
+                                
+                            case 'q'
+                                disp('End Experiment')
+                                stopTrial=true;
+                                obj.paused=false;
+                                
+                            case 'r'
+                                disp('Reward')
+                                if obj.props.usingLabJack
+                                    if keyTicks > keyHold
+                                        timedTTL(obj.lJack,0,500);
+                                        disp('reward!! (0.5 s)');
+                                       
+                                    end
+                                end
+                            case 'm'
+                                disp('Mark')
+                                sendTTLByte(127,obj.props.usingDataPixx);
+                                
+                                
+                        end
+                        obj.externalControl = '';
+                        
+                    end
         end
         
         

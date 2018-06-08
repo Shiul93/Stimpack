@@ -50,7 +50,7 @@ classdef FixationStimulus < AbstractStimulus
         function runTrials(obj)
             
             disp('runTrials');
-            trial = 1;
+            obj.trial = 1;
             
             keyTicks = 0;
             keyHold = 1;
@@ -73,7 +73,7 @@ classdef FixationStimulus < AbstractStimulus
             
             
             
-            while (((trial <= obj.numTrials) || obj.numTrials == 0) && stopTrial==false)
+            while (((obj.trial <= obj.numTrials) || obj.numTrials == 0) && stopTrial==false)
                 
                 % Stimulus dot
                 % Size array ex:[-10   -10    10    10]
@@ -108,7 +108,7 @@ classdef FixationStimulus < AbstractStimulus
                 % will not parse any messages, events, or samples, that exist in
                 % the data file prior to this message.
                 
-                obj.dataViewerTrialInfo(trial);
+                obj.dataViewerTrialInfo(obj.trial);
                 
                 % STEP 7.3
                 % start recording eye position (preceded by a short pause so that
@@ -166,7 +166,7 @@ classdef FixationStimulus < AbstractStimulus
                     end
                 end
                 if (infix)
-                    reactionTimes(trial) = GetSecs -startTime;
+                    reactionTimes(obj.trial) = GetSecs -startTime;
                 end
                 
                 if ~infix
@@ -221,7 +221,7 @@ classdef FixationStimulus < AbstractStimulus
                     obj.results(1) = obj.results(1)+1;
                     
                     Eyelink('Message', 'Fixed Success :-)');
-                    sprintf('Trial completed. Trial %d of %d\n', trial, obj.numTrials);
+                    sprintf('Trial completed. Trial %d of %d\n', obj.trial, obj.numTrials);
                     timeNow=GetSecs;
                     %res(trial,1)=trial;
                     %res(trial,2)=timeNow-graceTime;
@@ -272,7 +272,7 @@ classdef FixationStimulus < AbstractStimulus
                 % See "Protocol for EyeLink Data to Viewer Integration-> Trial
                 % Message Commands" section of the EyeLink Data Viewer User Manual
                 WaitSecs(0.001);
-                Eyelink('Message', '!V TRIAL_VAR index %d', trial);
+                Eyelink('Message', '!V TRIAL_VAR index %d', obj.trial);
                 %Eyelink('Message', '!V TRIAL_VAR imgfile %s', 'imgfile.jpg');
                 if infix
                     Eyelink('Message', '!V TRIAL_VAR trialOutcome %s', 'succesful');
@@ -289,7 +289,7 @@ classdef FixationStimulus < AbstractStimulus
                
                 
                 % Inter trial pause used for keyboard or gui commands
-                timeEnd = GetSecs+obj.interTrialTime;
+                timeEnd = GetSecs+obj.interTrialTime+randi([-obj.interTrialVariation obj.interTrialVariation],1,1);
                 
                 txt = {'Fixated: ';'Not Fixated: ';'Broke Fixation: '}; % strings
                 resultTxt ={ num2str(obj.results(1)); num2str(obj.results(2)); num2str(obj.results(3))};
@@ -302,38 +302,8 @@ classdef FixationStimulus < AbstractStimulus
                     fInc = 150;
                     keyTicks = keyTicks + 1;
                     
-                    command = obj.externalControl;
-                    
-                    if ~strcmp( command,'' )
-                        disp('External control:');
-                        disp(command);
-                        switch command
-                            case 'p'
-                                disp('Paused change')
-                                obj.paused=~obj.paused;
-                                
-                            case 'q'
-                                disp('End Experiment')
-                                stopTrial=true;
-                                obj.paused=false;
-                                
-                            case 'r'
-                                disp('Reward')
-                                if obj.props.usingLabJack
-                                    if keyTicks > keyHold
-                                        timedTTL(obj.lJack,0,obj.props.rewardTime);
-                                        keyHold = keyTicks + fInc;
-                                    end
-                                end
-                            case 'm'
-                                disp('Mark')
-                                sendTTLByte(127,obj.props.usingDataPixx);
-                                
-                                
-                        end
-                        obj.externalControl = '';
-                        
-                    end
+                    stopTrial = obj.checkExternalCommand();
+
                     
                     
                     [keyIsDown, ~, keyCode] = KbCheck(-1); %#ok<*ASGLU>
@@ -361,7 +331,7 @@ classdef FixationStimulus < AbstractStimulus
                 
                 
                 
-                trial = trial+1;
+                obj.trial = obj.trial+1;
                 
             end
         end
