@@ -295,7 +295,11 @@ classdef MappingStimulus < AbstractStimulus
                         if obj.props.usingLabJack
                             
                             timedTTL(obj.lJack,0,obj.props.rewardTime);
+                            % TTL 126 -> Reward
+                            sendTTLByte(126 , obj.stimPk.props.usingDataPixx);
                         else
+                            % TTL 126 -> Reward
+                            sendTTLByte(126 , obj.stimPk.props.usingDataPixx);
                             disp('Reward!');
                         end
                         
@@ -413,6 +417,8 @@ classdef MappingStimulus < AbstractStimulus
                             case 'space'
                                 if keyTicks > keyHold
                                     timedTTL(obj.lJack,0,500);
+                                    % TTL 126 -> Reward
+                                    sendTTLByte(126 , obj.stimPk.props.usingDataPixx);
                                     disp('reward!! (0.5 s)');
                                     keyHold = keyTicks + fInc;
                                 end

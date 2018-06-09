@@ -214,6 +214,8 @@ classdef FixationStimulus < AbstractStimulus
                         disp('Reward LJack!');
 
                         timedTTL(obj.lJack,0,obj.props.rewardTime);
+                        % TTL 126 -> Reward
+                        sendTTLByte(126 , obj.stimPk.props.usingDataPixx);
                     else
                         disp('Reward!');
                     end
@@ -297,7 +299,7 @@ classdef FixationStimulus < AbstractStimulus
                 combinedtxt = strcat(txt,resultTxt);
                 pie(obj.axes,obj.results,combinedtxt);
 
-                while (obj.paused)||(GetSecs<timeEnd)
+                while ((obj.paused)||(GetSecs<timeEnd))&&(~stopTrial)
                     drawnow
                     fInc = 150;
                     keyTicks = keyTicks + 1;
@@ -320,6 +322,8 @@ classdef FixationStimulus < AbstractStimulus
                             case 'space'
                                 if keyTicks > keyHold
                                     timedTTL(obj.lJack,0,obj.props.rewardTime);
+                                    % TTL 126 -> Reward
+                                    sendTTLByte(126 , obj.stimPk.props.usingDataPixx);
                                     disp('reward!! (0.5 s)');
                                     keyHold = keyTicks + fInc;
                                 end

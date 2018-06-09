@@ -226,8 +226,12 @@ classdef TemplateStimulus < AbstractStimulus
                         if obj.props.usingLabJack
                             
                             timedTTL(obj.lJack,0,obj.props.rewardTime);
+                            % TTL 126 -> Reward
+                            sendTTLByte(126 , obj.stimPk.props.usingDataPixx);
                         else
                             disp('Reward!');
+                            % TTL 126 -> Reward
+                            sendTTLByte(126 , obj.stimPk.props.usingDataPixx);
                         end
                         %%%%%CHANGE ME%%%%%%
                         %%%%%NOT NECESARY TO USE THIS TTL MESSAGE%%%%%%
@@ -307,7 +311,7 @@ classdef TemplateStimulus < AbstractStimulus
                     % Inter trial pause used for keyboard or gui commands
                     timeEnd = GetSecs+obj.interTrialTime+randi([-obj.interTrialVariation*1000 obj.interTrialVariation*1000],1,1)/1000;
                     
-                    while (obj.paused)||(GetSecs<timeEnd)
+                while ((obj.paused)||(GetSecs<timeEnd))&&(~stopTrial)
                         drawnow
                         fInc = 150;
                         keyTicks = keyTicks + 1;
@@ -330,6 +334,8 @@ classdef TemplateStimulus < AbstractStimulus
                                 case 'space'
                                     if keyTicks > keyHold
                                         timedTTL(obj. lJack,0,500);
+                                        % TTL 126 -> Reward
+                                        sendTTLByte(126 , obj.stimPk.props.usingDataPixx);
                                         disp('reward!! (0.5 s)');
                                         keyHold = keyTicks + fInc;
                                     end

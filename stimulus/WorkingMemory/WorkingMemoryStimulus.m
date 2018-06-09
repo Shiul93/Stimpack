@@ -9,7 +9,7 @@ classdef WorkingMemoryStimulus < AbstractStimulus
         pathsave@char = '';
         taskname@char = 'WorkingMemoryTask'; %%%%%CHANGE ME%%%%%%
         
-        results@double = [0 0 0];
+        results@double = zeros(2,8);
         testvar@double = 0;
         
         
@@ -89,7 +89,7 @@ classdef WorkingMemoryStimulus < AbstractStimulus
             
             keyTicks = 0;
             keyHold = 1;
-            obj.results = [0 0 0];
+            obj.results = zeros(2,8);
             obj.externalControl = '';
 
             
@@ -105,6 +105,11 @@ classdef WorkingMemoryStimulus < AbstractStimulus
             
             %%TRIAL LOOP
             while (((obj.trial <= obj.numTrials) || obj.numTrials == 0) && stopTrial==false)
+                
+                success = false;
+                lostFix = false;
+                notFix = false;
+                notFixSelector = false;
                 
                 obj.calculatePositions();
                 
@@ -198,6 +203,7 @@ classdef WorkingMemoryStimulus < AbstractStimulus
                     
                     % TTL 3 -> Fixation not achieved
                     sendTTLByte(3 , obj.stimPk.props.usingDataPixx);
+                    notFix = true;
                     
                     
                 else
@@ -210,9 +216,11 @@ classdef WorkingMemoryStimulus < AbstractStimulus
                         [mx, my] = obj.getEyeCoordinates();
                         
                         if ~obj.infixationWindow(mx,my) && infix
-                            Eyelink('Message', 'Fixation broken');
                             % TTL 12 -> Fixation broken
                             sendTTLByte(12 , obj.stimPk.props.usingDataPixx);
+                            Eyelink('Message', 'Fixation broken');
+                            lostFix = true;
+
                             infix = 0;
                             break;
                         end
@@ -266,9 +274,12 @@ classdef WorkingMemoryStimulus < AbstractStimulus
                         
                         if ~obj.infixationWindow(mx,my) && infix
                             
-                            Eyelink('Message', 'Fixation broken');
                             % TTL 12 -> Fixation broken
                             sendTTLByte(12 , obj.stimPk.props.usingDataPixx);
+                            Eyelink('Message', 'Fixation broken');
+
+                            lostFix = true;
+
                             infix = 0;
                         end
                     end
@@ -308,9 +319,11 @@ classdef WorkingMemoryStimulus < AbstractStimulus
                         
                         if ~obj.infixationWindow(mx,my) && infix
                             
-                            Eyelink('Message', 'Fixation broken');
                             % TTL 12 -> Fixation broken
                             sendTTLByte(12 , obj.stimPk.props.usingDataPixx);
+                            Eyelink('Message', 'Fixation broken');
+
+                            lostFix = true;
                             infix = 0;
                         end
                     end
@@ -358,9 +371,11 @@ classdef WorkingMemoryStimulus < AbstractStimulus
                         
                         if ~obj.infixationWindow(mx,my) && infix
                             
-                            Eyelink('Message', 'Fixation broken');
                             % TTL 12 -> Fixation broken
                             sendTTLByte(12 , obj.stimPk.props.usingDataPixx);
+                            Eyelink('Message', 'Fixation broken');
+
+                            lostFix = true;
                             infix = 0;
                         end
                     end
@@ -410,6 +425,8 @@ classdef WorkingMemoryStimulus < AbstractStimulus
                     
                     if selectorFix
                         infix = 1;
+                    else
+                        notFixSelector = true;
                     end
                     
                     disp('Fixated on');
@@ -438,6 +455,9 @@ classdef WorkingMemoryStimulus < AbstractStimulus
                             if  ~answerFix
                                 % TTL 10 -> Broken selector fixation
                                 sendTTLByte(10 , obj.stimPk.props.usingDataPixx);
+                                Eyelink('Message', 'Fixation on selector broken');
+
+                                lostFix = true;
                                 infix = 0;
                             end
                             
@@ -451,10 +471,14 @@ classdef WorkingMemoryStimulus < AbstractStimulus
                             if obj.props.usingLabJack
                                 
                                 timedTTL(obj.lJack,0,obj.props.rewardTime);
+                                % TTL 126 -> Reward
+                                sendTTLByte(126 , obj.stimPk.props.usingDataPixx);
                             else
                                 disp('Reward!');
+                                % TTL 126 -> Reward
+                                sendTTLByte(126 , obj.stimPk.props.usingDataPixx);
                             end
-                            
+                            success = true;
                         else
                             
                             % TTL 9 -> Wrong answer
@@ -530,9 +554,60 @@ classdef WorkingMemoryStimulus < AbstractStimulus
                 
                 %%INTER TRIAL PAUSE --- MANAGE KEYBOARD AND CONTROL GUI EVENTS
                 % Inter trial pause used for keyboard or gui commands
+                
+                
+                % In the results table 
+                if obj.showArrow
+                    resultIndex = 2;
+                else
+                    resultIndex = 1;
+                end
+                
+                % Trialdirection is -1 for left and 1 for right
+                % In the result table the index for right starts in 1 and
+                % for left in 4.
+                % In matlab 0 is considered false value, any other number
+                % is true so we add one to consider left as false and right as true.
+                if (obj.trialDirection(obj.trial)+1)
+                    directionIndex = 1;
+                else
+                    directionIndex = 4;
+                end
+                
+                % Correct
+                if success
+                    obj.results(resultIndex,directionIndex) = obj.results(resultIndex,directionIndex)+1;
+                % Not Fixated on fixation point   
+                elseif notFix
+                    obj.results(resultIndex,7) = obj.results(resultIndex,7)+1;
+                % Broke Fixation
+                elseif lostFix
+                    obj.results(resultIndex,8) = obj.results(resultIndex,8)+1;
+                
+                else
+                    % Incorrect selection
+                    if ~notFixSelector
+                        obj.results(resultIndex,directionIndex+1) = obj.results(resultIndex,directionIndex+1)+1;
+                    % Not fixed on selector
+                    else
+                        obj.results(resultIndex,directionIndex+2) = obj.results(resultIndex,directionIndex+2)+1;
+                    end
+                end
+                c = {'Right','Left'};
+
+                graphArray = [obj.results(resultIndex,1) obj.results(resultIndex,2) obj.results(resultIndex,3); ...
+                    obj.results(resultIndex,4) obj.results(resultIndex,5) obj.results(resultIndex,6)];
+                bg = bar(graphArray);
+                l={'Correct','Incorrect','NoFix'};
+                legend(bg,l);
+
+                set(gca,'xticklabel',c)
+ 
+                  
+                
                 timeEnd = GetSecs+obj.interTrialTime+randi([-obj.interTrialVariation*1000 obj.interTrialVariation*1000],1,1)/1000;
                 
-                while (obj.paused)||(GetSecs<timeEnd)
+                while ((obj.paused)||(GetSecs<timeEnd))&&(~stopTrial)
                     drawnow
                     fInc = 150;
                     keyTicks = keyTicks + 1;
@@ -555,6 +630,8 @@ classdef WorkingMemoryStimulus < AbstractStimulus
                             case 'space'
                                 if keyTicks > keyHold
                                     timedTTL(obj. lJack,0,500);
+                                    % TTL 126 -> Reward
+                                    sendTTLByte(126 , obj.stimPk.props.usingDataPixx);
                                     disp('reward!! (0.5 s)');
                                     keyHold = keyTicks + fInc;
                                 end

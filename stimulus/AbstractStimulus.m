@@ -404,6 +404,8 @@ classdef (Abstract) AbstractStimulus < handle
                                 if obj.props.usingLabJack
                                     if keyTicks > keyHold
                                         timedTTL(obj.lJack,0,500);
+                                        % TTL 126 -> Reward
+                                        sendTTLByte(126 , obj.stimPk.props.usingDataPixx);
                                         disp('reward!! (0.5 s)');
                                        
                                     end
