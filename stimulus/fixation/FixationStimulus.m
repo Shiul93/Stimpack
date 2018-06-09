@@ -289,7 +289,7 @@ classdef FixationStimulus < AbstractStimulus
                
                 
                 % Inter trial pause used for keyboard or gui commands
-                timeEnd = GetSecs+obj.interTrialTime+randi([-obj.interTrialVariation obj.interTrialVariation],1,1);
+                timeEnd = GetSecs+obj.interTrialTime+randi([-obj.interTrialVariation*1000 obj.interTrialVariation*1000],1,1)/1000;
                 
                 txt = {'Fixated: ';'Not Fixated: ';'Broke Fixation: '}; % strings
                 resultTxt ={ num2str(obj.results(1)); num2str(obj.results(2)); num2str(obj.results(3))};

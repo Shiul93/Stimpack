@@ -305,7 +305,7 @@ classdef TemplateStimulus < AbstractStimulus
                     
                     %% INTER TRIAL PAUSE --- MANAGE KEYBOARD AND CONTROL GUI EVENTS
                     % Inter trial pause used for keyboard or gui commands
-                    timeEnd = GetSecs+obj.interTrialTime+randi([-obj.interTrialVariation obj.interTrialVariation],1,1);
+                    timeEnd = GetSecs+obj.interTrialTime+randi([-obj.interTrialVariation*1000 obj.interTrialVariation*1000],1,1)/1000;
                     
                     while (obj.paused)||(GetSecs<timeEnd)
                         drawnow
