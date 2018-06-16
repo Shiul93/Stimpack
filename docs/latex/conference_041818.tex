@@ -7,282 +7,384 @@
 \usepackage{graphicx}
 \usepackage{textcomp}
 \usepackage{xcolor}
+\usepackage[spanish]{babel}
+\usepackage[utf8]{inputenc}
+
 \def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
     T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
 \begin{document}
 
-\title{Paper Title*\\
-{\footnotesize \textsuperscript{*}Note: Sub-titles are not captured in Xplore and
-should not be used}
-\thanks{Identify applicable funding agency here. If none, delete this.}
+\title{Desarrollo de un software de estimulación visual para estudios electrofisiológicos en primate
+despierto\\
 }
 
-\author{\IEEEauthorblockN{1\textsuperscript{st} Given Name Surname}
-\IEEEauthorblockA{\textit{dept. name of organization (of Aff.)} \\
-\textit{name of organization (of Aff.)}\\
-City, Country \\
-email address}
-\and
-\IEEEauthorblockN{2\textsuperscript{nd} Given Name Surname}
-\IEEEauthorblockA{\textit{dept. name of organization (of Aff.)} \\
-\textit{name of organization (of Aff.)}\\
-City, Country \\
-email address}
-\and
-\IEEEauthorblockN{3\textsuperscript{rd} Given Name Surname}
-\IEEEauthorblockA{\textit{dept. name of organization (of Aff.)} \\
-\textit{name of organization (of Aff.)}\\
-City, Country \\
-email address}
-\and
-\IEEEauthorblockN{4\textsuperscript{th} Given Name Surname}
-\IEEEauthorblockA{\textit{dept. name of organization (of Aff.)} \\
-\textit{name of organization (of Aff.)}\\
-City, Country \\
-email address}
-\and
-\IEEEauthorblockN{5\textsuperscript{th} Given Name Surname}
-\IEEEauthorblockA{\textit{dept. name of organization (of Aff.)} \\
-\textit{name of organization (of Aff.)}\\
-City, Country \\
-email address}
-\and
-\IEEEauthorblockN{6\textsuperscript{th} Given Name Surname}
-\IEEEauthorblockA{\textit{dept. name of organization (of Aff.)} \\
-\textit{name of organization (of Aff.)}\\
-City, Country \\
-email address}
+\author{\IEEEauthorblockN{1\textsuperscript{st} Luis Felipe Llamas Luaces}
+\IEEEauthorblockA{\textit{Grupo de Neurociencia y Control Motor¿?¿?¿?¿} \\
+\textit{Universidade da Coruña}\\
+A Coruña, España \\
+l.f.llamas@udc.es}
+%\and
+
 }
 
 \maketitle
 
 \begin{abstract}
-This document is a model and instructions for \LaTeX.
-This and the IEEEtran.cls file define the components of your paper [title, text, heads, etc.]. *CRITICAL: Do Not Use Symbols, Special Characters, Footnotes, 
-or Math in Paper Title or Abstract.
-\end{abstract}
+%La neurociencia, especialmente los estudios neurofisiológicos y psicofísicos, se han visto fuertemente impulsados por el avance de las ciencias de la computación. Este impulso viene dado por la aparición de nuevas herramientas de adquisición y procesado de datos que permitieron 
+El desarrollo de las ciencias de la computación ha impulsado mucho la investigación en neurociencia, especialmente en lo que se refiere a estudios electrofisiológicos y de psicofísica. Esto es debido a la capacidad de presentar estímulos y capturar datos de respuesta con cada vez mayor precisión temporal. Desde los años 70 han aparecido múltiples herramientas que permiten a los investigadores desarrollar experimentos que involucran tanto sistemas de presentación de estímulos como de captura de datos neuronales. En este artículo se presenta Stimpack, una nueva herramienta basada en la librería Psychtoolbox para el entorno Matlab, que permita a los investigadores el desarrollo de estudios electrofisiológicos en primates de una manera simple y con un entorno gráfico amigable y control de los experimentos a tiempo real, siendo además fácilmente modificable para añadir nuevas características a la misma. 
 
+\end{abstract}
 \begin{IEEEkeywords}
-component, formatting, style, styling, insert
+Psicofísica, Neurofisiología, Neurociencia, Vision, Software
 \end{IEEEkeywords}
 
-\section{Introduction}
-This document is a model and instructions for \LaTeX.
-Please observe the conference page limits. 
+\section{Introducción}
+\subsection{Contexto}
+%El grupo NeuroCom de la universidad de la Coruña lleva a cabo una linea de investigación
+%sobre estudios electrofisiológicos en primates.
+%El sistema actual para realizar estos estudios consta de una pantalla en la que se muestran
+%distintos patrones al animal, una cámara de seguimiento ocular, un sistema de recompensa
+%que suministra al sujeto una recompensa en forma de zumo cuando realiza la tarea
+%correctamente y un sistema de encefalograma que se conecta a los electrodos implantados en
+%el cerebro del animal.
+%Para facilitar el desarrollo de los estudios, se desarrollará una herramienta software que
+%permita realizar diferentes tareas de estimulación visual de forma paramétrica , que sincronice
+%las diferentes partes del sistema para obtener mediciones precisas que contengan marcadores
+%sobre los eventos ocurridos en el desarrollo del experimento y que cuente con una interfaz
+%amigable evitando en la medida de lo posible el uso de la linea de comandos.
 
-\section{Ease of Use}
+El grupo de Neurociencia y Control Motor de la universidad de la Coruña (NeuroCom) 
+\subsection{Objetivos del proyecto}
 
-\subsection{Maintaining the Integrity of the Specifications}
+Para el desarrollo del estudio mencionado en la sección anterior, es necesario que los investigadores cuenten con una herramienta acorde a sus necesidades. Actualmente los estudios se llevan a cabo empleando la herramienta Opticka, potente, pero al mismo tiempo complicada de usar, con una interfaz de usuario bastante densa, y difícil de modificar.  es por ello la necesidad del desarrollo de Stimpack.
+Los el objetivo de este proyecto es producir una herramienta que:
 
-The IEEEtran class file is used to format your paper and style the text. All margins, 
-column widths, line spaces, and text fonts are prescribed; please do not 
-alter them. You may note peculiarities. For example, the head margin
-measures proportionately more than is customary. This measurement 
-and others are deliberate, using specifications that anticipate your paper 
-as one part of the entire proceedings, and not as an independent document. 
-Please do not revise any of the current designations.
-
-\section{Prepare Your Paper Before Styling}
-Before you begin to format your paper, first write and save the content as a 
-separate text file. Complete all content and organizational editing before 
-formatting. Please note sections \ref{AA}--\ref{SCM} below for more information on 
-proofreading, spelling and grammar.
-
-Keep your text and graphic files separate until after the text has been 
-formatted and styled. Do not number text heads---{\LaTeX} will do that 
-for you.
-
-\subsection{Abbreviations and Acronyms}\label{AA}
-Define abbreviations and acronyms the first time they are used in the text, 
-even after they have been defined in the abstract. Abbreviations such as 
-IEEE, SI, MKS, CGS, ac, dc, and rms do not have to be defined. Do not use 
-abbreviations in the title or heads unless they are unavoidable.
-
-\subsection{Units}
 \begin{itemize}
-\item Use either SI (MKS) or CGS as primary units. (SI units are encouraged.) English units may be used as secondary units (in parentheses). An exception would be the use of English units as identifiers in trade, such as ``3.5-inch disk drive''.
-\item Avoid combining SI and CGS units, such as current in amperes and magnetic field in oersteds. This often leads to confusion because equations do not balance dimensionally. If you must use mixed units, clearly state the units for each quantity that you use in an equation.
-\item Do not mix complete spellings and abbreviations of units: ``Wb/m\textsuperscript{2}'' or ``webers per square meter'', not ``webers/m\textsuperscript{2}''. Spell out units when they appear in text: ``. . . a few henries'', not ``. . . a few H''.
-\item Use a zero before decimal points: ``0.25'', not ``.25''. Use ``cm\textsuperscript{3}'', not ``cc''.)
+	
+	\item Permita la presentación de estímulos visuales parametrizables
+	\item Se integre con el sistema de registro de movimientos oculares
+	\item Se integre con el sistema de registro electrofisiológico
+	\item Se integre con el sistema de recompensa
+	\item Cuente con un entorno gráfico amigable
+	\item Pueda ser expandida en un futuro con facilidad
 \end{itemize}
 
-\subsection{Equations}
-Number equations consecutively. To make your 
-equations more compact, you may use the solidus (~/~), the exp function, or 
-appropriate exponents. Italicize Roman symbols for quantities and variables, 
-but not Greek symbols. Use a long dash rather than a hyphen for a minus 
-sign. Punctuate equations with commas or periods when they are part of a 
-sentence, as in:
-\begin{equation}
-a+b=\gamma\label{eq}
-\end{equation}
 
-Be sure that the 
-symbols in your equation have been defined before or immediately following 
-the equation. Use ``\eqref{eq}'', not ``Eq.~\eqref{eq}'' or ``equation \eqref{eq}'', except at 
-the beginning of a sentence: ``Equation \eqref{eq} is . . .''
+Durante la fase de definición de requisitos se hizo especial mención a la necesidad de generar un entorno amigable, por lo que se buscó limitar al mínimo las interacciones con la herramienta a través del teclado y la consola de comandos a favor del uso de un entorno gráfico.
 
-\subsection{\LaTeX-Specific Advice}
+La primera versión de esta herramienta además debía soportar la ejecución de las siguientes tareas experimentales:
 
-Please use ``soft'' (e.g., \verb|\eqref{Eq}|) cross references instead
-of ``hard'' references (e.g., \verb|(1)|). That will make it possible
-to combine sections, add equations, or change the order of figures or
-citations without having to go through the file line by line.
-
-Please don't use the \verb|{eqnarray}| equation environment. Use
-\verb|{align}| or \verb|{IEEEeqnarray}| instead. The \verb|{eqnarray}|
-environment leaves unsightly spaces around relation symbols.
-
-Please note that the \verb|{subequations}| environment in {\LaTeX}
-will increment the main equation counter even when there are no
-equation numbers displayed. If you forget that, you might write an
-article in which the equation numbers skip from (17) to (20), causing
-the copy editors to wonder if you've discovered a new method of
-counting.
-
-{\BibTeX} does not work by magic. It doesn't get the bibliographic
-data from thin air but from .bib files. If you use {\BibTeX} to produce a
-bibliography you must send the .bib files. 
-
-{\LaTeX} can't read your mind. If you assign the same label to a
-subsubsection and a table, you might find that Table I has been cross
-referenced as Table IV-B3. 
-
-{\LaTeX} does not have precognitive abilities. If you put a
-\verb|\label| command before the command that updates the counter it's
-supposed to be using, the label will pick up the last counter to be
-cross referenced instead. In particular, a \verb|\label| command
-should not go before the caption of a figure or a table.
-
-Do not use \verb|\nonumber| inside the \verb|{array}| environment. It
-will not stop equation numbers inside \verb|{array}| (there won't be
-any anyway) and it might stop a wanted equation number in the
-surrounding equation.
-
-\subsection{Some Common Mistakes}\label{SCM}
 \begin{itemize}
-\item The word ``data'' is plural, not singular.
-\item The subscript for the permeability of vacuum $\mu_{0}$, and other common scientific constants, is zero with subscript formatting, not a lowercase letter ``o''.
-\item In American English, commas, semicolons, periods, question and exclamation marks are located within quotation marks only when a complete thought or name is cited, such as a title or full quotation. When quotation marks are used, instead of a bold or italic typeface, to highlight a word or phrase, punctuation should appear outside of the quotation marks. A parenthetical phrase or statement at the end of a sentence is punctuated outside of the closing parenthesis (like this). (A parenthetical sentence is punctuated within the parentheses.)
-\item A graph within a graph is an ``inset'', not an ``insert''. The word alternatively is preferred to the word ``alternately'' (unless you really mean something that alternates).
-\item Do not use the word ``essentially'' to mean ``approximately'' or ``effectively''.
-\item In your paper title, if the words ``that uses'' can accurately replace the word ``using'', capitalize the ``u''; if not, keep using lower-cased.
-\item Be aware of the different meanings of the homophones ``affect'' and ``effect'', ``complement'' and ``compliment'', ``discreet'' and ``discrete'', ``principal'' and ``principle''.
-\item Do not confuse ``imply'' and ``infer''.
-\item The prefix ``non'' is not a word; it should be joined to the word it modifies, usually without a hyphen.
-\item There is no period after the ``et'' in the Latin abbreviation ``et al.''.
-\item The abbreviation ``i.e.'' means ``that is'', and the abbreviation ``e.g.'' means ``for example''.
+	\item Fijación, para el entrenamiento del sujeto
+	\item Mapeo, para el estudio de los campos receptores en la retina
+	\item Memoria de trabajo, para el estudio de el efecto de la estimulación magnética transcraneal sobre la memoria de trabajo.
 \end{itemize}
-An excellent style manual for science writers is \cite{b7}.
 
-\subsection{Authors and Affiliations}
-\textbf{The class file is designed for, but not limited to, six authors.} A 
-minimum of one author is required for all conference articles. Author names 
-should be listed starting from left to right and then moving down to the 
-next line. This is the author sequence that will be used in future citations 
-and by indexing services. Names should not be listed in columns nor group by 
-affiliation. Please keep your affiliations as succinct as possible (for 
-example, do not differentiate among departments of the same organization).
+\section{Trabajo relacionado}
 
-\subsection{Identify the Headings}
-Headings, or heads, are organizational devices that guide the reader through 
-your paper. There are two types: component heads and text heads.
+Existen múltiples herramientas para realizar experimentos de estimulación visual, a menudo desarrolladas por los propios grupos de investigación a medida de sus necesidades. A continuación se comentan algunas de las herramientas relacionadas con la herramienta desarrollada en este trabajo.
 
-Component heads identify the different components of your paper and are not 
-topically subordinate to each other. Examples include Acknowledgments and 
-References and, for these, the correct style to use is ``Heading 5''. Use 
-``figure caption'' for your Figure captions, and ``table head'' for your 
-table title. Run-in heads, such as ``Abstract'', will require you to apply a 
-style (in this case, italic) in addition to the style provided by the drop 
-down menu to differentiate the head from the text.
+\subsection{Cortex}
 
-Text heads organize the topics on a relational, hierarchical basis. For 
-example, the paper title is the primary text head because all subsequent 
-material relates and elaborates on this one topic. If there are two or more 
-sub-topics, the next level head (uppercase Roman numerals) should be used 
-and, conversely, if there are not at least two sub-topics, then no subheads 
-should be introduced.
+Cortex (COmputerized Real Time EXperiments)\cite{cortex} fue una de las primeras herramientas desarrolladas para la ejecución de experimentos neurofisiológicos y de comportamiento en PC.
+La herramienta estaba pensada en torno al concepto de ensayo, donde se ejecutaban las diferentes tareas de forma individual, mientras los diferentes sistemas de adquisición de datos capturaban la información necesaria, seguidos de un tiempo entre ensayos durante el que se almacenaban los datos y se preparaba el siguiente ensayo. 
+La configuración de los ensayos se llevaba a cabo mediante tres archivos de texto que eran importados por Cortex, un archivo de "items" donde se describen los estímulos visuales que se usarán en el experimento, un archivo de condiciones que controla lo que ocurre en cada ensayo y un script de temporización que controlaba los tiempos del experimento.
 
-\subsection{Figures and Tables}
-\paragraph{Positioning Figures and Tables} Place figures and tables at the top and 
-bottom of columns. Avoid placing them in the middle of columns. Large 
-figures and tables may span across both columns. Figure captions should be 
-below the figures; table heads should appear above the tables. Insert 
-figures and tables after they are cited in the text. Use the abbreviation 
-``Fig.~\ref{fig}'', even at the beginning of a sentence.
 
-\begin{table}[htbp]
-\caption{Table Type Styles}
-\begin{center}
-\begin{tabular}{|c|c|c|c|}
-\hline
-\textbf{Table}&\multicolumn{3}{|c|}{\textbf{Table Column Head}} \\
-\cline{2-4} 
-\textbf{Head} & \textbf{\textit{Table column subhead}}& \textbf{\textit{Subhead}}& \textbf{\textit{Subhead}} \\
-\hline
-copy& More table copy$^{\mathrm{a}}$& &  \\
-\hline
-\multicolumn{4}{l}{$^{\mathrm{a}}$Sample of a Table footnote.}
-\end{tabular}
-\label{tab1}
-\end{center}
-\end{table}
+\subsection{Monkeylogic}
+
+Monkeylogic\cite{monkeylogic} es una herramienta escrita en  Matlab que permite el desarrollo de estudios psicofísicos con una alta precisión temporal, integrando la presentación de estímulos visuales con múltiples tipos de entrada de información del sujeto, como pueden ser sistemas de seguimiento ocular, joysticks o entradas de teclado.
+Sus características más destacadas son:
+\begin{itemize}
+	\item Alta precisión temporal en la presentación de estímulos. 
+	\item Interfaz gráfica basada en Matlab para diseño de tareas con flexibilidad.
+	\item Compatibilidad con múltiples modelos de hardware de adquisición de datos.
+	\item Interfaz de ejecución de experimentos con información a tiempo real del comportamiento y rendimiento del sujeto.
+	\item Estructura de programación de experimentos derivada de la de CORTEX\cite{cortex} mediante un archivo de condiciones y un script de temporización
+	\item Las tareas pueden ser modificadas durante la ejecución de las mismas.
+\end{itemize}
+Esta herramienta se utiliza de forma extensa, estando citados los artículos de referencia un total de 138 veces en google scholar.
+Monkeylogic tiene la desventaja de solo poder ser utilizada en entornos Windows.
+
+\subsection{Psychtoolbox}
+
+Psychtoolbox\cite{psychtoolbox} es una toolbox para los entornos Matlab y GNU Octave que proporciona una serie de funciones que permiten la síntesis y presentación de estímulos visuales con una alta precisión temporal. 
+Es una de las librerías más conocidas y utilizadas en este ámbito, contando con una gran comunidad de usuarios.
+Psychtoolbox no proporciona únicamente funciones de presentación de estímulos, sino que también proporciona métodos para utilizar diferentes tipos de hardware como sistemas de seguimiento ocular o tarjetas de entrada/salida digitales.
+Muchas herramientas de estimulación visual \cite{opticka}\cite{wave} han sido construidas sobre esta librería, y suele ser la elección de muchos investigadores a la hora de desarrollar sus propios experimentos personalizados.
+Existen alternativas a esta librería para su uso en diferentes entornos de programación como PsychoPy\cite{psychopy} para Python y PsychJava para Java.
+
+
+\subsection{Opticka}
+
+Opticka\cite{opticka} es un framework orientado a objetos en Matlab basado en la Psychtoolbox que permite la generación de estímulos visuales complejos y su presentación al sujeto. Es multiplataforma y se comunica con el sistema de adquisición de datos Omniplex\cite{omniplex} de Plexon a través de "strobbed words" y ethernet. Para "Behavioral control" utiliza el sistema de seguimiento ocular Eyelink conectado con la interfaz TCP. 
+Tiene una interfaz gráfica opcional, que permite la configuración de experimentos a personas sin conocimientos de programación.
+Opticka es la herramienta que se emplea actualmente en el Grupo de Neurociencia y Control Motor de la UDC, ya que el equipo usado fue heredado del laboratorio donde se desarrolló esta herramienta y es completamente compatible con la misma sin necesidad de modificaciones.
+
+
+
+\subsection{Orion}
+
+Orion fue un intento por parte de un miembro del grupo para implementar una nueva herramienta, hecha a medida de las necesidades del grupo, que pudiera llevar a cabo tareas especificas de una forma más sencilla. Cuenta con una interfaz gráfica muy simple, únicamente valida para lanzar los experimentos, siendo necesario modificar el código para cambiar las condiciones experimentales. Permite cierto grado de control a tiempo real del experimento, a través de comandos de teclado.
+Depende de Opticka para su funcionamiento.
+
+
+\section{Material}
+
+\subsection{Configuración hardware del sistema}
 
 \begin{figure}[htbp]
-\centerline{\includegraphics{fig1.png}}
+\centerline{\includegraphics[width=\linewidth]{figures/system_diagram.png}}
 \caption{Example of a figure caption.}
-\label{fig}
+\label{figSysDiagram}
 \end{figure}
 
-Figure Labels: Use 8 point Times New Roman for Figure labels. Use words 
-rather than symbols or abbreviations when writing Figure axis labels to 
-avoid confusing the reader. As an example, write the quantity 
-``Magnetization'', or ``Magnetization, M'', not just ``M''. If including 
-units in the label, present them within parentheses. Do not label axes only 
-with units. In the example, write ``Magnetization (A/m)'' or ``Magnetization 
-\{A[m(1)]\}'', not just ``A/m''. Do not label axes with a ratio of 
-quantities and units. For example, write ``Temperature (K)'', not 
-``Temperature/K''.
+Stimpack requiere un ordenador donde se ejecutará la herramienta, el equipo usado en el laboratorio es un Mac Pro, con XXXX características.
+Adicionalmente son necesarios otros dos equipos, uno ejecutando windows empleado para la captura de datos y marcas temporales y otro parte del sistema de seguimiento ocular.
+Para el seguimiento ocular se emplea un sistema Eyelink 1000 Plus\cite{eyelink} capaz de realizar un seguimiento binocular a una tasa de muestreo de 2000Hz conectado con el equipo ejecutando Stimpack a través de ethernet.
+Para la presentación de estímulos visuales y el envío de marcas temporales se emplea un DATAPixx \cite{datapixx} de VPixx Technologies, conectado al equipo ejecutando la herramienta mediante USB para el envío de marcas temporales y mediante DVI para la presentación de estimulos, esta señal es duplicada en dos monitores, uno que se muestra al sujeto experimental y uno para que el usuario supervise la ejecución del experimento.
+Para la captura de datos de los electrodos y de las marcas temporales se emplea un OmniPlex Neural Data Acquisition System\cite{omniplex} de Plexon, conectado al DATAPixx y al preamplificador de los electrodos, también de Plexon. El procesado de estos datos se lleva a cabo en el equipo Windows mencionado anteriormente
+Para la administración de recompensas al sujeto experimental se emplea un sistema de recompensa digital Crist Instruments V2 Models D1 manejado a través de una  tarjeta de IO digital Labjack U6\cite{labjack}, que se conecta a través de USB con el ordenador que ejecuta la herramienta.
 
-\section*{Acknowledgment}
 
-The preferred spelling of the word ``acknowledgment'' in America is without 
-an ``e'' after the ``g''. Avoid the stilted expression ``one of us (R. B. 
-G.) thanks $\ldots$''. Instead, try ``R. B. G. thanks$\ldots$''. Put sponsor 
-acknowledgments in the unnumbered footnote on the first page.
+\subsection{Software necesario}
+El equipo en el que se utiliza la herramienta funciona sobre OSX Lion?. Tiene instalada una copia de Matlab version 2015b, la Psychophysics Toolbox v3, la toolbox de Eyelink, la toolbox de Datapixx y la librería para utilizar el Labjack.
+El equipo conectado al Omniplex tiene instalado el software XXXXX para la captura de datos.
 
-\section*{References}
+\section{Desarrollo}
+\subsection{Concepto}
+ 
+Partiendo de los requisitos expuestos en la sección de objetivos, se decidió desarrollar una herramienta que primara la sencillez ante la capacidad de realizar muchas tareas diferentes, por ello se evitó el uso de una única pantalla de configuración, como las usadas en Opticka o Monkeylogic, a favor de interfaces individuales para cada tarea. 
+Estas interfaces siguen una estructura compartida, compartiendo la parte donde se especifican las variables experimentales comunes a todas las tareas, como podría ser el color del fondo, tiempo entre ensayos, tamaño del punto de fijación, y completandola con las diferentes variables o formas de control específicas a cada tarea diferente. En esta interfaz se integra además el sistema de control experimental que permite, una vez iniciado el experimento, controlar la ejecución del mismo, ya sea visualizando datos relevantes a cada tarea, mediante una zona de visualización de gráficos, como pausando o deteniendo el experimento, enviando marcas al sistema de registro o administrando manualmente una recompensa al sujeto, todo ello a través de la interfaz gráfica, sin la necesidad de ejecutar comandos de consola ni memorizar combinaciones de teclas. 
+Otra característica de la herramienta es la capacidad de modificar los parámetros del experimento sin necesidad de reiniciarlo, siendo posible cambiar cualquiera de las variables experimentales a través de la interfaz de usuario a tiempo real viendo reflejados los cambios al inicio del siguiente ensayo.
+Ya que se quería que la herramienta fuera expansible, dadas las limitaciones de Matlab a la hora de crear interfaces, se decidió crear una plantilla de tarea, que el desarrollador puede completar para implementar nuevos experimentos.
 
-Please number citations consecutively within brackets \cite{b1}. The 
-sentence punctuation follows the bracket \cite{b2}. Refer simply to the reference 
-number, as in \cite{b3}---do not use ``Ref. \cite{b3}'' or ``reference \cite{b3}'' except at 
-the beginning of a sentence: ``Reference \cite{b3} was the first $\ldots$''
+\begin{figure}[htbp]
+\centerline{\includegraphics[width=\linewidth]{figures/main_gui}}
+\caption{Interfaz principal de la aplicación}
+\label{figmainGUI}
+\end{figure}
 
-Number footnotes separately in superscripts. Place the actual footnote at 
-the bottom of the column in which it was cited. Do not put footnotes in the 
-abstract or reference list. Use letters for table footnotes.
+La interfaz principal del programa permite el lanzamiento de las diferentes tareas y cuenta con una parte de configuración donde se pueden modificar parámetros comunes a todas las tareas como puede ser la distancia al monitor de presentación de estímulos y sus dimensiones, usadas para el cálculo de tamaños empleando grados del sistema visual o el numero de monitor donde se mostraran los estímulos. También proporciona la configuración de              varios parámetros que son útiles a la hora de realizar la depuración o desarrollo de la herramienta, como la activación y desactivación del uso de hardware de seguimiento ocular, emulando la vista con el puntero del ratón en caso de desactivar el sistema, del hardware de comunicaciones o la ejecución de Psychtoolbox en modo inseguro, que desactiva los test de sincronía del monitor y permite mostrar estímulos en monitores que no cumplen las especificaciones mínimas de precisión.
 
-Unless there are six authors or more give all authors' names; do not use 
-``et al.''. Papers that have not been published, even if they have been 
-submitted for publication, should be cited as ``unpublished'' \cite{b4}. Papers 
-that have been accepted for publication should be cited as ``in press'' \cite{b5}. 
-Capitalize only the first word in a paper title, except for proper nouns and 
-element symbols.
+\subsection{Arquitectura}
+Stimpack esta desarrollado usando orientación a objetos en la medida de lo posible para poder implementar un sistema lo más modular posible y facilitar la expansión de la herramienta añadiendo nuevas tareas.
+Stimpack esta formado por varias clases, la clase principal del programa "stimpack" contiene una referencia a la clase de propiedades generales del sistema, de la que se hablará a continuación, y se encarga del inicio de la interfaz gráfica de usuario. Esta clase hereda de la clase "handle" de Matlab, lo que permite su acceso como referencia. La interfaz gráfica principal, arrancada al ejecutar la herramienta, contiene tres botones para arrancar las diferentes tareas y una zona con opciones de configuración.
+La clase "stimprops", que también hereda de handle, contiene las propiedades generales del sistema, como el tamaño real de la pantalla en centímetros y la distancia a la misma, el estado de activación del hardware, el índice del monitor de estimulación, etc... que no necesitan ser cambiadas durante las distintas ejecuciones del experimento.
+Para evitar la repetición de código y abstraer a los futuros desarrolladores de la herramienta de tener que repetir la configuración del sistema en cada tarea diferente se definió una clase abstracta "abstractStimulus" donde se aglomeran todas las propiedades y métodos comunes a todas las tareas, dejando que el  programador de la tarea se centre en la parte más especifica de las tareas, la presentación de estímulos y el procesado de los resultados.
 
-For papers published in translation journals, please give the English 
-citation first, followed by the original foreign-language citation \cite{b6}.
+Algunas de las propiedades mas relevantes definidas en esta clase abstracta son las siguientes:
+
+* Resolución de la pantalla
+* Parámetros de la parte de fijación
+* Número de ensayos por tarea
+* Tiempo entre ensayos y la variabilidad del mismo
+* El estado del experimento
+
+Además de esas propiedades, existen algunas propiedades abstractas que deben ser implementadas por las tareas que hereden de la clase, que configuran los nombres y las rutas que se emplearan a la hora de guardar los datos al finalizar el experimento.
+
+Además de las propiedades, en esta clase están definidos los métodos de configuración comunes a todos las tareas, como la configuración de los distintos elementos de hardware que integran el sistema (Eyelink, dataPixx y labJack),la conexión a los mismos, la preparación de la pantalla y la configuración de psychToolbox para la presentación de estímulos y los métodos de limpieza que se ejecutan al terminar el experimento. También está aquí definido el método principal de ejecución de la tarea, que ejecuta todos los métodos en el orden correcto, incluyendo los dos métodos abstractos que el programador debe implementar. Estos métodos son "runTrials" donde se implementa toda la lógica del experimento y "endExperiment" que se ejecuta inmediatamente después de terminar todos los ensayos y cuya finalidad es procesar los datos recogidos en el experimento.
+
+A parte de los métodos mencionados anteriormente, "abstractStimulus" proporciona una serie de métodos de utilidad que facilitan la implementación de las tareas:
+
+\begin{itemize}
+	\item Obtener las coordenadas visuales
+	\item Escribir los datos del ensayo al archivo EDF
+	\item Dibujar el punto de fijación
+	\item Comprobar si hay errores en la cámara
+	\item Comprobar los comandos enviados desde la interfaz de control
+\end{itemize}
+
+
+\subsection{Tareas a implementar}
+
+Tres tareas fueron implementadas en la primera versión de la herramienta, adicionalmente se creo una plantilla para desarrollar nuevas tareas sin tener que reescribir el código común. A continuación se extienden los detalles de cada tarea individualmente.
+
+\subsubsection*{Tarea de fijación}
+
+\begin{figure}[htbp]
+\centerline{\includegraphics[width=\linewidth]{figures/fixation}}
+\caption{Tarea de fijación}
+\label{figfixTask}
+\end{figure}
+
+\begin{figure*}[htbp]
+\centerline{\includegraphics[width=\linewidth]{figures/fixation_gui}}
+\caption{Interfaz principal de la aplicación}
+\label{figfixGUI}
+\end{figure*}
+
+La tarea de fijación es la más básica de las implementadas y sirve de base para el resto, derivando la plantilla para crear tareas directamente de esta.
+En esta tarea se le muestra al individuo un punto sobre un fondo en el que debe fijar la vista, si lo hace correctamente se le da una recompensa.
+Los pasos de la tarea son los siguientes:
+
+\begin{enumerate}
+	\item Aparece solo el fondo
+	\item Aparece el punto de fijación
+	\item El sujeto tiene un tiempo limite para poner la mirada sobre el punto
+	\item Una vez tiene la mirada fija en el punto, debe permanecer un tiempo definido
+	\item Desaparece el punto y si ha hecho correctamente todos los pasos se le da una recompensa
+	\item Tiempo entre ensayos y vuelta al punto 1
+\end{enumerate}
+
+
+Esta tarea sirve para entrenar al sujeto en mantener la mirada en el punto de fijación. Es necesario entrenar al sujeto en mantener la vista fija en el punto de fijación, ya que en el resto de tareas es un requisito indispensable que el animal mantenga la mirada en todo momento en el punto de fijación.
+
+Esta tarea es totalmente parametrizable, pudiéndose modificar:
+\begin{itemize}
+	\item Tamaño del punto de fijación y de la ventana de fijación
+	\item Color del punto de fijación y del fondo
+	\item Tiempo de espera de fijación
+	\item Tiempo de fijación
+	\item Tiempo de recompensa
+	\item Tiempo entre ensayos
+	\item Variación del tiempo entre ensayos
+	\item Número de ensayos
+\end{itemize}
+
+
+
+
+Durante el experimento, se le muestra al investigador en la interfaz de usuario un gráfico de sectores donde se puede ver la cantidad de ensayos terminados con éxito, abortados por romper la fijación o fallidos por no haber alcanzado la fijación.
+
+\subsubsection*{Tarea de mapeo}
+
+\begin{figure}[htbp]
+\centerline{\includegraphics[width=\linewidth]{figures/mapping_task}}
+\caption{Tarea de mapeo}
+\label{figMapTask}
+\end{figure}
+
+\begin{figure*}[htbp]
+\centerline{\includegraphics[width=\linewidth]{figures/mapping_gui}}
+\caption{Interfaz de la tarea de mapeo}
+\label{figmappingGUI}
+\end{figure*}
+
+La tarea de mapeo se construye sobre la tarea de fijación y comparte todos su parámetros, además de añadir parámetros propios y una interfaz gráfica basada en la anterior pero adecuada a esta tarea.
+En la tarea de mapeo se le muestra al sujeto el punto de fijación, una vez consigue fijar la mirada aparece un estimulo, en forma de un rectángulo de color. El animal debe seguir manteniendo la mirada en el punto de fijación hasta que desaparezca, si lo consigue se le da una recompensa.
+El protocolo seguido es el siguiente:
+
+\begin{enumerate}
+	\item Aparece el fondo
+	\item Aparece el punto de fijación
+	\item El animal fija
+	\item Aparece el estimulo
+	\item El animal mantiene la fijación
+	\item Desaparece el punto y el estimulo
+	\item Recompensa
+	\item Tiempo entre ensayos y vuelta al punto 1
+\end{enumerate}
+
+
+Los parámetros modificables adicionalmente a los de la tarea de fijación son el tiempo de presentación del estímulo y el color del mismo. Además cuenta con una serie de botones que permiten controlar qué estimulo (cuadrante o subcuadrante) se le mostrará al animal, dos botones para activar el ciclado automático de cuadrantes entre ensayos y un botón para en caso de estar activado el ciclado de cuadrantes, repita el último mientras no se realice correctamente.
+Durante el experimento se le muestra al investigador un gráfico similar al de la tarea de fijación, pero mostrando los datos para el cuadrante seleccionado en la interfaz.
+
+
+Esta tarea permite registrar datos neuronales sobre que neuronas se activan al presentar cierto estímulo en parte de la retina ¿Campos receptores? y enfocar con mayor precisión los estímulos futuros.
+
+
+\subsubsection*{Tarea de memoria de trabajo}
+
+\begin{figure}[htbp]
+\centerline{\includegraphics[width=\linewidth]{figures/memory_task}}
+\caption{Tarea de memoria de trabajo (con flecha)}
+\label{figMemoryTask}
+\end{figure}
+
+\begin{figure*}
+  \includegraphics[width=\textwidth]{figures/memory_gui}
+  \caption{Interfaz de la tarea de memoria de trabajo}
+  \label{figMemoryGui}
+
+\end{figure*}
+
+La última tarea implementada es la más elaborada de todas, fue construida también sobre la plantilla y es la que se va a utilizar para llevar a cabo la investigación sobre el efecto de la TMS sobre la memoria de trabajo. 
+En esta tarea el animal debe fijar la mirada en el punto, una vez fija se le muestra un estimulo, que puede ser de dos tipos diferentes, un grating en movimiento o un grating más una flecha, una vez pasa un tiempo el estimulo desaparece y se deja únicamente el punto de fijación, pasado otro momento se muestra un grating moviéndose en una dirección aleatoria, una vez pasado otro intervalo de tiempo desaparecen tanto el estimulo como el punto de fijación y aparecen dos puntos a los lados de la pantalla. En el caso del estimulo sin flecha, el animal debe fijar la mirada en el punto en el lado hacia el cual se movía el primer gratina, en caso de que fuera el con flecha, debe escoger  hacia el lado que señalaba la misma.
+Los pasos organizados son los siguientes:
+
+
+\begin{enumerate}
+	\item Aparece punto de fijación
+	\item Animal fija
+	\item Aparece primer estímulo (con o sin flecha)
+	\item Desaparece el estimulo y se mantiene el punto de fijación
+	\item Aparece el segundo estimulo (solo grating)
+	\item Desaparecen el estimulo y el punto de fijación y aparecen los selectores en el monitor
+	\item El animal escoge fijando la vista en uno de ellos
+	\item Desaparecen los selectores y si escoge el correcto se le da recompensa
+	\item Tiempo entre ensayos y vuelta al punto 1
+\end{enumerate}
+
+
+Los parámetros modificables son los siguientes:
+
+\begin{itemize}
+	\item Tiempo del primer estimulo
+	\item Tiempo entre estímulos
+	\item Tiempo del segundo estímulo
+	\item Tiempo disponible para responder
+	\item Tiempo de fijación en los selectores
+	\item Frecuencia espacial y temporal del grating
+	\item Posición del grating
+	\item Orientación del grating
+
+\end{itemize}
+
+
+Además de estos parámetros, en la interfaz gráfica existe un botón para cambiar entre las dos variantes de la tarea con y sin flecha.
+Las direcciones empleadas para el primer estimulo son precalculadas basadas en el numero de ensayos, 50\% hacia cada lado, y después son ordenadas de manera aleatoria.
+
+En la zona de información de la interfaz de usuario se muestra un gráfico de barras separado en izquierda y derecha que muestra las diferentes estadísticas de fijación, no fijación y rotura de fijación para cada lado.
+
+
+En esta tarea se pone a prueba la memoria de trabajo del sujeto, haciéndole recordar una dirección hasta que aparezcan los selectores. En este tiempo se le puede aplicar al sujeto la estimulación magnética transcraneal (TMS) en la zona del cerebro responsable de este tipo de memoria y estudiar el efecto de la misma sobre el comportamiento del sujeto.
+
+\section{Conclusiones}
+
+En este trabajo se ha implementado una herramienta que permite el control de experimentos de estimulación visual.
+Stimpack proporciona un entorno fácil de utilizar que permite al usuario ejecutar las tres tareas de comportamiento definidas en los objetivos del proyecto, limitando la interacción a través de la linea de comandos únicamente a arrancar propia herramienta. La interfaz gráfica se ha simplificado al máximo, creando ventanas especificas para cada tarea, esto distancia a la herramienta de otras cómo Opticka o Monkeylogic, que cuentan con interfaces de usuario muy densas y genericas. Esta característica de stimpack lo hace más usable a costa de una menor flexibilidad.
+Stimpack emplea como lenguaje de programación Matlab y como framework para la presentación de estímulos Psychtoolbox, herramientas que se han convertido en el estándar para el desarrollo de experimentos de psicofísica y neurociencia.
+Se proporciona una forma de expandir la herramienta con nuevas tareas haciendo uso de plantillas, donde los desarrolladores solo necesitan centrarse en la programación de la tarea y la presentación de estímulos, despreocupandose de la parte de configuración y conexión a los diferentes sistemas de hardware.
+La herramienta se integra con los sistemas de seguimiento ocular y adquisición de datos
+
+
+\section{Trabajo Futuro}
+
+A continuación se detallan una serie de puntos en los que el futuro desarrollo de Stimpack debería centrarse:
+
+\begin{itemize}
+	\item Modificar la tarea de memoria de trabajo para poder escoger entre el estimulo basado en el grating y un estimulo basado en el ruido de puntos aleatorios
+	\item Añadir la capacidad de guardar un archivo de texto donde se registren todos los cambios a los parámetros de una tarea durante la ejecución de un experimento
+	\item Hacer pruebas de precisión temporal del sistema y de sincronía con la presentación de estímulos
+	\item Mejorar el sistema de calibración de la cámara para soportar la administración de recompensas al sujeto durante la misma.
+	\item Elaborar un manual de usuario y documentar extensivamente la herramienta.
+
+\end{itemize}
+
 
 \begin{thebibliography}{00}
-\bibitem{b1} G. Eason, B. Noble, and I. N. Sneddon, ``On certain integrals of Lipschitz-Hankel type involving products of Bessel functions,'' Phil. Trans. Roy. Soc. London, vol. A247, pp. 529--551, April 1955.
-\bibitem{b2} J. Clerk Maxwell, A Treatise on Electricity and Magnetism, 3rd ed., vol. 2. Oxford: Clarendon, 1892, pp.68--73.
-\bibitem{b3} I. S. Jacobs and C. P. Bean, ``Fine particles, thin films and exchange anisotropy,'' in Magnetism, vol. III, G. T. Rado and H. Suhl, Eds. New York: Academic, 1963, pp. 271--350.
-\bibitem{b4} K. Elissa, ``Title of paper if known,'' unpublished.
-\bibitem{b5} R. Nicole, ``Title of paper with only first word capitalized,'' J. Name Stand. Abbrev., in press.
-\bibitem{b6} Y. Yorozu, M. Hirano, K. Oka, and Y. Tagawa, ``Electron spectroscopy studies on magneto-optical media and plastic substrate interface,'' IEEE Transl. J. Magn. Japan, vol. 2, pp. 740--741, August 1987 [Digests 9th Annual Conf. Magnetics Japan, p. 301, 1982].
-\bibitem{b7} M. Young, The Technical Writer's Handbook. Mill Valley, CA: University Science, 1989.
+\bibitem{monkeylogic}ASAAD, Wael F.; ESKANDAR, Emad N. A flexible software tool for temporally-precise behavioral control in Matlab. Journal of neuroscience methods, 2008, vol. 174, no 2, p. 245-258.
+
+\bibitem{psychtoolbox} BRAINARD, David H.; VISION, Spatial. The psychophysics toolbox. Spatial vision, 1997, vol. 10, p. 433-436.
+
+\bibitem{wave} Meyer, T. and Constantinidis, C. (2005) ‘A software solution for the control of visual behavioral experimentation’, Journal of Neuroscience Methods, 142(1), pp. 27–34. doi: 10.1016/j.jneumeth.2004.07.009.
+
+\bibitem{opticka} Opticka visual stimulus generator. http://iandol.github.io/opticka/ (Online) Último acceso: 16/6/2018
+
+\bibitem{eyelink} Eyelink 1000 Plus Eye Tracking System. https://www.sr-research.com/products/eyelink-1000-plus/ (Online) Último acceso: 13/6/2018
+\bibitem{datapixx} VPixx Technologies DATAPixx data acquisition and graphics toolbox. http://vpixx.com/products/tools-for-vision-sciences/display-drivers/datapixx/  (Online) Último acceso: 13/6/2018
+
+\bibitem{omniplex} OmniPlex Neural Data Acquisition System. https://plexon.com/products/omniplex-d-neural-data-acquisition-system-1/ (Online) Último acceso: 13/6/2018
+
+\bibitem{labjack} Labjack U6 DAQ. https://labjack.com/products/u6 (Online) Último acceso: 13/6/2018
+
+\bibitem{cortex} Cortex: A Program for COmputerized Real Time EXperiments. http://www.cnbc.cmu.edu/~rickr/ctxman5.html (Online) Último acceso: 14/6/2018
+
+\bibitem{psychopy} Peirce, J. W. (2007) ‘PsychoPy—Psychophysics software in Python’, Journal of Neuroscience Methods. Elsevier, 162(1–2), pp. 8–13. doi: 10.1016/J.JNEUMETH.2006.11.017.
+
 \end{thebibliography}
 \vspace{12pt}
-\color{red}
-IEEE conference templates contain guidance text for composing and formatting conference papers. Please ensure that all template text is removed from your conference paper prior to submission to the conference. Failure to remove the template text from your paper may result in your paper not being published.
+
 
 \end{document}
