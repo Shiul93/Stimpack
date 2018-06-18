@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.10.5)  16 JUN 2018 16:48
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.10.5)  18 JUN 2018 20:50
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -703,8 +703,8 @@ File: ts1enc.dfu 2017/01/28 v1.1t UTF-8 support for inputenc
    defining Unicode char U+2122 (decimal 8482)
    defining Unicode char U+2423 (decimal 9251)
 )) (/Users/luis/Documents/Master/TFM/repos/stimpack/docs/latex/.texpadtmp/conference_041818.aux
-LaTeX Info: Redefining \. on input line 8.
-LaTeX Info: Redefining \% on input line 8.
+LaTeX Info: Redefining \. on input line 9.
+LaTeX Info: Redefining \% on input line 9.
 )
 \openout1 = `conference_041818.aux'.
 
@@ -788,90 +788,97 @@ File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 LaTeX Font Info:    Try loading font information for U+msb on input line 30.
  (/usr/local/texlive/2017/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
-) [1{/usr/local/texlive/2017/texmf-var/fonts/map/pdftex/updmap/pdftex.map}
+) <figures/mono.jpg, id=1, 449.5194pt x 571.4148pt>
+File: figures/mono.jpg Graphic file (type jpg)
+ <use figures/mono.jpg>
+Package pdftex.def Info: figures/mono.jpg used on input line 86.
+(pdftex.def)             Requested size: 252.0pt x 320.33014pt.
+ [1{/usr/local/texlive/2017/texmf-var/fonts/map/pdftex/updmap/pdftex.map}
 
 
-] <figures/system_diagram.png, id=10, 1204.5pt x 1010.77625pt>
+] [2 <./figures/mono.jpg>] <figures/system_diagram.png, id=14, 1204.5pt x 1010.77625pt>
 File: figures/system_diagram.png Graphic file (type png)
  <use figures/system_diagram.png>
-Package pdftex.def Info: figures/system_diagram.png used on input line 137.
+Package pdftex.def Info: figures/system_diagram.png used on input line 170.
 (pdftex.def)             Requested size: 252.0pt x 211.46727pt.
- [2 <./figures/system_diagram.png>] <figures/main_gui.png, id=16, 595.22375pt x 449.68pt>
+ [3 <./figures/system_diagram.png>] <figures/main_gui.png, id=20, 595.22375pt x 449.68pt>
 File: figures/main_gui.png Graphic file (type png)
  <use figures/main_gui.png>
-Package pdftex.def Info: figures/main_gui.png used on input line 163.
+Package pdftex.def Info: figures/main_gui.png used on input line 196.
 (pdftex.def)             Requested size: 252.0pt x 190.3807pt.
- [3 <./figures/main_gui.png>]
-Underfull \hbox (badness 3000) in paragraph at lines 188--189
-[]\OT1/ptm/m/n/10 A par-te de los m[]eto-dos men-cio-na-dos an-te-rior-men-te,
- []
-
-<figures/fixation.png, id=21, 402.50375pt x 141.52875pt>
+ <figures/visual_degrees.png, id=21, 1883.035pt x 748.7975pt>
+File: figures/visual_degrees.png Graphic file (type png)
+ <use figures/visual_degrees.png>
+Package pdftex.def Info: figures/visual_degrees.png used on input line 213.
+(pdftex.def)             Requested size: 252.0pt x 100.20352pt.
+ [4 <./figures/main_gui.png> <./figures/visual_degrees.png>] <figures/fixation.png, id=27, 402.50375pt x 141.52875pt>
 File: figures/fixation.png Graphic file (type png)
  <use figures/fixation.png>
-Package pdftex.def Info: figures/fixation.png used on input line 206.
+Package pdftex.def Info: figures/fixation.png used on input line 264.
 (pdftex.def)             Requested size: 252.0pt x 88.60857pt.
- <figures/fixation_gui.png, id=22, 992.70876pt x 469.755pt>
+ <figures/fixation_gui.png, id=28, 992.70876pt x 469.755pt>
 File: figures/fixation_gui.png Graphic file (type png)
  <use figures/fixation_gui.png>
-Package pdftex.def Info: figures/fixation_gui.png used on input line 212.
+Package pdftex.def Info: figures/fixation_gui.png used on input line 270.
 (pdftex.def)             Requested size: 516.0pt x 244.17366pt.
- <figures/mapping_task.png, id=23, 624.3325pt x 141.52875pt>
+ <figures/mapping_task.png, id=29, 624.3325pt x 141.52875pt>
 File: figures/mapping_task.png Graphic file (type png)
  <use figures/mapping_task.png>
-Package pdftex.def Info: figures/mapping_task.png used on input line 253.
+Package pdftex.def Info: figures/mapping_task.png used on input line 312.
 (pdftex.def)             Requested size: 252.0pt x 57.12447pt.
- <figures/mapping_gui.png, id=24, 981.6675pt x 518.93875pt>
+ <figures/mapping_gui.png, id=30, 981.6675pt x 518.93875pt>
 File: figures/mapping_gui.png Graphic file (type png)
  <use figures/mapping_gui.png>
-Package pdftex.def Info: figures/mapping_gui.png used on input line 259.
+Package pdftex.def Info: figures/mapping_gui.png used on input line 318.
 (pdftex.def)             Requested size: 516.0pt x 272.7795pt.
- [4 <./figures/fixation.png>] <figures/memory_task.png, id=29, 698.61pt x 302.12875pt>
+ [5 <./figures/fixation.png>] <figures/memory_task.png, id=35, 698.61pt x 302.12875pt>
 File: figures/memory_task.png Graphic file (type png)
  <use figures/memory_task.png>
-Package pdftex.def Info: figures/memory_task.png used on input line 290.
+Package pdftex.def Info: figures/memory_task.png used on input line 353.
 (pdftex.def)             Requested size: 252.0pt x 108.98294pt.
- <figures/memory_gui.png, id=30, 991.20313pt x 468.75125pt>
+ <figures/memory_gui.png, id=36, 991.20313pt x 468.75125pt>
 File: figures/memory_gui.png Graphic file (type png)
  <use figures/memory_gui.png>
-Package pdftex.def Info: figures/memory_gui.png used on input line 296.
+Package pdftex.def Info: figures/memory_gui.png used on input line 359.
 (pdftex.def)             Requested size: 516.0pt x 244.02383pt.
-
-Underfull \vbox (badness 1264) has occurred while \output is active []
-
- [5 <./figures/fixation_gui.png> <./figures/mapping_task.png>] [6 <./figures/mapping_gui.png> <./figures/memory_task.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 375--376
-[]\OT1/ptm/m/n/8 Eyelink 1000 Plus Eye Trac-king Sys-tem. https://www.sr-
+ [6 <./figures/fixation_gui.png> <./figures/mapping_task.png>] [7 <./figures/mapping_gui.png> <./figures/memory_task.png>]
+Underfull \hbox (badness 2617) in paragraph at lines 429--430
+[]\OT1/ptm/m/n/8 Cortex: A Pro-gram for COm-pute-ri-zed Real Ti-me EX-pe-ri-ments.
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 375--376
-\OT1/ptm/m/n/8 research.com/products/eyelink-1000-plus/ (On-li-ne) []Ulti-mo ac-ce-so:
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 376--377
-[]\OT1/ptm/m/n/8 VPixx Tech-no-lo-gies DA-TA-Pixx da-ta ac-qui-si-tion and grap-hics
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 376--377
-\OT1/ptm/m/n/8 tool-box. http://vpixx.com/products/tools-for-vision-sciences/display-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 378--379
+Underfull \hbox (badness 10000) in paragraph at lines 444--445
 []\OT1/ptm/m/n/8 OmniPlex Neu-ral Da-ta Ac-qui-si-tion Sys-tem.
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 378--379
+Underfull \hbox (badness 10000) in paragraph at lines 444--445
 \OT1/ptm/m/n/8 https://plexon.com/products/omniplex-d-neural-data-acquisition-system-
  []
 
 
-Underfull \hbox (badness 2617) in paragraph at lines 382--383
-[]\OT1/ptm/m/n/8 Cortex: A Pro-gram for COm-pute-ri-zed Real Ti-me EX-pe-ri-ments.
+Underfull \hbox (badness 10000) in paragraph at lines 446--447
+[]\OT1/ptm/m/n/8 Eyelink 1000 Plus Eye Trac-king Sys-tem. https://www.sr-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 446--447
+\OT1/ptm/m/n/8 research.com/products/eyelink-1000-plus/ (On-li-ne) []Ulti-mo ac-ce-so:
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 447--448
+[]\OT1/ptm/m/n/8 VPixx Tech-no-lo-gies DA-TA-Pixx da-ta ac-qui-si-tion and grap-hics
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 447--448
+\OT1/ptm/m/n/8 tool-box. http://vpixx.com/products/tools-for-vision-sciences/display-
+ []
+
+
+Underfull \hbox (badness 1881) in paragraph at lines 449--450
+[]\OT1/ptm/m/n/8 Plexcontrol Soft-wa-re. https://plexon.com/products/omniplex-software/
  []
 
 
@@ -885,25 +892,23 @@ Before submitting the final camera ready copy, remember to:
  uses only Type 1 fonts and that every step in the generation
  process uses the appropriate paper size.
 
-[7
-
- <./figures/memory_gui.png>] (/Users/luis/Documents/Master/TFM/repos/stimpack/docs/latex/.texpadtmp/conference_041818.aux
-LaTeX Info: Redefining \. on input line 8.
-LaTeX Info: Redefining \% on input line 8.
+[8 <./figures/memory_gui.png>] (/Users/luis/Documents/Master/TFM/repos/stimpack/docs/latex/.texpadtmp/conference_041818.aux
+LaTeX Info: Redefining \. on input line 9.
+LaTeX Info: Redefining \% on input line 9.
 ) ) 
 Here is how much of TeX's memory you used:
- 5660 strings out of 492995
- 79601 string characters out of 6132704
- 160871 words of memory out of 5000000
- 9114 multiletter control sequences out of 15000+600000
- 41116 words of font info for 88 fonts, out of 8000000 for 9000
+ 5663 strings out of 492995
+ 79731 string characters out of 6132704
+ 160904 words of memory out of 5000000
+ 9115 multiletter control sequences out of 15000+600000
+ 40038 words of font info for 87 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 39i,11n,35p,990b,359s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 39i,11n,35p,1021b,359s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/local/texlive/2017/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/local/texlive/2017/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/urw/times/utmbi8a.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on /Users/luis/Documents/Master/TFM/repos/stimpack/docs/latex/.texpadtmp/conference_041818.pdf (7 pages, 578914 bytes).
+Output written on /Users/luis/Documents/Master/TFM/repos/stimpack/docs/latex/.texpadtmp/conference_041818.pdf (8 pages, 838073 bytes).
 PDF statistics:
- 62 PDF objects out of 1000 (max. 8388607)
- 32 compressed objects within 1 object stream
+ 68 PDF objects out of 1000 (max. 8388607)
+ 34 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
- 41 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 51 words of extra memory for PDF output out of 10000 (max. 10000000)
 

@@ -19,7 +19,7 @@ despierto\\
 }
 
 \author{\IEEEauthorblockN{1\textsuperscript{st} Luis Felipe Llamas Luaces}
-\IEEEauthorblockA{\textit{Grupo de Neurociencia y Control Motor¿?¿?¿?¿} \\
+\IEEEauthorblockA{\textit{Grupo de Neurociencia y Control Motor} \\
 \textit{Universidade da Coruña}\\
 A Coruña, España \\
 l.f.llamas@udc.es}
@@ -30,7 +30,7 @@ l.f.llamas@udc.es}
 \maketitle
 
 \begin{abstract}
-%La neurociencia, especialmente los estudios neurofisiológicos y psicofísicos, se han visto fuertemente impulsados por el avance de las ciencias de la computación. Este impulso viene dado por la aparición de nuevas herramientas de adquisición y procesado de datos que permitieron 
+
 El desarrollo de las ciencias de la computación ha impulsado mucho la investigación en neurociencia, especialmente en lo que se refiere a estudios electrofisiológicos y de psicofísica. Esto es debido a la capacidad de presentar estímulos y capturar datos de respuesta con cada vez mayor precisión temporal. Desde los años 70 han aparecido múltiples herramientas que permiten a los investigadores desarrollar experimentos que involucran tanto sistemas de presentación de estímulos como de captura de datos neuronales. En este artículo se presenta Stimpack, una nueva herramienta basada en la librería Psychtoolbox para el entorno Matlab, que permita a los investigadores el desarrollo de estudios electrofisiológicos en primates de una manera simple y con un entorno gráfico amigable y control de los experimentos a tiempo real, siendo además fácilmente modificable para añadir nuevas características a la misma. 
 
 \end{abstract}
@@ -40,24 +40,57 @@ Psicofísica, Neurofisiología, Neurociencia, Vision, Software
 
 \section{Introducción}
 \subsection{Contexto}
-%El grupo NeuroCom de la universidad de la Coruña lleva a cabo una linea de investigación
-%sobre estudios electrofisiológicos en primates.
-%El sistema actual para realizar estos estudios consta de una pantalla en la que se muestran
-%distintos patrones al animal, una cámara de seguimiento ocular, un sistema de recompensa
-%que suministra al sujeto una recompensa en forma de zumo cuando realiza la tarea
-%correctamente y un sistema de encefalograma que se conecta a los electrodos implantados en
-%el cerebro del animal.
-%Para facilitar el desarrollo de los estudios, se desarrollará una herramienta software que
-%permita realizar diferentes tareas de estimulación visual de forma paramétrica , que sincronice
-%las diferentes partes del sistema para obtener mediciones precisas que contengan marcadores
-%sobre los eventos ocurridos en el desarrollo del experimento y que cuente con una interfaz
-%amigable evitando en la medida de lo posible el uso de la linea de comandos.
 
-El grupo de Neurociencia y Control Motor de la universidad de la Coruña (NeuroCom) 
+
+%- Si todas la memorias de trabajo son iguales y en que lugar del cerebro se codifican
+
+%- Hipotesos -> dos memorias de trabajo, una sensorial y una conceptual
+
+%- La memoria sensorial debe estar codificada en las áreas visuales(en este caso) en general en las áreas sensoriales. Ej, sin flecha
+
+%- La memoria conceptual esta codificada en el área prefrontal, por ejemplo tarea con flecha
+
+
+%- Necesidad del proyecto: Simplificar el proceso , tener una herramienta propia elimina dependencias del desarrollador de opticka. 
+
+
+%- Cortex: Alta comunicación con los miembros del equipo de desarrollo
+
+%- Plexon OnlinePlexonmap? En el ordenador con windows
+
+%- En la introducción explicar la necesidad de fijación, desplazamiento de los campos receptores
+
+
+%Mapeo
+
+%- Se va a bloquear con tms en el prefrontal, la idea es que a nivel de comportamiento se va a inhibir una de las memorias. Si quitamos prefrontal el resto van a poder codificar la sensorial pero no la conceptual.
+
+
+%- Se ha probado con los investigadores y la van a usar
+
+
+%- Explicar que esta disponible en GitHub
+
+%- Trabajo futuro, a través del feedback de otros usuarios, que la herramienta termine siendo algo más general y no solo especifica para este proyecto
+
+
+
+El grupo de Neurociencia y Control Motor de la universidad de la Coruña (NeuroCom) lleva a cabo una línea de investigación sobre estudios electrofisiológicos en primates despiertos\cite{neurocom1}\cite{neurocom2}. Actualmente se está desarrollando un proyecto de investigación europeo que busca descubrir si todas las memorias de trabajo son iguales y definir en qué lugar del cerebro se codifican. La memoria de trabajo u operativa es aquella encargada del almacenamiento temporal de información que, al contrario que la memoria a corto plazo, toma parte en procesos más complejos en el procesamiento de información. Esta memoria tiene poca capacidad, está en constante cambio y es la encargada de mantener en mente los datos mientras realizamos una tarea.
+La hipótesis del proyecto en curso es que hay dos tipos diferentes de memoria de trabajo, la sensorial, que únicamente integra datos de los sentidos y la conceptual, que asocia un significado adicional a estos datos. Lo que se busca demostrar es que la memoria sensorial debe estar localizada en el área sensorial del cerebro, en este caso en la corteza visual, ya que los estímulos son visuales, y la memoria conceptual se codifica en la corteza prefrontal.
+Para comprobar esta hipótesis se diseñó un experimento que permitiera capturar los datos de las zonas implicadas en este tipo de memoria durante la realización de distintas tareas para después inhibir la actividad en la corteza prefrontal y comprobar si la memoria conceptual se ve afectada.
+El experimento involucra un primate (un macaco, Macaca mulatta) al que se le mostraran distintos estímulos a través de la vista a los que tendrá que reaccionar empleando un sistema de seguimiento ocular. El animal tendrá fija la cabeza mediante una jaula especifica para esta tarea y se le colocará en frente de un monitor donde se le presentarán los distintos estímulos. Al lado del monitor se encuentra la cámara de seguimiento ocular y un iluminador de infrarrojos para la misma. Adicionalmente cuenta con un sistema de recompensas automático que administra una recompensa en forma de zumo de frutas al animal cuando realiza la tarea correctamente. El animal cuenta con electrodos implantados en las zonas del cerebro a estudiar, a través de los cuales se capturarán los datos de actividad neuronal. Para la inhibición de la corteza prefrontal se usa un sistema de estimulación magnética transcraneal (TMS). Puede verse un esquema del sistema en la figura \ref{figMono}.
+Es necesario que la cabeza del animal y la vista del mismo permanezcan fijas en la misma posición para poder estimular con precisión los campos receptores de la corteza visual, para ello, además del sistema de fijación de la cabeza, se debe entrenar al animal para que mantenga la mirada en todo momento en un punto de fijación que aparece en todo momento en la pantalla.
+En el grupo actualmente se emplea la herramienta Opticka\cite{opticka} para realizar las diferentes tareas, sin embargo se desea desarrollar una nueva herramienta más especifica para este proyecto, y que además pueda expandirse para futuros desarrollos. La mayor ventaja del desarrollo de una herramienta propia es evitar la dependencia con los desarrolladores de Opticka para implementar cambios en la herramienta y al hacerla más especifica en vez de abarcar muchas cosas permite simplificar la interacción del usuario con la misma.
+
+\begin{figure}[htbp]
+\centerline{\includegraphics[width=\linewidth]{figures/mono}}
+\caption{Configuración del experimento}
+\label{figMono}
+\end{figure}
 \subsection{Objetivos del proyecto}
 
-Para el desarrollo del estudio mencionado en la sección anterior, es necesario que los investigadores cuenten con una herramienta acorde a sus necesidades. Actualmente los estudios se llevan a cabo empleando la herramienta Opticka, potente, pero al mismo tiempo complicada de usar, con una interfaz de usuario bastante densa, y difícil de modificar.  es por ello la necesidad del desarrollo de Stimpack.
-Los el objetivo de este proyecto es producir una herramienta que:
+Para el desarrollo del estudio mencionado en la sección anterior, es necesario que los investigadores cuenten con una herramienta acorde a sus necesidades. Actualmente los estudios se llevan a cabo empleando la herramienta Opticka, potente, pero al mismo tiempo complicada de usar, con una interfaz de usuario bastante densa y difícil de modificar, es por ello la necesidad del desarrollo de Stimpack.
+El objetivo de este proyecto es producir una herramienta que:
 
 \begin{itemize}
 	
@@ -70,7 +103,7 @@ Los el objetivo de este proyecto es producir una herramienta que:
 \end{itemize}
 
 
-Durante la fase de definición de requisitos se hizo especial mención a la necesidad de generar un entorno amigable, por lo que se buscó limitar al mínimo las interacciones con la herramienta a través del teclado y la consola de comandos a favor del uso de un entorno gráfico.
+Durante la fase de definición de requisitos del proyecto se hizo especial mención a la necesidad de generar un entorno amigable, por lo que se buscó limitar al mínimo las interacciones con la herramienta a través del teclado y la consola de comandos a favor del uso de un entorno gráfico.
 
 La primera versión de esta herramienta además debía soportar la ejecución de las siguientes tareas experimentales:
 
@@ -87,8 +120,8 @@ Existen múltiples herramientas para realizar experimentos de estimulación visu
 \subsection{Cortex}
 
 Cortex (COmputerized Real Time EXperiments)\cite{cortex} fue una de las primeras herramientas desarrolladas para la ejecución de experimentos neurofisiológicos y de comportamiento en PC.
-La herramienta estaba pensada en torno al concepto de ensayo, donde se ejecutaban las diferentes tareas de forma individual, mientras los diferentes sistemas de adquisición de datos capturaban la información necesaria, seguidos de un tiempo entre ensayos durante el que se almacenaban los datos y se preparaba el siguiente ensayo. 
-La configuración de los ensayos se llevaba a cabo mediante tres archivos de texto que eran importados por Cortex, un archivo de "items" donde se describen los estímulos visuales que se usarán en el experimento, un archivo de condiciones que controla lo que ocurre en cada ensayo y un script de temporización que controlaba los tiempos del experimento.
+La herramienta estaba pensada en torno al concepto de ensayo, donde se ejecutaban las diferentes tareas de forma individual mientras los diferentes sistemas de adquisición de datos capturaban la información necesaria, seguidos de un tiempo entre ensayos durante el que se almacenaban los datos y se preparaba el siguiente ensayo. 
+La configuración de los ensayos se llevaba a cabo mediante tres archivos de texto que eran importados por Cortex: un archivo de \textit{items} donde se describen los estímulos visuales que se usarán en el experimento, un archivo de condiciones que controla lo que ocurre en cada ensayo y un script de temporización que controlaba los tiempos del experimento. Además de todas las características ofrecidas por la herramienta, Cortex contaba con la ventaja de tener un equipo de desarollo que mantenía un alto grado de comunicación con los usuarios, permitiendo integrar mejoras a la aplicación y dar soporte a los usuarios.
 
 
 \subsection{Monkeylogic}
@@ -117,7 +150,7 @@ Existen alternativas a esta librería para su uso en diferentes entornos de prog
 
 \subsection{Opticka}
 
-Opticka\cite{opticka} es un framework orientado a objetos en Matlab basado en la Psychtoolbox que permite la generación de estímulos visuales complejos y su presentación al sujeto. Es multiplataforma y se comunica con el sistema de adquisición de datos Omniplex\cite{omniplex} de Plexon a través de "strobbed words" y ethernet. Para "Behavioral control" utiliza el sistema de seguimiento ocular Eyelink conectado con la interfaz TCP. 
+Opticka\cite{opticka} es un framework orientado a objetos en Matlab basado en la Psychtoolbox que permite la generación de estímulos visuales complejos y su presentación al sujeto. Es multiplataforma y se comunica con el sistema de adquisición de datos Omniplex\cite{omniplex} de Plexon a través de \textit{strobbed words} y ethernet. Para tareas de control de comportamiento utiliza el sistema de seguimiento ocular Eyelink conectado con la interfaz TCP. 
 Tiene una interfaz gráfica opcional, que permite la configuración de experimentos a personas sin conocimientos de programación.
 Opticka es la herramienta que se emplea actualmente en el Grupo de Neurociencia y Control Motor de la UDC, ya que el equipo usado fue heredado del laboratorio donde se desarrolló esta herramienta y es completamente compatible con la misma sin necesidad de modificaciones.
 
@@ -125,7 +158,7 @@ Opticka es la herramienta que se emplea actualmente en el Grupo de Neurociencia 
 
 \subsection{Orion}
 
-Orion fue un intento por parte de un miembro del grupo para implementar una nueva herramienta, hecha a medida de las necesidades del grupo, que pudiera llevar a cabo tareas especificas de una forma más sencilla. Cuenta con una interfaz gráfica muy simple, únicamente valida para lanzar los experimentos, siendo necesario modificar el código para cambiar las condiciones experimentales. Permite cierto grado de control a tiempo real del experimento, a través de comandos de teclado.
+Orion fue un intento por parte de un miembro del grupo para implementar una nueva herramienta, hecha a medida de las necesidades del grupo, que pudiera llevar a cabo tareas especificas de una forma más sencilla. Cuenta con una interfaz gráfica muy simple, únicamente válida para lanzar los experimentos, siendo necesario modificar el código para cambiar las condiciones experimentales. Permite cierto grado de control a tiempo real del experimento a través de comandos de teclado.
 Depende de Opticka para su funcionamiento.
 
 
@@ -135,27 +168,27 @@ Depende de Opticka para su funcionamiento.
 
 \begin{figure}[htbp]
 \centerline{\includegraphics[width=\linewidth]{figures/system_diagram.png}}
-\caption{Example of a figure caption.}
+\caption{Diagrama de conexiones del sistema}
 \label{figSysDiagram}
 \end{figure}
 
-Stimpack requiere un ordenador donde se ejecutará la herramienta, el equipo usado en el laboratorio es un Mac Pro, con XXXX características.
-Adicionalmente son necesarios otros dos equipos, uno ejecutando windows empleado para la captura de datos y marcas temporales y otro parte del sistema de seguimiento ocular.
+Stimpack requiere un ordenador donde se ejecutará la herramienta. El equipo usado en el laboratorio es un Mac Pro, con XXXX características.
+Adicionalmente son necesarios otros dos equipos, uno ejecutando Windows empleado para la captura de datos y marcas temporales y otro parte del sistema de seguimiento ocular.
 Para el seguimiento ocular se emplea un sistema Eyelink 1000 Plus\cite{eyelink} capaz de realizar un seguimiento binocular a una tasa de muestreo de 2000Hz conectado con el equipo ejecutando Stimpack a través de ethernet.
-Para la presentación de estímulos visuales y el envío de marcas temporales se emplea un DATAPixx \cite{datapixx} de VPixx Technologies, conectado al equipo ejecutando la herramienta mediante USB para el envío de marcas temporales y mediante DVI para la presentación de estimulos, esta señal es duplicada en dos monitores, uno que se muestra al sujeto experimental y uno para que el usuario supervise la ejecución del experimento.
-Para la captura de datos de los electrodos y de las marcas temporales se emplea un OmniPlex Neural Data Acquisition System\cite{omniplex} de Plexon, conectado al DATAPixx y al preamplificador de los electrodos, también de Plexon. El procesado de estos datos se lleva a cabo en el equipo Windows mencionado anteriormente
+Para la presentación de estímulos visuales y el envío de marcas temporales se emplea un DATAPixx \cite{datapixx} de VPixx Technologies, conectado al equipo ejecutando la herramienta mediante USB para el envío de marcas temporales y mediante DVI para la presentación de estímulos, esta señal es duplicada en dos monitores, uno que se muestra al sujeto experimental y uno para que el usuario supervise la ejecución del experimento.
+Para la captura de datos de los electrodos y de las marcas temporales se emplea un OmniPlex Neural Data Acquisition System\cite{omniplex} de Plexon, conectado al DATAPixx y al preamplificador de los electrodos, también de Plexon. El procesado de estos datos se lleva a cabo en el equipo Windows mencionado anteriormente.
 Para la administración de recompensas al sujeto experimental se emplea un sistema de recompensa digital Crist Instruments V2 Models D1 manejado a través de una  tarjeta de IO digital Labjack U6\cite{labjack}, que se conecta a través de USB con el ordenador que ejecuta la herramienta.
 
 
 \subsection{Software necesario}
-El equipo en el que se utiliza la herramienta funciona sobre OSX Lion?. Tiene instalada una copia de Matlab version 2015b, la Psychophysics Toolbox v3, la toolbox de Eyelink, la toolbox de Datapixx y la librería para utilizar el Labjack.
-El equipo conectado al Omniplex tiene instalado el software XXXXX para la captura de datos.
+El equipo en el que se utiliza la herramienta funciona sobre OSX Lion. Tiene instalada una copia de Matlab versión 2015b, la Psychophysics Toolbox v3, la toolbox de Eyelink, la toolbox de Datapixx y la librería para utilizar el Labjack.
+El equipo conectado al Omniplex tiene instalado el software Plexcontrol\cite{plexcontrol} para la captura de datos.
 
 \section{Desarrollo}
 \subsection{Concepto}
  
-Partiendo de los requisitos expuestos en la sección de objetivos, se decidió desarrollar una herramienta que primara la sencillez ante la capacidad de realizar muchas tareas diferentes, por ello se evitó el uso de una única pantalla de configuración, como las usadas en Opticka o Monkeylogic, a favor de interfaces individuales para cada tarea. 
-Estas interfaces siguen una estructura compartida, compartiendo la parte donde se especifican las variables experimentales comunes a todas las tareas, como podría ser el color del fondo, tiempo entre ensayos, tamaño del punto de fijación, y completandola con las diferentes variables o formas de control específicas a cada tarea diferente. En esta interfaz se integra además el sistema de control experimental que permite, una vez iniciado el experimento, controlar la ejecución del mismo, ya sea visualizando datos relevantes a cada tarea, mediante una zona de visualización de gráficos, como pausando o deteniendo el experimento, enviando marcas al sistema de registro o administrando manualmente una recompensa al sujeto, todo ello a través de la interfaz gráfica, sin la necesidad de ejecutar comandos de consola ni memorizar combinaciones de teclas. 
+Partiendo de los requisitos expuestos en la sección de objetivos, se decidió desarrollar una herramienta que primara la sencillez ante la capacidad de realizar muchas tareas diferentes por ello se evitó el uso de una única pantalla de configuración, como las usadas en Opticka o Monkeylogic, a favor de interfaces individuales para cada tarea. 
+Estas interfaces siguen una estructura similar, compartiendo la parte donde se especifican las variables experimentales comunes a todas las tareas, como podría ser el color del fondo, tiempo entre ensayos, tamaño del punto de fijación, y completándola con las diferentes variables o formas de control específicas a cada tarea diferente. En esta interfaz se integra además el sistema de control experimental que permite, una vez iniciado el experimento, controlar la ejecución del mismo, ya sea visualizando datos relevantes a cada tarea, mediante una zona de visualización de gráficos, como pausando o deteniendo el experimento, enviando marcas al sistema de registro o administrando manualmente una recompensa al sujeto, todo ello a través de la interfaz gráfica, sin la necesidad de ejecutar comandos de consola ni memorizar combinaciones de teclas. 
 Otra característica de la herramienta es la capacidad de modificar los parámetros del experimento sin necesidad de reiniciarlo, siendo posible cambiar cualquiera de las variables experimentales a través de la interfaz de usuario a tiempo real viendo reflejados los cambios al inicio del siguiente ensayo.
 Ya que se quería que la herramienta fuera expansible, dadas las limitaciones de Matlab a la hora de crear interfaces, se decidió crear una plantilla de tarea, que el desarrollador puede completar para implementar nuevos experimentos.
 
@@ -165,27 +198,51 @@ Ya que se quería que la herramienta fuera expansible, dadas las limitaciones de
 \label{figmainGUI}
 \end{figure}
 
-La interfaz principal del programa permite el lanzamiento de las diferentes tareas y cuenta con una parte de configuración donde se pueden modificar parámetros comunes a todas las tareas como puede ser la distancia al monitor de presentación de estímulos y sus dimensiones, usadas para el cálculo de tamaños empleando grados del sistema visual o el numero de monitor donde se mostraran los estímulos. También proporciona la configuración de              varios parámetros que son útiles a la hora de realizar la depuración o desarrollo de la herramienta, como la activación y desactivación del uso de hardware de seguimiento ocular, emulando la vista con el puntero del ratón en caso de desactivar el sistema, del hardware de comunicaciones o la ejecución de Psychtoolbox en modo inseguro, que desactiva los test de sincronía del monitor y permite mostrar estímulos en monitores que no cumplen las especificaciones mínimas de precisión.
+La interfaz principal (figura \ref{figmainGUI}) del programa permite el lanzamiento de las diferentes tareas y cuenta con una parte de configuración donde se pueden modificar los siguientes parámetros generales de la aplicación:
+\begin{itemize}
+	\item La distancia al monitor
+	\item Las dimensiones del monitor
+	\item Activación del sistema de seguimiento ocular
+	\item Activación del sistema de envío de marcas temporales
+	\item Activación del sistema de recompensa
+	\item Activación del modo inseguro de Pychtoolbox
+	\item Seleccion del monitor de estimulación
+\end{itemize} 
+
+\begin{figure}[htbp]
+\centerline{\includegraphics[width=\linewidth]{figures/visual_degrees}}
+\caption{Grados del sistema visual}
+\label{figvisualDegrees}
+\end{figure}
+
+Las dimensiones y la distancia al monitor son necesarias para calcular la correspondencia en grados del sistema visual y píxeles en la pantalla. Los grados del sistema visual son la unidad tamaño usada en los experimentos que implican visión y permiten trasladar tamaños reales a su proyección en la retina (figura \ref{figvisualDegrees}).
+
+El resto de las opciones son útiles a la hora de desarrollar nuevas tareas o modificar la herramienta, ya que permiten ejecutarla sin la necesidad de contar con todo el equipo. En el caso del sistema de seguimiento visual, si se encuentra desactivado, se puede usar el ratón del ordenador para emular la mirada, en los otros casos, tener el hardware desactivado provoca que se generen logs en la consola para poder depurar la aplicación.
+El modo no seguro de Psychtoolbox nos permite ejecutar la aplicación saltándose los tests automáticos de sincronía del monitor. Esta opción es útil cuando es necesario hacer pruebas en monitores que no alcanzan la precisión mínima requerida de sincronía, pero debe ser evitada a la hora de ejecutar experimentos reales ya que los resultados pueden perder precisión.
 
 \subsection{Arquitectura}
-Stimpack esta desarrollado usando orientación a objetos en la medida de lo posible para poder implementar un sistema lo más modular posible y facilitar la expansión de la herramienta añadiendo nuevas tareas.
-Stimpack esta formado por varias clases, la clase principal del programa "stimpack" contiene una referencia a la clase de propiedades generales del sistema, de la que se hablará a continuación, y se encarga del inicio de la interfaz gráfica de usuario. Esta clase hereda de la clase "handle" de Matlab, lo que permite su acceso como referencia. La interfaz gráfica principal, arrancada al ejecutar la herramienta, contiene tres botones para arrancar las diferentes tareas y una zona con opciones de configuración.
-La clase "stimprops", que también hereda de handle, contiene las propiedades generales del sistema, como el tamaño real de la pantalla en centímetros y la distancia a la misma, el estado de activación del hardware, el índice del monitor de estimulación, etc... que no necesitan ser cambiadas durante las distintas ejecuciones del experimento.
-Para evitar la repetición de código y abstraer a los futuros desarrolladores de la herramienta de tener que repetir la configuración del sistema en cada tarea diferente se definió una clase abstracta "abstractStimulus" donde se aglomeran todas las propiedades y métodos comunes a todas las tareas, dejando que el  programador de la tarea se centre en la parte más especifica de las tareas, la presentación de estímulos y el procesado de los resultados.
+Stimpack está desarrollado usando orientación a objetos para poder implementar un sistema lo más modular posible y facilitar la expansión de la herramienta añadiendo nuevas características.
+Stimpack está formado por varias clases, la clase principal del programa \textit{stimpack} contiene una referencia a la clase de propiedades generales del sistema, de la que se hablará a continuación, y se encarga del inicio de la interfaz gráfica de usuario. Esta clase hereda de la clase \textit{handle} de Matlab, lo que permite su acceso como referencia. La interfaz gráfica principal, arrancada al ejecutar la herramienta, contiene tres botones para arrancar las diferentes tareas y una zona con opciones de configuración.
+La clase \textit(stimprops), que también hereda de handle, contiene las propiedades generales del sistema, como el tamaño real de la pantalla en centímetros y la distancia a la misma, el estado de activación del hardware, el índice del monitor de estimulación, etc, que no necesitan ser cambiadas durante las distintas ejecuciones del experimento.
+Para evitar la repetición de código y abstraer a los futuros desarrolladores de la herramienta de tener que repetir la configuración del sistema en cada tarea diferente se definió una clase abstracta \textit{abstractStimulus} donde se aglomeran todas las propiedades y métodos comunes a todas las tareas, dejando que el  programador de la tarea se centre en la parte más especifica de las tareas, la presentación de estímulos y el procesado de los resultados.
 
 Algunas de las propiedades mas relevantes definidas en esta clase abstracta son las siguientes:
 
-* Resolución de la pantalla
-* Parámetros de la parte de fijación
-* Número de ensayos por tarea
-* Tiempo entre ensayos y la variabilidad del mismo
-* El estado del experimento
+\begin{itemize}
+
+	\item Resolución de la pantalla
+	\item Parámetros de la parte de fijación
+	\item Número de ensayos por tarea
+	\item Tiempo entre ensayos y la variabilidad del mismo
+	\item El estado del experimento
+
+\end{itemize}
 
 Además de esas propiedades, existen algunas propiedades abstractas que deben ser implementadas por las tareas que hereden de la clase, que configuran los nombres y las rutas que se emplearan a la hora de guardar los datos al finalizar el experimento.
 
-Además de las propiedades, en esta clase están definidos los métodos de configuración comunes a todos las tareas, como la configuración de los distintos elementos de hardware que integran el sistema (Eyelink, dataPixx y labJack),la conexión a los mismos, la preparación de la pantalla y la configuración de psychToolbox para la presentación de estímulos y los métodos de limpieza que se ejecutan al terminar el experimento. También está aquí definido el método principal de ejecución de la tarea, que ejecuta todos los métodos en el orden correcto, incluyendo los dos métodos abstractos que el programador debe implementar. Estos métodos son "runTrials" donde se implementa toda la lógica del experimento y "endExperiment" que se ejecuta inmediatamente después de terminar todos los ensayos y cuya finalidad es procesar los datos recogidos en el experimento.
+Además de las propiedades, en esta clase están definidos los métodos de configuración comunes a todos las tareas, como la configuración de los distintos elementos de hardware que integran el sistema (Eyelink, dataPixx y labJack), la conexión a los mismos, la preparación de la pantalla y la configuración de psychToolbox para la presentación de estímulos y los métodos de limpieza que se ejecutan al terminar el experimento. También está aquí definido el método principal de ejecución de la tarea, que ejecuta todos los métodos en el orden correcto, incluyendo los dos métodos abstractos que el programador debe implementar. Estos métodos son \textit{runTrials} donde se implementa toda la lógica del experimento y \textit{endExperiment} que se ejecuta inmediatamente después de terminar todos los ensayos y cuya finalidad es procesar los datos recogidos en el experimento.
 
-A parte de los métodos mencionados anteriormente, "abstractStimulus" proporciona una serie de métodos de utilidad que facilitan la implementación de las tareas:
+Aparte de los métodos mencionados anteriormente, \textit{abstractStimulus} proporciona una serie de métodos de utilidad que facilitan la implementación de las tareas:
 
 \begin{itemize}
 	\item Obtener las coordenadas visuales
@@ -196,9 +253,10 @@ A parte de los métodos mencionados anteriormente, "abstractStimulus" proporcion
 \end{itemize}
 
 
-\subsection{Tareas a implementar}
+\subsection{Tareas implementadas}
 
-Tres tareas fueron implementadas en la primera versión de la herramienta, adicionalmente se creo una plantilla para desarrollar nuevas tareas sin tener que reescribir el código común. A continuación se extienden los detalles de cada tarea individualmente.
+Tres tareas fueron implementadas en la primera versión de la herramienta, adicionalmente se creo una plantilla a partir de la primera (fijación) para desarrollar nuevas tareas sin tener que reescribir el código común. 
+A continuación se extienden los detalles de cada tarea individualmente.
 
 \subsubsection*{Tarea de fijación}
 
@@ -210,12 +268,12 @@ Tres tareas fueron implementadas en la primera versión de la herramienta, adici
 
 \begin{figure*}[htbp]
 \centerline{\includegraphics[width=\linewidth]{figures/fixation_gui}}
-\caption{Interfaz principal de la aplicación}
+\caption{Interfaz de la tarea de fijación}
 \label{figfixGUI}
 \end{figure*}
 
-La tarea de fijación es la más básica de las implementadas y sirve de base para el resto, derivando la plantilla para crear tareas directamente de esta.
-En esta tarea se le muestra al individuo un punto sobre un fondo en el que debe fijar la vista, si lo hace correctamente se le da una recompensa.
+La tarea de fijación es la más básica de las implementadas y sirve de base para el resto, derivando la plantilla para crear tareas directamente de esta. 
+En la tarea de fijación se le muestra al individuo un punto sobre un fondo en el que debe fijar la vista. Si lo hace correctamente se le da una recompensa.
 Los pasos de la tarea son los siguientes:
 
 \begin{enumerate}
@@ -227,10 +285,11 @@ Los pasos de la tarea son los siguientes:
 	\item Tiempo entre ensayos y vuelta al punto 1
 \end{enumerate}
 
+En la figura \ref{figfixTask} puede verse lo que se le muestra al sujeto durante el experimento. 
 
 Esta tarea sirve para entrenar al sujeto en mantener la mirada en el punto de fijación. Es necesario entrenar al sujeto en mantener la vista fija en el punto de fijación, ya que en el resto de tareas es un requisito indispensable que el animal mantenga la mirada en todo momento en el punto de fijación.
 
-Esta tarea es totalmente parametrizable, pudiéndose modificar:
+Esta tarea es totalmente parametrizable, pudiéndose modificara través de la interfaz gráfica (figura \ref{figfixGUI}) las siguientes propiedades:
 \begin{itemize}
 	\item Tamaño del punto de fijación y de la ventana de fijación
 	\item Color del punto de fijación y del fondo
@@ -262,26 +321,30 @@ Durante el experimento, se le muestra al investigador en la interfaz de usuario 
 \end{figure*}
 
 La tarea de mapeo se construye sobre la tarea de fijación y comparte todos su parámetros, además de añadir parámetros propios y una interfaz gráfica basada en la anterior pero adecuada a esta tarea.
-En la tarea de mapeo se le muestra al sujeto el punto de fijación, una vez consigue fijar la mirada aparece un estimulo, en forma de un rectángulo de color. El animal debe seguir manteniendo la mirada en el punto de fijación hasta que desaparezca, si lo consigue se le da una recompensa.
+En la tarea de mapeo se le muestra al sujeto el punto de fijación, una vez consigue fijar la mirada aparece un estimulo, en forma de un rectángulo de color. El animal debe seguir manteniendo la mirada en el punto de fijación hasta que desaparezca. Si lo consigue se le da una recompensa.
 El protocolo seguido es el siguiente:
 
 \begin{enumerate}
 	\item Aparece el fondo
 	\item Aparece el punto de fijación
 	\item El animal fija
-	\item Aparece el estimulo
+	\item Aparece el estímulo
 	\item El animal mantiene la fijación
-	\item Desaparece el punto y el estimulo
+	\item Desaparece el punto y el estímulo
 	\item Recompensa
 	\item Tiempo entre ensayos y vuelta al punto 1
 \end{enumerate}
 
 
-Los parámetros modificables adicionalmente a los de la tarea de fijación son el tiempo de presentación del estímulo y el color del mismo. Además cuenta con una serie de botones que permiten controlar qué estimulo (cuadrante o subcuadrante) se le mostrará al animal, dos botones para activar el ciclado automático de cuadrantes entre ensayos y un botón para en caso de estar activado el ciclado de cuadrantes, repita el último mientras no se realice correctamente.
+En la figura \ref{figMapTask} puede verse lo que se le muestra al sujeto durante la tarea. 
+
+
+
+Los parámetros modificables adicionalmente a los de la tarea de fijación son el tiempo de presentación del estímulo y el color del mismo. Además cuenta con una serie de botones (figura \ref{figmappingGUI}) que permiten controlar qué estimulo (cuadrante o subcuadrante) se le mostrará al animal, dos botones para activar el ciclado automático de cuadrantes entre ensayos y un botón para en caso de estar activado el ciclado de cuadrantes, repita el último mientras no se realice correctamente.
 Durante el experimento se le muestra al investigador un gráfico similar al de la tarea de fijación, pero mostrando los datos para el cuadrante seleccionado en la interfaz.
 
 
-Esta tarea permite registrar datos neuronales sobre que neuronas se activan al presentar cierto estímulo en parte de la retina ¿Campos receptores? y enfocar con mayor precisión los estímulos futuros.
+Esta tarea permite registrar datos neuronales sobre que neuronas se activan al presentar cierto estímulo en parte de la retina, los denominados campos receptores,  y enfocar con mayor precisión los estímulos futuros.
 
 
 \subsubsection*{Tarea de memoria de trabajo}
@@ -299,8 +362,8 @@ Esta tarea permite registrar datos neuronales sobre que neuronas se activan al p
 
 \end{figure*}
 
-La última tarea implementada es la más elaborada de todas, fue construida también sobre la plantilla y es la que se va a utilizar para llevar a cabo la investigación sobre el efecto de la TMS sobre la memoria de trabajo. 
-En esta tarea el animal debe fijar la mirada en el punto, una vez fija se le muestra un estimulo, que puede ser de dos tipos diferentes, un grating en movimiento o un grating más una flecha, una vez pasa un tiempo el estimulo desaparece y se deja únicamente el punto de fijación, pasado otro momento se muestra un grating moviéndose en una dirección aleatoria, una vez pasado otro intervalo de tiempo desaparecen tanto el estimulo como el punto de fijación y aparecen dos puntos a los lados de la pantalla. En el caso del estimulo sin flecha, el animal debe fijar la mirada en el punto en el lado hacia el cual se movía el primer gratina, en caso de que fuera el con flecha, debe escoger  hacia el lado que señalaba la misma.
+La última tarea implementada es la más elaborada de todas, fue construida también sobre la plantilla y es la que se va a utilizar para llevar a cabo la investigación sobre la memoria de trabajo. 
+En esta tarea el animal debe fijar la mirada en el punto, una vez fija se le muestra un estímulo, que puede ser de dos tipos diferentes, un grating en movimiento o un grating más una flecha, una vez pasa un tiempo el estimulo desaparece y se deja únicamente el punto de fijación, pasado otro momento se muestra un grating moviéndose en una dirección aleatoria, una vez pasado otro intervalo de tiempo desaparecen tanto el estimulo como el punto de fijación y aparecen dos puntos a los lados de la pantalla. En el caso del estímulo sin flecha, el animal debe fijar la mirada en el punto en el lado hacia el cual se movía el primer gratina, en caso de que fuera el con flecha, debe escoger  hacia el lado que señalaba la misma.
 Los pasos organizados son los siguientes:
 
 
@@ -309,18 +372,20 @@ Los pasos organizados son los siguientes:
 	\item Animal fija
 	\item Aparece primer estímulo (con o sin flecha)
 	\item Desaparece el estimulo y se mantiene el punto de fijación
-	\item Aparece el segundo estimulo (solo grating)
-	\item Desaparecen el estimulo y el punto de fijación y aparecen los selectores en el monitor
+	\item Aparece el segundo estímulo (solo grating)
+	\item Desaparecen el estímulo y el punto de fijación y aparecen los selectores en el monitor
 	\item El animal escoge fijando la vista en uno de ellos
 	\item Desaparecen los selectores y si escoge el correcto se le da recompensa
 	\item Tiempo entre ensayos y vuelta al punto 1
 \end{enumerate}
 
+En la figura \ref{figMemoryTask} puede verse este proceso. 
+
 
 Los parámetros modificables son los siguientes:
 
 \begin{itemize}
-	\item Tiempo del primer estimulo
+	\item Tiempo del primer estímulo
 	\item Tiempo entre estímulos
 	\item Tiempo del segundo estímulo
 	\item Tiempo disponible para responder
@@ -332,56 +397,63 @@ Los parámetros modificables son los siguientes:
 \end{itemize}
 
 
-Además de estos parámetros, en la interfaz gráfica existe un botón para cambiar entre las dos variantes de la tarea con y sin flecha.
-Las direcciones empleadas para el primer estimulo son precalculadas basadas en el numero de ensayos, 50\% hacia cada lado, y después son ordenadas de manera aleatoria.
+Además de estos parámetros, en la interfaz gráfica (figura \ref{figMemoryGui}) existe un botón para cambiar entre las dos variantes de la tarea con y sin flecha.
+Las direcciones empleadas para el primer estímulo son precalculadas basadas en el número de ensayos, 50\% hacia cada lado, y después son ordenadas de manera aleatoria.
 
 En la zona de información de la interfaz de usuario se muestra un gráfico de barras separado en izquierda y derecha que muestra las diferentes estadísticas de fijación, no fijación y rotura de fijación para cada lado.
 
 
-En esta tarea se pone a prueba la memoria de trabajo del sujeto, haciéndole recordar una dirección hasta que aparezcan los selectores. En este tiempo se le puede aplicar al sujeto la estimulación magnética transcraneal (TMS) en la zona del cerebro responsable de este tipo de memoria y estudiar el efecto de la misma sobre el comportamiento del sujeto.
+En esta tarea se pone a prueba la memoria de trabajo del sujeto, haciéndole recordar una dirección hasta que aparezcan los selectores. En este tiempo se le puede aplicar al sujeto la estimulación magnética transcraneal (TMS) en la corteza prefrontal. Si la hipótesis es correcta, se verá afectado el rendimiento del individuo a la hora de realizar la tarea que implica la flecha ya que requiere información contextual (el animal debe aprender qué significa la flecha), sin embargo la versión sin flecha, al ser una estimulación puramente sensorial, no debería verse afectada.
 
 \section{Conclusiones}
 
 En este trabajo se ha implementado una herramienta que permite el control de experimentos de estimulación visual.
-Stimpack proporciona un entorno fácil de utilizar que permite al usuario ejecutar las tres tareas de comportamiento definidas en los objetivos del proyecto, limitando la interacción a través de la linea de comandos únicamente a arrancar propia herramienta. La interfaz gráfica se ha simplificado al máximo, creando ventanas especificas para cada tarea, esto distancia a la herramienta de otras cómo Opticka o Monkeylogic, que cuentan con interfaces de usuario muy densas y genericas. Esta característica de stimpack lo hace más usable a costa de una menor flexibilidad.
+Stimpack proporciona un entorno fácil de utilizar que permite al usuario ejecutar las tres tareas de comportamiento definidas en los objetivos del proyecto, limitando la interacción a través de la línea de comandos únicamente a arrancar propia herramienta. La interfaz gráfica se ha simplificado al máximo, creando ventanas especificas para cada tarea. Esto distancia a la herramienta de otras cómo Opticka o Monkeylogic, que cuentan con interfaces de usuario muy densas y genéricas. Esta característica de stimpack lo hace más usable a costa de una menor flexibilidad.
 Stimpack emplea como lenguaje de programación Matlab y como framework para la presentación de estímulos Psychtoolbox, herramientas que se han convertido en el estándar para el desarrollo de experimentos de psicofísica y neurociencia.
-Se proporciona una forma de expandir la herramienta con nuevas tareas haciendo uso de plantillas, donde los desarrolladores solo necesitan centrarse en la programación de la tarea y la presentación de estímulos, despreocupandose de la parte de configuración y conexión a los diferentes sistemas de hardware.
-La herramienta se integra con los sistemas de seguimiento ocular y adquisición de datos
+Se proporciona una forma de expandir la herramienta con nuevas tareas haciendo uso de plantillas, donde los desarrolladores solo necesitan centrarse en la programación de la tarea y la presentación de estímulos, despreocupándose de la parte de configuración y conexión a los diferentes sistemas de hardware.
+La herramienta se integra con los sistemas de seguimiento ocular y adquisición de datos.
+Durante el desarollo se ha mantenido una comunicación con los investigadores al cargo del proyecto y se han realizado pruebas en el entorno real, lo que ha permitido que la herramienta se adapte bien a sus necesidades. Stimpack comenzará a emplearse en breve en el proyecto.
 
 
 \section{Trabajo Futuro}
 
-A continuación se detallan una serie de puntos en los que el futuro desarrollo de Stimpack debería centrarse:
 
-\begin{itemize}
-	\item Modificar la tarea de memoria de trabajo para poder escoger entre el estimulo basado en el grating y un estimulo basado en el ruido de puntos aleatorios
-	\item Añadir la capacidad de guardar un archivo de texto donde se registren todos los cambios a los parámetros de una tarea durante la ejecución de un experimento
-	\item Hacer pruebas de precisión temporal del sistema y de sincronía con la presentación de estímulos
-	\item Mejorar el sistema de calibración de la cámara para soportar la administración de recompensas al sujeto durante la misma.
-	\item Elaborar un manual de usuario y documentar extensivamente la herramienta.
-
-\end{itemize}
+La herramienta está publicada en un repositorio público en Github\cite{stimpackrepo} y se espera que a través del feedback proporcionado los usuarios pueda convertirse en una herramienta general para estimulación visual y no sólo algo especifico para este experimento.
 
 
 \begin{thebibliography}{00}
+\bibitem{neurocom1} Aguila, J., Cudeiro, F. J. and Rivadulla, C. (2017) ‘Suppression of V1 Feedback Produces a Shift in the Topographic Representation of Receptive Fields of LGN Cells by Unmasking Latent Retinal Drives’, Cerebral Cortex, 27(6), pp. 3331–3345. doi: 10.1093/cercor/bhx071.
+
+\bibitem{neurocom2} Aguila, J., Cudeiro, F. J. and Rivadulla, C. (2017) ‘Suppression of V1 Feedback Produces a Shift in the Topographic Representation of Receptive Fields of LGN Cells by Unmasking Latent Retinal Drives’, Cerebral Cortex, 27(6), pp. 3331–3345. doi: 10.1093/cercor/bhx071.
+
+\bibitem{cortex} Cortex: A Program for COmputerized Real Time EXperiments. http://www.cnbc.cmu.edu/~rickr/ctxman5.html (Online) Último acceso: 14/6/2018
+
+
 \bibitem{monkeylogic}ASAAD, Wael F.; ESKANDAR, Emad N. A flexible software tool for temporally-precise behavioral control in Matlab. Journal of neuroscience methods, 2008, vol. 174, no 2, p. 245-258.
 
+
 \bibitem{psychtoolbox} BRAINARD, David H.; VISION, Spatial. The psychophysics toolbox. Spatial vision, 1997, vol. 10, p. 433-436.
+
+\bibitem{psychopy} Peirce, J. W. (2007) ‘PsychoPy—Psychophysics software in Python’, Journal of Neuroscience Methods. Elsevier, 162(1–2), pp. 8–13. doi: 10.1016/J.JNEUMETH.2006.11.017.
 
 \bibitem{wave} Meyer, T. and Constantinidis, C. (2005) ‘A software solution for the control of visual behavioral experimentation’, Journal of Neuroscience Methods, 142(1), pp. 27–34. doi: 10.1016/j.jneumeth.2004.07.009.
 
 \bibitem{opticka} Opticka visual stimulus generator. http://iandol.github.io/opticka/ (Online) Último acceso: 16/6/2018
 
-\bibitem{eyelink} Eyelink 1000 Plus Eye Tracking System. https://www.sr-research.com/products/eyelink-1000-plus/ (Online) Último acceso: 13/6/2018
-\bibitem{datapixx} VPixx Technologies DATAPixx data acquisition and graphics toolbox. http://vpixx.com/products/tools-for-vision-sciences/display-drivers/datapixx/  (Online) Último acceso: 13/6/2018
 
 \bibitem{omniplex} OmniPlex Neural Data Acquisition System. https://plexon.com/products/omniplex-d-neural-data-acquisition-system-1/ (Online) Último acceso: 13/6/2018
 
+\bibitem{eyelink} Eyelink 1000 Plus Eye Tracking System. https://www.sr-research.com/products/eyelink-1000-plus/ (Online) Último acceso: 13/6/2018
+\bibitem{datapixx} VPixx Technologies DATAPixx data acquisition and graphics toolbox. http://vpixx.com/products/tools-for-vision-sciences/display-drivers/datapixx/  (Online) Último acceso: 13/6/2018
+
+\bibitem{plexcontrol} Plexcontrol Software. https://plexon.com/products/omniplex-software/ (Online) Último acceso: 18/6/2018
+
 \bibitem{labjack} Labjack U6 DAQ. https://labjack.com/products/u6 (Online) Último acceso: 13/6/2018
 
-\bibitem{cortex} Cortex: A Program for COmputerized Real Time EXperiments. http://www.cnbc.cmu.edu/~rickr/ctxman5.html (Online) Último acceso: 14/6/2018
 
-\bibitem{psychopy} Peirce, J. W. (2007) ‘PsychoPy—Psychophysics software in Python’, Journal of Neuroscience Methods. Elsevier, 162(1–2), pp. 8–13. doi: 10.1016/J.JNEUMETH.2006.11.017.
+
+
+\bibitem{stimpackrepo} Stimpack repository. https://github.com/Shiul93/stimpack (Online) Último acceso: 18/6/2018
 
 \end{thebibliography}
 \vspace{12pt}
