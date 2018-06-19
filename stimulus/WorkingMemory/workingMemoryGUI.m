@@ -56,7 +56,7 @@ function workingMemoryGUI_OpeningFcn(hObject, eventdata, handles, varargin)
 handles.output = hObject;
 if nargin > 3
     handles.stimpack = varargin{1};
-    handles.stimulus = WorkingMemoryStimulus(handles.stimpack);
+    handles.stimulus = WorkingMemoryTask(handles.stimpack);
 end
 
 

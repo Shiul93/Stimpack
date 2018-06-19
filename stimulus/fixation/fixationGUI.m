@@ -56,7 +56,7 @@ function fixationGUI_OpeningFcn(hObject, eventdata, handles, varargin)
 handles.output = hObject;
 if nargin > 3
     handles.stimpack = varargin{1};
-    handles.stimulus = FixationStimulus(handles.stimpack);
+    handles.stimulus = FixationTask(handles.stimpack);
 end
 
 % Common options
