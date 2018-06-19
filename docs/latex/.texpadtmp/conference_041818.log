@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.10.5)  18 JUN 2018 20:50
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.10.5)  19 JUN 2018 17:22
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -780,104 +780,104 @@ File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Live
 ))
 LaTeX Info: Redefining \. on input line 15.
 LaTeX Info: Redefining \% on input line 15.
-LaTeX Font Info:    Calculating math sizes for size <11> on input line 30.
-LaTeX Font Info:    Try loading font information for U+msa on input line 30.
+LaTeX Font Info:    Calculating math sizes for size <11> on input line 34.
+LaTeX Font Info:    Try loading font information for U+msa on input line 34.
  (/usr/local/texlive/2017/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 30.
+LaTeX Font Info:    Try loading font information for U+msb on input line 34.
  (/usr/local/texlive/2017/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
-) <figures/mono.jpg, id=1, 449.5194pt x 571.4148pt>
+) [1{/usr/local/texlive/2017/texmf-var/fonts/map/pdftex/updmap/pdftex.map}
+
+
+] <figures/mono.jpg, id=10, 449.5194pt x 571.4148pt>
 File: figures/mono.jpg Graphic file (type jpg)
  <use figures/mono.jpg>
-Package pdftex.def Info: figures/mono.jpg used on input line 86.
+Package pdftex.def Info: figures/mono.jpg used on input line 92.
 (pdftex.def)             Requested size: 252.0pt x 320.33014pt.
- [1{/usr/local/texlive/2017/texmf-var/fonts/map/pdftex/updmap/pdftex.map}
-
-
-] [2 <./figures/mono.jpg>] <figures/system_diagram.png, id=14, 1204.5pt x 1010.77625pt>
+ [2 <./figures/mono.jpg>] <figures/system_diagram.png, id=14, 1204.5pt x 1010.77625pt>
 File: figures/system_diagram.png Graphic file (type png)
  <use figures/system_diagram.png>
-Package pdftex.def Info: figures/system_diagram.png used on input line 170.
+Package pdftex.def Info: figures/system_diagram.png used on input line 176.
 (pdftex.def)             Requested size: 252.0pt x 211.46727pt.
  [3 <./figures/system_diagram.png>] <figures/main_gui.png, id=20, 595.22375pt x 449.68pt>
 File: figures/main_gui.png Graphic file (type png)
  <use figures/main_gui.png>
-Package pdftex.def Info: figures/main_gui.png used on input line 196.
+Package pdftex.def Info: figures/main_gui.png used on input line 202.
 (pdftex.def)             Requested size: 252.0pt x 190.3807pt.
  <figures/visual_degrees.png, id=21, 1883.035pt x 748.7975pt>
 File: figures/visual_degrees.png Graphic file (type png)
  <use figures/visual_degrees.png>
-Package pdftex.def Info: figures/visual_degrees.png used on input line 213.
+Package pdftex.def Info: figures/visual_degrees.png used on input line 219.
 (pdftex.def)             Requested size: 252.0pt x 100.20352pt.
  [4 <./figures/main_gui.png> <./figures/visual_degrees.png>] <figures/fixation.png, id=27, 402.50375pt x 141.52875pt>
 File: figures/fixation.png Graphic file (type png)
  <use figures/fixation.png>
-Package pdftex.def Info: figures/fixation.png used on input line 264.
+Package pdftex.def Info: figures/fixation.png used on input line 270.
 (pdftex.def)             Requested size: 252.0pt x 88.60857pt.
  <figures/fixation_gui.png, id=28, 992.70876pt x 469.755pt>
 File: figures/fixation_gui.png Graphic file (type png)
  <use figures/fixation_gui.png>
-Package pdftex.def Info: figures/fixation_gui.png used on input line 270.
+Package pdftex.def Info: figures/fixation_gui.png used on input line 276.
 (pdftex.def)             Requested size: 516.0pt x 244.17366pt.
  <figures/mapping_task.png, id=29, 624.3325pt x 141.52875pt>
 File: figures/mapping_task.png Graphic file (type png)
  <use figures/mapping_task.png>
-Package pdftex.def Info: figures/mapping_task.png used on input line 312.
+Package pdftex.def Info: figures/mapping_task.png used on input line 318.
 (pdftex.def)             Requested size: 252.0pt x 57.12447pt.
  <figures/mapping_gui.png, id=30, 981.6675pt x 518.93875pt>
 File: figures/mapping_gui.png Graphic file (type png)
  <use figures/mapping_gui.png>
-Package pdftex.def Info: figures/mapping_gui.png used on input line 318.
+Package pdftex.def Info: figures/mapping_gui.png used on input line 324.
 (pdftex.def)             Requested size: 516.0pt x 272.7795pt.
  [5 <./figures/fixation.png>] <figures/memory_task.png, id=35, 698.61pt x 302.12875pt>
 File: figures/memory_task.png Graphic file (type png)
  <use figures/memory_task.png>
-Package pdftex.def Info: figures/memory_task.png used on input line 353.
+Package pdftex.def Info: figures/memory_task.png used on input line 359.
 (pdftex.def)             Requested size: 252.0pt x 108.98294pt.
  <figures/memory_gui.png, id=36, 991.20313pt x 468.75125pt>
 File: figures/memory_gui.png Graphic file (type png)
  <use figures/memory_gui.png>
-Package pdftex.def Info: figures/memory_gui.png used on input line 359.
+Package pdftex.def Info: figures/memory_gui.png used on input line 365.
 (pdftex.def)             Requested size: 516.0pt x 244.02383pt.
  [6 <./figures/fixation_gui.png> <./figures/mapping_task.png>] [7 <./figures/mapping_gui.png> <./figures/memory_task.png>]
-Underfull \hbox (badness 2617) in paragraph at lines 429--430
+Underfull \hbox (badness 2617) in paragraph at lines 435--436
 []\OT1/ptm/m/n/8 Cortex: A Pro-gram for COm-pute-ri-zed Real Ti-me EX-pe-ri-ments.
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 444--445
+Underfull \hbox (badness 10000) in paragraph at lines 450--451
 []\OT1/ptm/m/n/8 OmniPlex Neu-ral Da-ta Ac-qui-si-tion Sys-tem.
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 444--445
+Underfull \hbox (badness 10000) in paragraph at lines 450--451
 \OT1/ptm/m/n/8 https://plexon.com/products/omniplex-d-neural-data-acquisition-system-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 446--447
+Underfull \hbox (badness 10000) in paragraph at lines 452--453
 []\OT1/ptm/m/n/8 Eyelink 1000 Plus Eye Trac-king Sys-tem. https://www.sr-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 446--447
+Underfull \hbox (badness 10000) in paragraph at lines 452--453
 \OT1/ptm/m/n/8 research.com/products/eyelink-1000-plus/ (On-li-ne) []Ulti-mo ac-ce-so:
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 447--448
+Underfull \hbox (badness 10000) in paragraph at lines 453--454
 []\OT1/ptm/m/n/8 VPixx Tech-no-lo-gies DA-TA-Pixx da-ta ac-qui-si-tion and grap-hics
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 447--448
+Underfull \hbox (badness 10000) in paragraph at lines 453--454
 \OT1/ptm/m/n/8 tool-box. http://vpixx.com/products/tools-for-vision-sciences/display-
  []
 
 
-Underfull \hbox (badness 1881) in paragraph at lines 449--450
+Underfull \hbox (badness 1881) in paragraph at lines 455--456
 []\OT1/ptm/m/n/8 Plexcontrol Soft-wa-re. https://plexon.com/products/omniplex-software/
  []
 
@@ -903,9 +903,9 @@ Here is how much of TeX's memory you used:
  9115 multiletter control sequences out of 15000+600000
  40038 words of font info for 87 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 39i,11n,35p,1021b,359s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 39i,11n,35p,1066b,359s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/local/texlive/2017/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/local/texlive/2017/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/urw/times/utmbi8a.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on /Users/luis/Documents/Master/TFM/repos/stimpack/docs/latex/.texpadtmp/conference_041818.pdf (8 pages, 838073 bytes).
+Output written on /Users/luis/Documents/Master/TFM/repos/stimpack/docs/latex/.texpadtmp/conference_041818.pdf (8 pages, 838483 bytes).
 PDF statistics:
  68 PDF objects out of 1000 (max. 8388607)
  34 compressed objects within 1 object stream

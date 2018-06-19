@@ -24,7 +24,11 @@ despierto\\
 A Coruña, España \\
 l.f.llamas@udc.es}
 %\and
-
+\IEEEauthorblockN{2\textsuperscript{nd} Juan Casto Rivadulla Fernández}
+\IEEEauthorblockA{\textit{Grupo de Neurociencia y Control Motor} \\
+\textit{Universidade da Coruña}\\
+A Coruña, España \\
+casto.rivadulla@udc.es}
 }
 
 \maketitle
@@ -75,11 +79,13 @@ Psicofísica, Neurofisiología, Neurociencia, Vision, Software
 
 
 
-El grupo de Neurociencia y Control Motor de la universidad de la Coruña (NeuroCom) lleva a cabo una línea de investigación sobre estudios electrofisiológicos en primates despiertos\cite{neurocom1}\cite{neurocom2}. Actualmente se está desarrollando un proyecto de investigación europeo que busca descubrir si todas las memorias de trabajo son iguales y definir en qué lugar del cerebro se codifican. La memoria de trabajo u operativa es aquella encargada del almacenamiento temporal de información que, al contrario que la memoria a corto plazo, toma parte en procesos más complejos en el procesamiento de información. Esta memoria tiene poca capacidad, está en constante cambio y es la encargada de mantener en mente los datos mientras realizamos una tarea.
-La hipótesis del proyecto en curso es que hay dos tipos diferentes de memoria de trabajo, la sensorial, que únicamente integra datos de los sentidos y la conceptual, que asocia un significado adicional a estos datos. Lo que se busca demostrar es que la memoria sensorial debe estar localizada en el área sensorial del cerebro, en este caso en la corteza visual, ya que los estímulos son visuales, y la memoria conceptual se codifica en la corteza prefrontal.
+El grupo de Neurociencia y Control Motor de la universidad de la Coruña (NeuroCom) lleva a cabo una línea de investigación sobre estudios electrofisiológicos en primates despiertos\cite{neurocom1}\cite{neurocom2}. Actualmente se está desarrollando un proyecto de investigación que intenta descubrir como se organiza y distrubuye la memoria de trabajo en la corteza cerebral. La memoria de trabajo u operativa es aquella encargada del almacenamiento temporal de información que, al contrario que la memoria a largo plazo, toma parte en procesos más complejos en el procesamiento de información. Esta memoria tiene poca capacidad, está en constante cambio y es la encargada de mantener en mente los datos mientras realizamos una tarea.
+
+La hipótesis del proyecto en curso es que hay dos tipos diferentes de memoria de trabajo, la sensorial, que únicamente integra datos de los sentidos y la conceptual, que asocia un significado adicional a estos datos. Lo que se busca demostrar es que la zona sensorial del cerebro, en este caso en la corteza visual ya que los estímulos son visuales, tirnr un papel importante en la codificación de la memoria sensorial mientras que la memoria conceptual se codifica en la corteza prefrontal.
 Para comprobar esta hipótesis se diseñó un experimento que permitiera capturar los datos de las zonas implicadas en este tipo de memoria durante la realización de distintas tareas para después inhibir la actividad en la corteza prefrontal y comprobar si la memoria conceptual se ve afectada.
-El experimento involucra un primate (un macaco, Macaca mulatta) al que se le mostraran distintos estímulos a través de la vista a los que tendrá que reaccionar empleando un sistema de seguimiento ocular. El animal tendrá fija la cabeza mediante una jaula especifica para esta tarea y se le colocará en frente de un monitor donde se le presentarán los distintos estímulos. Al lado del monitor se encuentra la cámara de seguimiento ocular y un iluminador de infrarrojos para la misma. Adicionalmente cuenta con un sistema de recompensas automático que administra una recompensa en forma de zumo de frutas al animal cuando realiza la tarea correctamente. El animal cuenta con electrodos implantados en las zonas del cerebro a estudiar, a través de los cuales se capturarán los datos de actividad neuronal. Para la inhibición de la corteza prefrontal se usa un sistema de estimulación magnética transcraneal (TMS). Puede verse un esquema del sistema en la figura \ref{figMono}.
-Es necesario que la cabeza del animal y la vista del mismo permanezcan fijas en la misma posición para poder estimular con precisión los campos receptores de la corteza visual, para ello, además del sistema de fijación de la cabeza, se debe entrenar al animal para que mantenga la mirada en todo momento en un punto de fijación que aparece en todo momento en la pantalla.
+El experimento involucra un primate (un macaco, Macaca mulatta) al que se le mostraran distintos estímulos a través de la vista a los que tendrá que reaccionar usando sus ojos, cuyas reacciones se medirán mediante un sistema de seguimiento ocular. El animal tendrá fija la cabeza mediante una silla especifica para esta tarea y se le colocará en frente de un monitor donde se le presentarán los distintos estímulos. Al lado del monitor se encuentra la cámara de seguimiento ocular y un iluminador de infrarrojos para la misma. Adicionalmente cuenta con un sistema de recompensas automático que administra una recompensa en forma de zumo de frutas al animal cuando realiza la tarea correctamente. El animal cuenta con electrodos implantados en las zonas del cerebro a estudiar, a través de los cuales se capturarán los datos de actividad neuronal. Para la inhibición de la corteza prefrontal se usa un sistema de estimulación magnética transcraneal (TMS). Puede verse un esquema del sistema en la figura \ref{figMono}.
+
+Es necesario que la cabeza del animal y la vista del mismo permanezcan fijas en la misma posición para poder estimular con precisión los campos receptores de la corteza visual, para ello, además del sistema de fijación de la cabeza, se debe entrenar al animal para que mantenga la mirada en todo momento en un punto de fijación que aparecerá durante todo el experimento en el centro de la pantalla.
 En el grupo actualmente se emplea la herramienta Opticka\cite{opticka} para realizar las diferentes tareas, sin embargo se desea desarrollar una nueva herramienta más especifica para este proyecto, y que además pueda expandirse para futuros desarrollos. La mayor ventaja del desarrollo de una herramienta propia es evitar la dependencia con los desarrolladores de Opticka para implementar cambios en la herramienta y al hacerla más especifica en vez de abarcar muchas cosas permite simplificar la interacción del usuario con la misma.
 
 \begin{figure}[htbp]
@@ -109,7 +115,7 @@ La primera versión de esta herramienta además debía soportar la ejecución de
 
 \begin{itemize}
 	\item Fijación, para el entrenamiento del sujeto
-	\item Mapeo, para el estudio de los campos receptores en la retina
+	\item Mapeo, para localizar los campos receptores en la corteza visual
 	\item Memoria de trabajo, para el estudio de el efecto de la estimulación magnética transcraneal sobre la memoria de trabajo.
 \end{itemize}
 
