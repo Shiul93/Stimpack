@@ -25,3 +25,4 @@ sccprj/
 octave-workspace
 
 DATA/*
+.DS_Store
