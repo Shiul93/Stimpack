@@ -19,7 +19,7 @@ despierto\\
 }
 
 \author{\IEEEauthorblockN{1\textsuperscript{st} Luis Felipe Llamas Luaces}
-\IEEEauthorblockA{\textit{Grupo de Neurociencia y Control Motor} \\
+\IEEEauthorblockA{\textit{Facultad de Informática} \\
 \textit{Universidade da Coruña}\\
 A Coruña, España \\
 l.f.llamas@udc.es}
@@ -91,9 +91,9 @@ Es necesario que la cabeza del animal y la vista del mismo permanezcan fijas en 
 
 En el grupo actualmente se emplea la herramienta Opticka\cite{opticka} para realizar las diferentes tareas, sin embargo se desea desarrollar una nueva herramienta más especifica para este proyecto, y que además pueda expandirse para futuros desarrollos. La mayor ventaja del desarrollo de una herramienta propia es evitar la dependencia con los desarrolladores de Opticka para implementar cambios en la herramienta y al hacerla más especifica en vez de abarcar muchas cosas permite simplificar la interacción del usuario con la misma.
 
-\begin{figure}[htbp]
+\begin{figure}[tp]
 \centerline{\includegraphics[width=\linewidth]{figures/mono}}
-\caption{Configuración del experimento}
+\caption{Configuración del experimento.}
 \label{figMono}
 \end{figure}
 \subsection{Objetivos del proyecto}
@@ -143,9 +143,9 @@ La configuración de los ensayos se llevaba a cabo mediante tres archivos de tex
 
 \subsection{Monkeylogic}
 
-\begin{figure}[htbp]
+\begin{figure}[tp]
 \centerline{\includegraphics[width=\linewidth]{figures/monkeylogic.jpg}}
-\caption{Interfaz de ususario de Monkeylogic}
+\caption{Interfaz de ususario de Monkeylogic.}
 \label{figMonkeyLogic}
 \end{figure}
 
@@ -191,9 +191,9 @@ A continuación se detalla el hardware y el software necesario para la ejecució
 
 \subsection{Configuración hardware del sistema}
 
-\begin{figure}[htbp]
+\begin{figure}[tp]
 \centerline{\includegraphics[width=\linewidth]{figures/system_diagram.png}}
-\caption{Diagrama de conexiones del sistema}
+\caption{Diagrama de conexiones del sistema.}
 \label{figSysDiagram}
 \end{figure}
 En la figura \ref{figSysDiagram} se puede ver un esquema de las conexiones del sistema. La herramienta se ejecuta en un Mac Pro siendo además necesarios dos equipos adicionales, uno ejecutando Windows empleado para la captura de datos y marcas temporales y otro que forma parte del sistema de seguimiento ocular.
@@ -245,31 +245,31 @@ Otra característica deseada para la herramienta es que  sea extensible. Esto se
 
 \begin{figure*}[htbp]
 \centerline{\includegraphics[width=\linewidth]{figures/concept_diagram.png}}
-\caption{Diagrama de arquitectura de la herramienta}
+\caption{Diagrama de arquitectura de la herramienta.}
 \label{figConceptDiagram}
 \end{figure*}
 
 
 
-\begin{figure}[htbp]
+\begin{figure}[bp]
 \centerline{\includegraphics[scale=0.15]{figures/class_diagram.png}}
-\caption{Estructura de clases que representa a las tareas}
+\caption{Estructura de clases que representa a las tareas.}
 \label{figClassDiagram}
 \end{figure}
 
 Stimpack está estructurado siguiendo una arquitectura por capas, como se puede ver en la figura \ref{figConceptDiagram}. 
 \begin{itemize}
 	\item La capa UI, donde se definen las múltiples interfaces de usuario.
-	\item La capa Task, donde se define la lógica de las diferentes tareass experimentales.
+	\item La capa Task, donde se define la lógica de las diferentes tareas experimentales.
 	\item La capa Device Access, que abstrae a las tareas de la complejidad de la interacción con el hardware.
 	\item La capa Configuration, transversal al resto de capas responsable de gestionar la configuración básica del sistema.
 \end{itemize}
 La herramienta cuenta con una clase que hace el papel de lanzador de la aplicación, que es la que se llama al ejecutar la misma. Esta clase crea una instancia de la clase de propiedades, en la que se definen los parámetros básicos de la aplicación. En la implementación actual de la herramienta estas propiedades se pueden diferenciar en tres grupos diferentes: 
 
 \begin{itemize}
-	\item Estado de activación del hardware
-	\item Parámetros de ejecución de Psychtoolbox
-	\item Dimensiones del monitor de estimulación
+	\item Estado de activación del hardware.
+	\item Parámetros de ejecución de Psychtoolbox.
+	\item Dimensiones del monitor de estimulación.
 \end{itemize}
 
 Estas propiedades se pueden modificar desde la ventana principal de la aplicación, que es arrancada por el lanzador del sistema. Desde esta interfaz también se pueden arrancar las IU especificas de cada tarea, que a su vez, instancian y configuran a las clases que implementan la lógica de las tareas.
@@ -278,11 +278,11 @@ Estas tareas (figura \ref{figClassDiagram}) son creadas extendiendo una clase ab
 
 \begin{itemize}
 
-	\item Resolución de la pantalla
-	\item Parámetros de la parte de fijación
-	\item Número de ensayos por tarea
-	\item Tiempo entre ensayos y la variabilidad del mismo
-	\item El estado del experimento
+	\item Resolución de la pantalla.
+	\item Parámetros de la parte de fijación.
+	\item Número de ensayos por tarea.
+	\item Tiempo entre ensayos y la variabilidad del mismo.
+	\item El estado del experimento.
 
 \end{itemize}
 
@@ -295,11 +295,11 @@ El resto de métodos son los mismos para todas las tareas y se encargan de la pr
 Además de estos métodos, la clase proporciona algunas funciones que son de utilidad a la hora de programar las tareas, estos métodos de utilidad permiten:
 
 \begin{itemize}
-	\item Obtener las coordenadas visuales
-	\item Forzar la actualización de los datos en el visor de la cámara
-	\item Dibujar el punto de fijación
-	\item Comprobar si hay errores en la cámara
-	\item Comprobar los comandos enviados desde la interfaz de control
+	\item Obtener las coordenadas visuales.
+	\item Forzar la actualización de los datos en el visor de la cámara.
+	\item Dibujar el punto de fijación.
+	\item Comprobar si hay errores en la cámara.
+	\item Comprobar los comandos enviados desde la interfaz de control.
 \end{itemize}
 
 Esta clase delega en la capa \textit{Device Access} para el acceso a los diferentes dispositivos hardware, empleando las distintas librerías proporcionadas por los fabricantes de los mismos.
@@ -337,10 +337,9 @@ Esta clase delega en la capa \textit{Device Access} para el acceso a los diferen
 %\end{itemize}
 
 \subsection{Interfaz gráfica de usuario}
-
-\begin{figure}[htbp]
+\begin{figure}[tp]
 \centerline{\includegraphics[width=\linewidth]{figures/main_gui}}
-\caption{Interfaz principal de la aplicación}
+\caption{Interfaz principal de la aplicación.}
 \label{figmainGUI}
 \end{figure}
 Como se introdujo en el primer punto, uno de los objetivos de este proyecto es que la herramienta cuente con una interfaz de usuario amigable, que facilite la configuración y control de los experimentos por cualquier investigador sin necesidad de una formación tecnológica especifica.
@@ -348,16 +347,16 @@ La interfaz de usuario principal (figura \ref{figmainGUI}) del programa permite 
 \begin{itemize}
 	\item La distancia al monitor.
 	\item Las dimensiones del monitor.
-	\item Activación del sistema de seguimiento ocular
+	\item Activación del sistema de seguimiento ocular.
 	\item Activación del sistema de envío de marcas temporales.
 	\item Activación del sistema de recompensa.
 	\item Activación del modo inseguro de Pychtoolbox.
 	\item Selección del monitor de estimulación.
 \end{itemize} 
 
-\begin{figure}[htbp]
+\begin{figure}[tp]
 \centerline{\includegraphics[width=\linewidth]{figures/visual_degrees}}
-\caption{Grados del sistema visual}
+\caption{Grados del sistema visual.}
 \label{figvisualDegrees}
 \end{figure}
 
@@ -380,65 +379,66 @@ Para el desarrollo del experimento explicado en el primer apartado, ha sido nece
 	\item La tarea de mapeo, que permite buscar los campos receptores en la corteza visual. 
 	\item La tarea de memoria de trabajo, que permitirá comprobar la hipótesis planteada por el proyecto.
 \end{itemize}
-estas tres tareas fueron incluidas en esta implementación de la herramienta. Adicionalmente se creó una plantilla a partir de la primera (fijación) para desarrollar nuevas tareas sin tener que reescribir el código común. 
+Estas tres tareas fueron incluidas en esta implementación de la herramienta. Adicionalmente se creó una plantilla a partir de la primera (fijación) para desarrollar nuevas tareas sin tener que reescribir el código común. 
 A continuación se extienden los detalles de cada tarea individualmente.
 
 \subsubsection*{Tarea de fijación}
+\begin{figure*}[tp]
+\centerline{\includegraphics[width=\linewidth]{figures/fixation_gui}}
+\caption{Interfaz de la tarea de fijación.}
+\label{figfixGUI}
+\end{figure*}
 
-\begin{figure}[htbp]
+\begin{figure}[bp]
 \centerline{\includegraphics[width=\linewidth]{figures/fixation}}
-\caption{Tarea de fijación}
+\caption{Tarea de fijación.}
 \label{figfixTask}
 \end{figure}
 
-\begin{figure*}[htbp]
-\centerline{\includegraphics[width=\linewidth]{figures/fixation_gui}}
-\caption{Interfaz de la tarea de fijación}
-\label{figfixGUI}
-\end{figure*}
+
 
 La tarea de fijación es la más básica de las implementadas y sirve de base para el resto, derivando la plantilla para crear tareas directamente de esta. 
 En la tarea de fijación se le muestra al individuo un punto sobre un fondo en el que debe fijar la vista. Si lo hace correctamente se le da una recompensa.
 Los pasos de la tarea son los siguientes:
 
 \begin{enumerate}
-	\item Aparece solo el fondo
-	\item Aparece el punto de fijación
-	\item El sujeto tiene un tiempo limite para poner la mirada sobre el punto
-	\item Una vez tiene la mirada fija en el punto, debe permanecer un tiempo definido
-	\item Desaparece el punto y si ha hecho correctamente todos los pasos se le da una recompensa
-	\item Tiempo entre ensayos y vuelta al punto 1
+	\item Aparece solo el fondo.
+	\item Aparece el punto de fijación.
+	\item El sujeto tiene un tiempo limite para poner la mirada sobre el punto.
+	\item Una vez tiene la mirada fija en el punto, debe permanecer un tiempo definido.
+	\item Desaparece el punto y si ha hecho correctamente todos los pasos se le da una recompensa.
+	\item Tiempo entre ensayos y vuelta al punto 1.
 \end{enumerate}
 
 En la figura \ref{figfixTask} puede verse lo que se le muestra al sujeto durante el experimento. 
 
 Esta tarea sirve para entrenar al sujeto en mantener la mirada en el punto de fijación. Es necesario entrenar al sujeto en mantener la vista fija en el punto de fijación, ya que en el resto de tareas es un requisito indispensable que el animal mantenga la mirada en todo momento en el punto de fijación.
 
-Esta tarea es totalmente parametrizable, de forma muy sencilla, pudiéndose modificara través de la interfaz gráfica (figura \ref{figfixGUI}) las siguientes propiedades:
+Esta tarea es totalmente parametrizable, de forma muy sencilla, pudiéndose modificar a través de la interfaz gráfica (figura \ref{figfixGUI}) las siguientes propiedades:
 \begin{itemize}
-	\item Tamaño del punto de fijación y de la ventana de fijación
-	\item Color del punto de fijación y del fondo
-	\item Tiempo de espera de fijación
-	\item Tiempo de fijación
-	\item Tiempo de recompensa
-	\item Tiempo entre ensayos
-	\item Variación del tiempo entre ensayos
-	\item Número de ensayos
+	\item Tamaño del punto de fijación y de la ventana de fijación.
+	\item Color del punto de fijación y del fondo.
+	\item Tiempo de espera de fijación.
+	\item Tiempo de fijación.
+	\item Tiempo de recompensa.
+	\item Tiempo entre ensayos.
+	\item Variación del tiempo entre ensayos.
+	\item Número de ensayos.
 \end{itemize}
 
 Durante el experimento, se le muestra al investigador en la interfaz de usuario un gráfico de sectores donde se puede ver la cantidad de ensayos terminados con éxito, abortados por romper la fijación o fallidos por no haber alcanzado la fijación, esto ayuda a saber que tal progresa el experimento, pudiendo decidir si pausar el experimento o pararlo si el animal no progresa en la tarea.
 
 \subsubsection*{Tarea de mapeo}
 
-\begin{figure}[htbp]
+\begin{figure}[bp]
 \centerline{\includegraphics[width=\linewidth]{figures/mapping_task}}
-\caption{Tarea de mapeo}
+\caption{Tarea de mapeo.}
 \label{figMapTask}
 \end{figure}
 
-\begin{figure*}[htbp]
+\begin{figure*}[tp]
 \centerline{\includegraphics[width=\linewidth]{figures/mapping_gui}}
-\caption{Interfaz de la tarea de mapeo}
+\caption{Interfaz de la tarea de mapeo.}
 \label{figmappingGUI}
 \end{figure*}
 
@@ -447,14 +447,14 @@ En la tarea de mapeo se le muestra al sujeto el punto de fijación, una vez cons
 El protocolo seguido es el siguiente:
 
 \begin{enumerate}
-	\item Aparece el fondo
-	\item Aparece el punto de fijación
-	\item El animal fija
-	\item Aparece el estímulo
-	\item El animal mantiene la fijación
-	\item Desaparece el punto y el estímulo
-	\item Recompensa
-	\item Tiempo entre ensayos y vuelta al punto 1
+	\item Aparece el fondo.
+	\item Aparece el punto de fijación.
+	\item El animal fija.
+	\item Aparece el estímulo.
+	\item El animal mantiene la fijación.
+	\item Desaparece el punto y el estímulo.
+	\item Recompensa.
+	\item Tiempo entre ensayos y vuelta al punto 1.
 \end{enumerate}
 
 
@@ -472,34 +472,34 @@ Esta tarea permite registrar datos neuronales sobre que neuronas se activan al p
 
 \subsubsection*{Tarea de memoria de trabajo}
 
-\begin{figure}[htbp]
+\begin{figure}[bp]
 \centerline{\includegraphics[width=\linewidth]{figures/memory_task}}
-\caption{Tarea de memoria de trabajo (con flecha)}
+\caption{Tarea de memoria de trabajo (con flecha).}
 \label{figMemoryTask}
 \end{figure}
 
-\begin{figure*}
+\begin{figure*}[tp]
   \includegraphics[width=\textwidth]{figures/memory_gui}
   \caption{Interfaz de la tarea de memoria de trabajo}
   \label{figMemoryGui}
 
 \end{figure*}
 
-La última tarea implementada es la más elaborada de todas, fue construida también sobre la plantilla y es la que se va a utilizar para llevar a cabo la investigación sobre la memoria de trabajo. 
+La última tarea implementada es la más elaborada de todas. Fue construida también sobre la plantilla y es la que se va a utilizar para llevar a cabo la investigación sobre la memoria de trabajo. 
 En esta tarea el animal debe fijar la mirada en el punto, una vez fija se le muestra un estímulo, que puede ser de dos tipos diferentes, un grating en movimiento o un grating más una flecha, una vez pasa un tiempo el estimulo desaparece y se deja únicamente el punto de fijación, pasado otro momento se muestra un grating moviéndose en una dirección aleatoria, una vez pasado otro intervalo de tiempo desaparecen tanto el estimulo como el punto de fijación y aparecen dos puntos a los lados de la pantalla. En el caso del estímulo sin flecha, el animal debe fijar la mirada en el punto en el lado hacia el cual se movía el primer grating, en caso de que fuera el con flecha, debe escoger  hacia el lado que señalaba la misma.
 Los pasos organizados son los siguientes:
 
 
 \begin{enumerate}
-	\item Aparece punto de fijación
-	\item Animal fija
-	\item Aparece primer estímulo (con o sin flecha)
-	\item Desaparece el estimulo y se mantiene el punto de fijación
-	\item Aparece el segundo estímulo (solo grating)
-	\item Desaparecen el estímulo y el punto de fijación y aparecen los selectores en el monitor
-	\item El animal escoge fijando la vista en uno de ellos
-	\item Desaparecen los selectores y si escoge el correcto se le da recompensa
-	\item Tiempo entre ensayos y vuelta al punto 1
+	\item Aparece punto de fijación.
+	\item Animal fija.
+	\item Aparece primer estímulo (con o sin flecha).
+	\item Desaparece el estimulo y se mantiene el punto de fijación.
+	\item Aparece el segundo estímulo (solo grating).
+	\item Desaparecen el estímulo y el punto de fijación y aparecen los selectores en el monitor.
+	\item El animal escoge fijando la vista en uno de ellos.
+	\item Desaparecen los selectores y si escoge el correcto se le da recompensa.
+	\item Tiempo entre ensayos y vuelta al punto 1.
 \end{enumerate}
 
 En la figura \ref{figMemoryTask} puede verse este proceso. 
@@ -508,14 +508,14 @@ En la figura \ref{figMemoryTask} puede verse este proceso.
 Los parámetros modificables son los siguientes:
 
 \begin{itemize}
-	\item Tiempo del primer estímulo
-	\item Tiempo entre estímulos
-	\item Tiempo del segundo estímulo
-	\item Tiempo disponible para responder
-	\item Tiempo de fijación en los selectores
-	\item Frecuencia espacial y temporal del grating
-	\item Posición del grating
-	\item Orientación del grating
+	\item Tiempo del primer estímulo.
+	\item Tiempo entre estímulos.
+	\item Tiempo del segundo estímulo.
+	\item Tiempo disponible para responder.
+	\item Tiempo de fijación en los selectores.
+	\item Frecuencia espacial y temporal del grating.
+	\item Posición del grating.
+	\item Orientación del grating.
 
 \end{itemize}
 
@@ -548,12 +548,12 @@ La herramienta está publicada en un repositorio público en Github\cite{stimpac
 \section{Agradecimientos}
 
 Quiero agradecer a Juan Casto Rivadulla Fernández por la dirección de este proyecto, a Sandra Yaneth Prieto Soler y José Luis Pardo Vázquez por su ayuda en el laboratorio y sus consejos desde la perspectiva de investigadores para desarrollar la herramienta. 
-También quiero agradecer la ayuda prestada por Alejandro Paz López por sus consejos, que permitieron al mejora de la arquitectura del sistema.
+También quiero agradecer la ayuda prestada por Alejandro Paz López cuyos consejos, permitieron la mejora de la arquitectura del sistema.
 
 \begin{thebibliography}{00}
 \bibitem{neurocom1} Aguila, J., Cudeiro, F. J. and Rivadulla, C. (2017) ‘Suppression of V1 Feedback Produces a Shift in the Topographic Representation of Receptive Fields of LGN Cells by Unmasking Latent Retinal Drives’, Cerebral Cortex, 27(6), pp. 3331–3345. doi: 10.1093/cercor/bhx071.
 
-\bibitem{neurocom2} Aguila, J., Cudeiro, F. J. and Rivadulla, C. (2017) ‘Suppression of V1 Feedback Produces a Shift in the Topographic Representation of Receptive Fields of LGN Cells by Unmasking Latent Retinal Drives’, Cerebral Cortex, 27(6), pp. 3331–3345. doi: 10.1093/cercor/bhx071.
+\bibitem{neurocom2} Ortuño, T. et al. (2014) ‘Bursting thalamic responses in awake monkey contribute to visual detection and are modulated by corticofugal feedback’, Frontiers in Behavioral Neuroscience, 8(May), pp. 1–10. doi: 10.3389/fnbeh.2014.00198.
 
 \bibitem{cortex} Cortex: A Program for COmputerized Real Time EXperiments. http://www.cnbc.cmu.edu/~rickr/ctxman5.html (Online) Último acceso: 14/6/2018
 
